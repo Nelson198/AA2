@@ -66,12 +66,22 @@
 
 \section{Tema}
 \normalsize{
-    ...
+    O tema escolhido pelo nosso grupo é o desenvolvimento de uma \textit{framework} de AutoML.
+    A \textit{framework} visa obter o melhor modelo para problemas de \textit{supervised learning} e \textit{unsupervised learning}.
+    O objetivo final é colocar a \textit{framework} disponivel para os utilizadores de Python.
 }
 
 \section{Planificação}
 \normalsize{
-    ...
+    Devido á complexidade do desenvolvimento deste projeto num prazo tão curto não estamos a incluir o pré processamento de dados neste projeto.
+    A \textit{framework} recebe como parametros os dados de treino e os dados de teste. 
+    A \textit{framework} vai distinguir entre um problema de \textit{supervised} e \textit{unsupervised} consoante receba as \textit{labels}/\textit{targets} ou não.
+    Para problemas de \textit{supervised} vai ser distinguido entre regressão e classificação se o \textit{target} é uma variavel continua ou discreta.
+    Em problemas de regressão os algoritmos usados para encontrar o melhor modelo são: Regressão Linear, Regressão Polinomial, Support Vector Regression, Decision Tree Regression, Random Forest Regression e Redes Neuronais.
+    Para problemas de classificação os algoritmos usados para encontrar o melhor modelo são: Regressão Logistica, KNN, Support Vector Machine, Kernel SVM, Naive Bayes, Decision Tree Classification, Random Forest e Redes Neuronais.
+    Para problemas de clustering os algoritmos em uso para procurar o melhor modelo são: k-Means Clustering e Hierarchical Clustering.
+    A procura de melhores \textit{hyperparameters} para Redes Neuronais vai ser realizada com o uso da biblioteca \texttt{kerastuner}. 
+    Para os outros algoritmos vai-se fazer uso do GridSearchCV e RandomizedSearchCV para a escolha dos melhores \textit{hyperparameters}.
 }
 
 \section{Objetivos}
