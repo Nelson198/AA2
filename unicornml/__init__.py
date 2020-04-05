@@ -1,8 +1,8 @@
 import sys
 import re
-from .regression     import Regression
-from .classification import Classification
-from .clustering     import Clustering
+from regression     import Regression
+from classification import Classification
+from clustering     import Clustering
 
 class UnicornML:
     def __init__(self, x_train, x_val, x_test, y_train, y_val, y_test):
@@ -11,7 +11,9 @@ class UnicornML:
         
         # it's unsupervised learning
         if not y_train:
-            self.model = Clustering()
+            self.model = Clustering(
+                x_train, x_val, x_test
+            )
         else: 
             # Stupid trick
             if bool(re.search('^int', str(y_train.dtype))):
