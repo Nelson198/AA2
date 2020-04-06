@@ -57,9 +57,9 @@
 
 \section{Introdução}
 \normalsize{
-    Tal como foi requerido pelo docente desta disciplina, este documento serve para fazer um 
-    levantamento preliminar do que será desenvolvido para o respetivo trabalho prático. Exibe-se
-    de seguida o repositório \textit{GitHub} público associado a este projeto onde será colocado todo
+    Tal como foi requerido pelo docente da unidade curricular "Aprendizagem Automática II", este documento serve para fazer um 
+    levantamento preliminar do que será desenvolvido para o trabalho prático da respetiva UC. Exibe-se,
+    de seguida, o repositório \textit{GitHub} público associado a este projeto, onde será colocado todo
     o código desenvolvido pelo grupo bem como toda a documentação e recursos intrínsecos à implementação:
     \begin{center}
         \textit{\url{https://github.com/Nelson198/AA2}}
@@ -69,28 +69,64 @@
 \section{Tema}
 \normalsize{
     O tema escolhido pelo nosso grupo é o desenvolvimento de uma \textit{framework} de AutoML.
-    A \textit{framework} visa obter o melhor modelo para problemas de \textit{supervised learning} e \textit{unsupervised learning}.
-    O objetivo final é colocar a \textit{framework} disponivel para os utilizadores de Python.
+    A \textit{framework} visa obter o melhor modelo para problemas de \textit{supervised learning} e \textit{unsupervised learning}, 
+    de forma automática e com a menor intervenção possível por parte do programador.
+    O objetivo final é colocar a \textit{framework} disponivel para os utilizadores da linguagem Python.
 }
 
 \section{Planificação}
 \normalsize{
-    Devido à complexidade do desenvolvimento deste projeto num prazo tão curto não estamos a incluir o pré processamento de dados neste projeto.
-    A \textit{framework} recebe como parametros os dados de treino e os dados de teste. 
-    A \textit{framework} vai distinguir entre um problema de \textit{supervised} e \textit{unsupervised} consoante receba as \textit{labels}/\textit{targets} ou não.
-    Para problemas de \textit{supervised} vai ser distinguido entre regressão e classificação se o \textit{target} é uma variavel continua ou discreta.
-    Em problemas de regressão os algoritmos usados para encontrar o melhor modelo são: Regressão Linear, Regressão Polinomial, Support Vector Regression, Decision Tree Regression, Random Forest Regression e Redes Neuronais.
-    Para problemas de classificação os algoritmos usados para encontrar o melhor modelo são: Regressão Logistica, KNN, Support Vector Machine, Kernel SVM, Naive Bayes, Decision Tree Classification, Random Forest e Redes Neuronais.
-    Para problemas de clustering os algoritmos em uso para procurar o melhor modelo são: k-Means Clustering e Hierarchical Clustering.
-    A procura de melhores \textit{hyperparameters} para Redes Neuronais vai ser realizada com o uso da biblioteca \texttt{kerastuner}. 
-    Para os outros algoritmos vai-se fazer uso do GridSearchCV e RandomizedSearchCV para a escolha dos melhores \textit{hyperparameters}.
+    Devido à complexidade do desenvolvimento deste projeto e atendendo ao curto espaço de tempo disponível, não serão incluídas opções de pré-processamento de dados.
+    Com isto, o utilizador/programador deverá indicar qual o tipo de modelo (regressão, classificação ou \textit{clustering}) que deseja obter, 
+    sendo depois da responsabilidade da \textit{framework} a procura do melhor modelo desse tipo, visitando todos os algoritmos disponíveis.
+    Se o utilizador preferir um algoritmo em especial poderá indicá-lo, sendo da responsabilidade da \textit{framework} a procura dos melhores hiperparâmetros.
+    
+    A \textit{framework} vai distinguir entre um problema de \textit{supervised} e \textit{unsupervised learning} consoante receba, ou não, as \textit{labels}/\textit{targets}.
+    Todos os problemas de \textit{supervised learning} vão ser distinguidos entre regressão e classificação, dependendo se o \textit{target} é uma variável contínua ou discreta.
+    
+    Para problemas de regressão, os algoritmos disponiveis serão: 
+    \begin{itemize}
+        \item Regressão Linear
+        \item Regressão Polinomial
+        \item \textit{Support Vector Regression}
+        \item \textit{Decision Tree Regression}
+        \item \textit{Random Forest Regression}
+        \item Redes Neuronais
+    \end{itemize}
+    
+    Para problemas de classificação, os algoritmos disponiveis serão:
+    \begin{itemize}
+        \item Regressão Logística
+        \item \textit{k-Nearest Neighbors} (KNN)
+        \item \textit{Support Vector Machine} (SVM)
+        \item Kernel SVM
+        \item \textit{Naive Bayes}
+        \item \textit{Decision Tree Classification}
+        \item \textit{Random Forest}
+        \item Redes Neuronais
+    \end{itemize}
+    
+    Para problemas de \textit{clustering}, os algoritmos disponiveis serão:
+    \begin{itemize}
+        \item \textit{k-Means Clustering}
+        \item \textit{Hierarchical Clustering}
+    \end{itemize}
+    
+    A procura de melhores hiperparâmetros para Redes Neuronais vai ser realizada com o uso da biblioteca \texttt{kerastuner}. 
+    Para outros algoritmos, vai-se fazer uso do \textit{GridSearchCV} e \textit{RandomizedSearchCV} para esta escolha.
+
+    Na eventualidade da plataforma estar terminada e ainda existir tempo para tal, será estudada a possibilidade de se incluir o pré-processamento de dados, 
+    aumentando a complexidade mas também a flexibilidade da \textit{framework}. Isto poderá permitir que sejam testados modelos de tipos distintos.
 }
 
 \section{Objetivos}
 \normalsize{
     \begin{enumerate}
-        \item Garantir que ...
-        \item Verificar que 
+        \item Permitir o teste de diferentes modelos, com diferentes algoritmos, para um certo conjunto de dados;
+        \item Comparar diferentes modelos, apresentando a suas métricas;
+        \item Encontrar o melhor modelo, com base nas métricas apresentadas;
+        \item Disponibilizar a plataforma \textit{online}, para uso da comunidade;
+        \item Preparar o projeto para a inclusão de pré-processamento de dados.
     \end{enumerate}
 }
 
