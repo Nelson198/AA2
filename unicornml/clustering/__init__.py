@@ -1,3 +1,4 @@
+
 class Clustering:
     def __init__(self, x_train, x_val, x_test):
         self.x_train = x_train
@@ -7,3 +8,4 @@ class Clustering:
 
     def Odin(self):
         return 1
+

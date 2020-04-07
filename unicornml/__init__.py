@@ -23,8 +23,8 @@ class UnicornML:
                 )
             else:
                 self.model = Regression(
-                    x_train, x_val, x_test,
-                    y_train, y_val, y_test
+                    x_train, x_test,
+                    y_train, y_test
                 )  
     
     # the Odin is the god model!!!
