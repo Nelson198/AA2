@@ -7,3 +7,7 @@
 *.toc
 *.synctex.gz
 *__pycache__
+\.*
+Code/build*
+Code/dist*
+Code/unicornml.egg*

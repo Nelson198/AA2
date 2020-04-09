@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='unicornml',
       version='0.1',
@@ -7,6 +7,6 @@ setup(name='unicornml',
       author='João Imperadeiro, José Boticas, Nelson Teixeira, Rui Meira',
       #author_email='flyingcircus@example.com',
       license='MIT',
-      packages=['.', 'regression', 'classification'],
+      packages=find_packages(),
       zip_safe=False
 )
