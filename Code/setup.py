@@ -8,5 +8,11 @@ setup(name='unicornml',
       #author_email='flyingcircus@example.com',
       license='MIT',
       packages=find_packages(),
-      zip_safe=False
+      zip_safe=False,
+      test_suite="tests"
 )
+
+#def module_tests():
+#    test_loader = unittest.TestLoader()
+#    test_suite  = test_loader.discover('tests', pattern='*.py')
+#    return test_suite
