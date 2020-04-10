@@ -40,23 +40,24 @@ class Regression:
     
 
     def __polynomialRegression(self):
-        print("Training with polynomial Regression")
-        poly_reg = PolynomialFeatures( degree = 2)
-        X_poly = poly_reg.fit_transform(self.X_train)
-        poly_reg.fit(X_poly, self.y_train)
-
-        regressor = LinearRegression()
-        regressor.fit(X_poly, self.y_train)
-
-        y_pred = regressor.predict(
-            poly_reg.fit_transform(self.X_test)
-        )
-
-        r2 = r2_score(self.y_test, y_pred)
-        print("Score: %f" % r2)
-        if not bool(self.model) or self.model['score'] < r2:
-            self.model['score'] = r2
-            self.model['model'] = regressor
+        for degree in range(2,self.X_train.shape[1]):
+            print("Training with polynomial Regression (degree: %d)", degree)
+            poly_reg = PolynomialFeatures( degree = degree)
+            X_poly = poly_reg.fit_transform(self.X_train)
+            poly_reg.fit(X_poly, self.y_train)
+    
+            regressor = LinearRegression()
+            regressor.fit(X_poly, self.y_train)
+    
+            y_pred = regressor.predict(
+                poly_reg.fit_transform(self.X_test)
+            )
+    
+            r2 = r2_score(self.y_test, y_pred)
+            print("Score: %f" % r2)
+            if not bool(self.model) or self.model['score'] < r2:
+                self.model['score'] = r2
+                self.model['model'] = regressor
 
     
     def __SVR(self):
