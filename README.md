@@ -10,9 +10,13 @@
 [Rui Meira](https://github.com/ruisteve)
 
 ### Instalação
+```bash
 cd Code/
 python3 setup.py install --user
+```
 
 ### Testes
+```bash
 cd Code/
 python3 setup.py test
+```
