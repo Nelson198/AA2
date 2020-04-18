@@ -114,4 +114,13 @@ class Regression:
         r2 = r2_score(self.y_test, y_pred)
         return r2,regressor
 
+    
+    def __param_tunning(self, model, params):
+        rsearch = RandomizedSearchCV(
+            estimater = model,
+            param_distributions=params,
+            n_jobs=-1 #uses all available processors
+        )
+        rsearch.fit
+
         
