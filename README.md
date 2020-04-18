@@ -8,3 +8,15 @@
 [José Boticas](https://github.com/SacitobJose)  
 [Nelson Teixeira](https://github.com/Nelson198)  
 [Rui Meira](https://github.com/ruisteve)
+
+### Instalação
+```bash
+cd Code/
+python3 setup.py install --user
+```
+
+### Testes
+```bash
+cd Code/
+python3 setup.py test
+```
