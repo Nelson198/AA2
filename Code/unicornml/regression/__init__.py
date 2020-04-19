@@ -11,8 +11,8 @@ class Regression:
     def __init__(self, x_train, x_test, y_train, y_test):
         self.X_train = x_train
         self.X_test  = x_test
-        self.y_train = y_train
-        self.y_test  = y_test
+        self.Y_train = y_train
+        self.Y_test  = y_test
         self.methods = {
             'linear'      : self.__linearRegression,
             'poly'        : self.__polynomialRegression,
@@ -28,11 +28,11 @@ class Regression:
         return self.model
 
     def __linearRegression(self):
-        print("Training with Linear Regression")
+        print("\nTraining with Linear Regression")
         regressor = LinearRegression()
-        regressor.fit(self.X_train, self.y_train)
+        regressor.fit(self.X_train, self.Y_train)
         y_pred = regressor.predict(self.X_test)
-        r2 = r2_score(self.y_test, y_pred)
+        r2 = r2_score(self.Y_test, y_pred)
         print("Score: %f" % r2)
         if not bool(self.model) or self.model['score'] < r2:
             self.model['score'] = r2
@@ -44,16 +44,16 @@ class Regression:
             print("Training with polynomial Regression (degree: %d)", degree)
             poly_reg = PolynomialFeatures( degree = degree)
             X_poly = poly_reg.fit_transform(self.X_train)
-            poly_reg.fit(X_poly, self.y_train)
+            poly_reg.fit(X_poly, self.Y_train)
     
             regressor = LinearRegression()
-            regressor.fit(X_poly, self.y_train)
+            regressor.fit(X_poly, self.Y_train)
     
             y_pred = regressor.predict(
                 poly_reg.fit_transform(self.X_test)
             )
     
-            r2 = r2_score(self.y_test, y_pred)
+            r2 = r2_score(self.Y_test, y_pred)
             print("Score: %f" % r2)
             if not bool(self.model) or self.model['score'] < r2:
                 self.model['score'] = r2
@@ -63,10 +63,10 @@ class Regression:
     def __SVR(self):
         print("Training with Support Vector Regressor")
         regressor = SVR(kernel='rbf', gamma = 'scale')
-        regressor.fit( self.X_train, self.y_train)
+        regressor.fit( self.X_train, self.Y_train)
         y_pred = regressor.predict(self.X_test)
 
-        r2 = r2_score(self.y_test, y_pred)
+        r2 = r2_score(self.Y_test, y_pred)
         print("Score: %f" % r2)
         if not bool(self.model) or self.model['score'] < r2:
             self.model['score'] = r2
@@ -76,10 +76,10 @@ class Regression:
     def __decisionTreeRegression(self):
         print("training with Decision Tree Regressor")
         regressor = DecisionTreeRegressor()
-        regressor.fit( self.X_train, self.y_train)
+        regressor.fit( self.X_train, self.Y_train)
         y_pred = regressor.predict(self.X_test)
 
-        r2 = r2_score(self.y_test, y_pred)
+        r2 = r2_score(self.Y_test, y_pred)
         print("Score: %f" % r2)
         if not bool(self.model) or self.model['score'] < r2:
             self.model['score'] = r2
@@ -89,10 +89,10 @@ class Regression:
     def __randomForestRegression(self):
         print("Training with Random Forest Regressor")
         regressor = RandomForestRegressor(n_estimators=10)
-        regressor.fit( self.X_train, self.y_train)
+        regressor.fit( self.X_train, self.Y_train)
         y_pred = regressor.predict(self.X_test)
 
-        r2 = r2_score(self.y_test, y_pred)
+        r2 = r2_score(self.Y_test, y_pred)
         print("Score: %f" % r2)
         if not bool(self.model) or self.model['score'] < r2:
             self.model['score'] = r2
@@ -104,14 +104,14 @@ class Regression:
         scores = cross_val_score(
             regressor,
             self.X_train,
-            self.y_train,
+            self.Y_train,
             scoring = 'r2',
             cv = 5
         )
         y_pred = regressor.predict(X_test) 
         # é necessário comparar o valor dos scores com o do r2 
         # para saber se existe overfitting
-        r2 = r2_score(self.y_test, y_pred)
+        r2 = r2_score(self.Y_test, y_pred)
         return r2,regressor
 
     

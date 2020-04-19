@@ -13,25 +13,24 @@ class TestStringMethods(unittest.TestCase):
     def test_linearRegression(self):
         data = pd.read_csv("./data/50_Startups.csv")
         X = data.iloc[:,:-1].values
-        y = data.iloc[:,-1].values
+        Y = data.iloc[:,-1].values
 
         ct = ColumnTransformer(
             [
-                ('encoder', OneHotEncoder(), [3] )
+                ('encoder', OneHotEncoder(), [3])
             ],
             remainder= 'passthrough'
         )
-        X = np.array( ct.fit_transform(X), dtype= np.float)
+        X = np.array(ct.fit_transform(X), dtype= np.float)
         X = X[:,1:]
 
-
-        X_train, X_test, y_train, y_test = train_test_split(X,y, test_size=.2, random_state=0)
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=.2, random_state=0)
 
         foo = Regression(
             X_train,
             X_test,
-            y_train,
-            y_test
+            Y_train,
+            Y_test
         )
         model = foo.Rainbow()
 
