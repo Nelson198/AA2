@@ -9,7 +9,6 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
 
 class TestStringMethods(unittest.TestCase):
-
     def test_linearRegression(self):
         data = pd.read_csv("./data/50_Startups.csv")
         X = data.iloc[:,:-1].values
@@ -26,7 +25,7 @@ class TestStringMethods(unittest.TestCase):
 
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=.2, random_state=0)
 
-        foo = Regression(
+        foo = Regression (
             X_train,
             X_test,
             Y_train,
@@ -49,5 +48,6 @@ class TestStringMethods(unittest.TestCase):
         with self.assertRaises(TypeError):
             s.split(2)
     '''
+
 if __name__ == '__main__':
     unittest.main()

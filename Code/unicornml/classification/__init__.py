@@ -32,8 +32,17 @@ class Classification:
             self.methods[method]()
         return self.model
 
+    # ACABAR !!!
     def __logisticRegression(self):
         print("\nTraining with Logistic Regression")
+        classifier = LogisticRegression()
+        classifier.fit(self.X_train, self.Y_train)
+        # classifier.predict()
+        score = classifier.score(self.X_test, self.Y_test)
+        print("Score: {0}".format(score))
+        if not bool(self.model) or self.model['score'] < score:
+            self.model['score'] = score
+            self.model['model'] = classifier
 
     def __KNN(self):
         print("Training with k-Nearest Neighbors (KNN)")

@@ -41,7 +41,7 @@ class Regression:
     def __polynomialRegression(self):
         for degree in range(2,self.X_train.shape[1]):
             print("Training with polynomial Regression (degree: %d)", degree)
-            poly_reg = PolynomialFeatures( degree = degree)
+            poly_reg = PolynomialFeatures(degree = degree)
             X_poly = poly_reg.fit_transform(self.X_train)
             poly_reg.fit(X_poly, self.Y_train)
     
@@ -111,7 +111,7 @@ class Regression:
         # é necessário comparar o valor dos scores com o do r2 
         # para saber se existe overfitting
         r2 = r2_score(self.Y_test, y_pred)
-        return r2,regressor
+        return r2, regressor
 
     
     def __param_tunning(self, model, params):
