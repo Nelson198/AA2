@@ -6,7 +6,6 @@ from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
 
-
 class Regression:
     def __init__(self, x_train, x_test, y_train, y_test):
         self.X_train = x_train
@@ -123,4 +122,3 @@ class Regression:
         )
         rsearch.fit
 
-        
