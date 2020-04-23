@@ -1,6 +1,4 @@
 import unittest
-import sys
-import os
 import pandas as pd
 import numpy as np
 from unicornml.regression import Regression
