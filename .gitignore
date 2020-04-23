@@ -5,6 +5,7 @@
 *.log
 *.out
 *.toc
+*.lof
 *.synctex.gz
 *__pycache__
 \.*

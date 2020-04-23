@@ -1,0 +1,94 @@
+% Setup -------------------------------
+
+\documentclass[a4paper]{report}
+\usepackage[a4paper, total={6in, 10in}]{geometry}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+\usepackage{hyperref}
+\usepackage{indentfirst}
+
+% Encoding
+%--------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+%--------------------------------------
+
+% Portuguese-specific commands
+%--------------------------------------
+\usepackage[portuguese]{babel}
+%--------------------------------------
+
+% Hyphenation rules
+%--------------------------------------
+\usepackage{hyphenat}
+%--------------------------------------
+
+% Capa do relatório
+
+\title{
+	Aprendizagem Automática 2
+	\\ \Large{\textbf{Trabalho Prático}}
+	\\ -
+	\\ Mestrado em Engenharia Informática
+	\\ Universidade do Minho
+}
+\author{
+	\begin{tabular}{ll}
+		\textbf{Grupo nº 8}
+		\\
+		\hline
+		PG41080 & João Ribeiro Imperadeiro
+        \\
+		PG41081 & José Alberto Martins Boticas
+		\\
+        PG41091 & Nelson José Dias Teixeira
+        \\
+        PG41851 & Rui Miguel da Costa Meira
+	\end{tabular}
+}
+
+\date{\today}
+
+\begin{document}
+
+\begin{titlepage}
+    \maketitle
+\end{titlepage}
+
+% Índice
+
+\tableofcontents
+\listoffigures
+
+% Introdução
+
+\chapter{Introdução} \label{ch:Introduction}
+\large {
+
+}
+
+\chapter{Implementação} \label{ch:Implementation}
+\large {
+	\section{A} \label{sec:A}
+		\subsection{A1} \label{subsec:A-1}
+            \subsubsection{A11} \label{sssec:A-1-1}
+            \subsubsection{A12} \label{sssec:A-1-2}
+
+		\subsection{A2} \label{subsec:A-2}
+}
+
+\chapter{Conclusão} \label{ch:Conclusion}
+\large{
+	
+}
+
+\appendix
+\chapter{Observações} \label{ch:Observations}
+\begin{itemize}
+    \item Documentação \textit{Python} 3:
+    \par \textit{\url{https://docs.python.org/3/}}
+\end{itemize}
+
+
+\end{document}

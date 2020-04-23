@@ -12,16 +12,16 @@ class TestStringMethods(unittest.TestCase):
         X = data.iloc[:,:-1].values
         Y = data.iloc[:,-1].values
 
-        ct = ColumnTransformer(
+        ct = ColumnTransformer (
             [
-                ('encoder', OneHotEncoder(), [3])
+                ("encoder", OneHotEncoder(), [3])
             ],
-            remainder= 'passthrough'
+            remainder= "passthrough"
         )
-        X = np.array(ct.fit_transform(X), dtype= np.float)
+        X = np.array(ct.fit_transform(X), dtype = np.float)
         X = X[:,1:]
 
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=.2, random_state=0)
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .2, random_state = 0)
 
         foo = Regression (
             X_train,
@@ -31,7 +31,7 @@ class TestStringMethods(unittest.TestCase):
         )
         model = foo.Rainbow()
 
-        self.assertEqual('foo'.upper(), 'FOO')
+        self.assertEqual("foo".upper(), "FOO")
 
     '''
     def test_isupper(self):
@@ -47,5 +47,5 @@ class TestStringMethods(unittest.TestCase):
             s.split(2)
     '''
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
