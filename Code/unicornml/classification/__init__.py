@@ -8,12 +8,10 @@ from sklearn.ensemble     import RandomForestClassifier, RandomForestRegressor
 # import kerastuner
 
 class Classification:
-    def __init__(self, x_train, x_val, x_test, y_train, y_val, y_test):
+    def __init__(self, x_train, x_test, y_train, y_test):
         self.X_train = x_train
-        self.X_val   = x_val
         self.X_test  = x_test
         self.Y_train = y_train
-        self.Y_val   = y_val
         self.Y_test  = y_test
         self.methods = {
             "logistic"      : self.__logisticRegression,
@@ -27,17 +25,17 @@ class Classification:
         }
         self.model = {}
 
-    def Odin(self):
+    def Rainbow(self):
         for method in self.methods:
             self.methods[method]()
         return self.model
 
-    # ACABAR !!!
+    #TODO ACABAR !!!
     def __logisticRegression(self):
-        print("\nTraining with Logistic Regression")
+        print("Training with Logistic Regression")
         classifier = LogisticRegression()
         classifier.fit(self.X_train, self.Y_train)
-        # classifier.predict()
+        classifier.predict(self.X_test)
         score = classifier.score(self.X_test, self.Y_test)
         print("Score: {0}".format(score))
         if not bool(self.model) or self.model['score'] < score:

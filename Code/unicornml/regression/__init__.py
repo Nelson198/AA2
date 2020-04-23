@@ -27,7 +27,7 @@ class Regression:
         return self.model
 
     def __linearRegression(self):
-        print("\nTraining with Linear Regression")
+        print("Training with Linear Regression")
         regressor = LinearRegression()
         regressor.fit(self.X_train, self.Y_train)
         y_pred = regressor.predict(self.X_test)
