@@ -62,7 +62,7 @@ class Regression:
     def __SVR(self):
         print("Training with Support Vector Regressor")
         regressor = SVR(kernel = "rbf", gamma = "scale")
-        regressor.fit( self.X_train, self.Y_train)
+        regressor.fit(self.X_train, self.Y_train)
         y_pred = regressor.predict(self.X_test)
 
         r2 = r2_score(self.Y_test, y_pred)
@@ -96,7 +96,6 @@ class Regression:
         if not bool(self.model) or self.model["score"] < r2:
             self.model["score"] = r2
             self.model["model"] = regressor
-
         
 
     def __cross_validation(self, model):
@@ -121,4 +120,3 @@ class Regression:
             n_jobs=-1 #uses all available processors
         )
         rsearch.fit
-

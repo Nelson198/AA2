@@ -9,6 +9,14 @@
 [Nelson Teixeira](https://github.com/Nelson198)  
 [Rui Meira](https://github.com/ruisteve)
 
+### Tema
+
+O tema escolhido pelos 4 elementos deste grupo corresponde ao desenvolvimento de uma ***framework de AutoML***. 
+Esta *framework* visa obter o melhor modelo para problemas de *supervised learning* e *unsupervised learning*, de forma automática e com a menor intervenção possível por parte do programador.
+O objetivo final é colocar a *framework* disponivel para os utilizadores da linguagem *Python*.
+
+---
+
 ### Instalação
 ```bash
 cd Code/
