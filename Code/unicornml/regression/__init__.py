@@ -86,28 +86,42 @@ class Regression:
 
     def __decisionTreeRegression(self):
         print("training with Decision Tree Regressor")
-        regressor = DecisionTreeRegressor()
-        regressor.fit(self.X_train, self.Y_train)
-        y_pred = regressor.predict(self.X_test)
+        search = self.__param_tunning(
+            DecisionTreeRegressor(),
+            params={
+                'criterion': ['mse', 'mae', 'friedman_mse'],
+                'splitter': ['best'],
+                'max_features': ['auto', 'sqrt', 'log2'],
+            }
+        )
+        print("The best params found: " + str(search.best_params_))
 
+        y_pred = search.predict(self.X_test)
         r2 = r2_score(self.Y_test, y_pred)
         print("Score: %f" % r2)
         if not bool(self.model) or self.model["score"] < r2:
             self.model["score"] = r2
-            self.model["model"] = regressor
+            #self.model["model"] = regressor
 
 
     def __randomForestRegression(self):
         print("Training with Random Forest Regressor")
-        regressor = RandomForestRegressor(n_estimators=10)
-        regressor.fit( self.X_train, self.Y_train)
-        y_pred = regressor.predict(self.X_test)
+        search = self.__param_tunning(
+            RandomForestRegressor(),
+            params={
+                'criterion'   : ['mse', 'mae'],
+                'max_features': ['auto', 'sqrt', 'log2'],
+                'n_estimators': list(arange(10,1001,10))
+            }
+        )
+        print("The best params found: " + str(search.best_params_))
 
+        y_pred = search.predict(self.X_test)
         r2 = r2_score(self.Y_test, y_pred)
         print("Score: %f" % r2)
         if not bool(self.model) or self.model["score"] < r2:
             self.model["score"] = r2
-            self.model["model"] = regressor
+        #    self.model["model"] = regressor
         
 
     def __param_tunning(self, model, params):
@@ -117,6 +131,7 @@ class Regression:
             random_state = 0,
             cv = 5, #TODO not sure how we can choose the best
 #            n_jobs=-1 #uses all available processors #TODO this is killing
+            n_iter=1000 #TODO this should be dynamic, based on the number of features
         )
         return randomized.fit( self.X_train, self.Y_train)
 
