@@ -1,10 +1,12 @@
+import numpy
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
-from sklearn.model_selection import RandomizedSearchCV, GridSearchCV, cross_val_score
+from sklearn.model_selection import RandomizedSearchCV
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
+from numpy import arange
 
 class Regression:
     def __init__(self, x_train, x_test, y_train, y_test):
@@ -61,15 +63,25 @@ class Regression:
     
     def __SVR(self):
         print("Training with Support Vector Regressor")
-        regressor = SVR(kernel = "rbf", gamma = "scale")
-        regressor.fit(self.X_train, self.Y_train)
-        y_pred = regressor.predict(self.X_test)
+        search = self.__param_tunning(
+            SVR(),
+            {
+                'kernel' : ['rbf'],
+                'gamma'  : ['scale', 'auto'],
+                'C'      : list(range(1, 5)),
+                'epsilon': list(numpy.arange(0, .1, .01))
+            }
+        )
 
+        print("The best params found: " + str(search.best_params_))
+        #TODO we can use this score >>>>print(search.best_score_)<<<< to check if there's any overfitting
+
+        y_pred = search.predict(self.X_test)
         r2 = r2_score(self.Y_test, y_pred)
         print("Score: %f" % r2)
         if not bool(self.model) or self.model["score"] < r2:
             self.model["score"] = r2
-            self.model["model"] = regressor
+           # self.model["model"] = regressor#TODO how should we return the model
         
 
     def __decisionTreeRegression(self):
@@ -98,25 +110,13 @@ class Regression:
             self.model["model"] = regressor
         
 
-    def __cross_validation(self, model):
-        scores = cross_val_score (
-            regressor,
-            self.X_train,
-            self.Y_train,
-            scoring = "r2",
-            cv = 5
-        )
-        y_pred = regressor.predict(X_test) 
-        # é necessário comparar o valor dos scores com o do r2 
-        # para saber se existe overfitting
-        r2 = r2_score(self.Y_test, y_pred)
-        return r2, regressor
-
-    
     def __param_tunning(self, model, params):
-        rsearch = RandomizedSearchCV (
-            estimater = model,
+        randomized = RandomizedSearchCV (
+            estimator = model,
             param_distributions=params,
-            n_jobs=-1 #uses all available processors
+            random_state = 0,
+            cv = 5, #TODO not sure how we can choose the best
+#            n_jobs=-1 #uses all available processors #TODO this is killing
         )
-        rsearch.fit
+        return randomized.fit( self.X_train, self.Y_train)
+
