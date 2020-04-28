@@ -63,16 +63,21 @@ class Regression:
     
     def __SVR(self):
         print("Training with Support Vector Regressor")
+        params = {
+            'kernel' : ['rbf'], #o melhor kernel é o rbf,
+            'gamma'  : ['scale', 'auto'],
+            'C'      : list(range(1, 5)),
+            'epsilon': list(numpy.arange(0, .1, .01))
+        }
+        n_space =1
+        for x in params.keys():
+            n_space *= len(params[x])
+
         search = self.__param_tunning(
             SVR(),
-            {
-                'kernel' : ['rbf'],
-                'gamma'  : ['scale', 'auto'],
-                'C'      : list(range(1, 5)),
-                'epsilon': list(numpy.arange(0, .1, .01))
-            }
+            params   = params,
+            n_space  = n_space
         )
-
         print("The best params found: " + str(search.best_params_))
         #TODO we can use this score >>>>print(search.best_score_)<<<< to check if there's any overfitting
 
@@ -86,14 +91,22 @@ class Regression:
 
     def __decisionTreeRegression(self):
         print("training with Decision Tree Regressor")
+        params = {
+            'criterion': ['mse', 'mae', 'friedman_mse'],
+            'splitter': ['best'],
+            'max_features': ['auto', 'sqrt', 'log2'],
+        }
+        n_space =1
+        for x in params.keys():
+            n_space *= len(params[x])
+
         search = self.__param_tunning(
             DecisionTreeRegressor(),
-            params={
-                'criterion': ['mse', 'mae', 'friedman_mse'],
-                'splitter': ['best'],
-                'max_features': ['auto', 'sqrt', 'log2'],
-            }
+            params   = params,
+            n_space  = n_space
         )
+
+
         print("The best params found: " + str(search.best_params_))
 
         y_pred = search.predict(self.X_test)
@@ -106,13 +119,20 @@ class Regression:
 
     def __randomForestRegression(self):
         print("Training with Random Forest Regressor")
-        search = self.__param_tunning(
-            RandomForestRegressor(),
-            params={
+        params={
                 'criterion'   : ['mse', 'mae'],
                 'max_features': ['auto', 'sqrt', 'log2'],
                 'n_estimators': list(arange(10,1001,10))
-            }
+        }
+        n_space =1
+        for x in params.keys():
+            n_space *= len(params[x])
+
+        search = self.__param_tunning(
+            RandomForestRegressor(),
+            params   = params,
+            n_space  = numpy.sqrt(n_space)
+            #n_space = 1
         )
         print("The best params found: " + str(search.best_params_))
 
@@ -124,14 +144,14 @@ class Regression:
         #    self.model["model"] = regressor
         
 
-    def __param_tunning(self, model, params):
+    def __param_tunning(self, model, params, n_space = 100):
         randomized = RandomizedSearchCV (
             estimator = model,
             param_distributions=params,
             random_state = 0,
             cv = 5, #TODO not sure how we can choose the best
 #            n_jobs=-1 #uses all available processors #TODO this is killing
-            n_iter=1000 #TODO this should be dynamic, based on the number of features
+            n_iter=n_space #TODO this should be dynamic, based on the number of features
         )
         return randomized.fit( self.X_train, self.Y_train)
 
