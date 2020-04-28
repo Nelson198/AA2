@@ -1,12 +1,13 @@
 import numpy as np
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import r2_score
+
+from sklearn.linear_model    import LinearRegression
+from sklearn.metrics         import r2_score
 from sklearn.model_selection import RandomizedSearchCV
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.svm import SVR
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor
-from numpy import arange
+from sklearn.preprocessing   import PolynomialFeatures
+from sklearn.svm             import SVR
+from sklearn.tree            import DecisionTreeRegressor
+from sklearn.ensemble        import RandomForestRegressor
+from numpy                   import arange
 
 class Regression:
     def __init__(self, x_train, x_test, y_train, y_test):
@@ -27,6 +28,20 @@ class Regression:
         for method in self.methods:
             self.methods[method]()
         return self.model
+
+    def __param_tunning(self, model, params, sqrt = False):
+        n_space = np.prod([ len(params[x]) for x in params.keys()])
+        if sqrt:
+            n_space = np.sqrt(n_space)
+        randomized = RandomizedSearchCV (
+            estimator = model,
+            param_distributions = params,
+            random_state = 0,
+            cv = 5, #TODO not sure how we can choose the best
+            # n_jobs = -1, # uses all available processors #TODO this is killing
+            n_iter = n_space #TODO this should be dynamic, based on the number of features
+        )
+        return randomized.fit( self.X_train, self.Y_train)
 
     def __linearRegression(self):
         print("Training with Linear Regression")
@@ -64,15 +79,15 @@ class Regression:
     def __SVR(self):
         print("Training with Support Vector Regressor")
         params = {
-            'kernel' : ['rbf'], #o melhor kernel é o rbf,
-            'gamma'  : ['scale', 'auto'],
-            'C'      : list(range(1, 5)),
-            'epsilon': list(np.arange(0, .1, .01))
+            "kernel"  : ["rbf"], # o melhor kernel é o rbf,
+            "gamma"   : ["scale", "auto"],
+            "C"       : list(range(1, 5)),
+            "epsilon" : list(np.arange(0, .1, .01))
         }
 
         search = self.__param_tunning(
             SVR(),
-            params   = params
+            params = params
         )
         print("The best params found: " + str(search.best_params_))
         #TODO we can use this score >>>>print(search.best_score_)<<<< to check if there's any overfitting
@@ -82,22 +97,21 @@ class Regression:
         print("Score: %f" % r2)
         if not bool(self.model) or self.model["score"] < r2:
             self.model["score"] = r2
-           # self.model["model"] = regressor#TODO how should we return the model
+            # self.model["model"] = regressor #TODO how should we return the model
         
 
     def __decisionTreeRegression(self):
         print("training with Decision Tree Regressor")
         params = {
-            'criterion': ['mse', 'mae', 'friedman_mse'],
-            'splitter': ['best'],
-            'max_features': ['auto', 'sqrt', 'log2'],
+            "criterion"    : ["mse", "mae", "friedman_mse"],
+            "splitter"     : ["best"],
+            "max_features" : ["auto", "sqrt", "log2"]
         }
 
         search = self.__param_tunning(
             DecisionTreeRegressor(),
-            params   = params,
+            params = params
         )
-
 
         print("The best params found: " + str(search.best_params_))
 
@@ -106,20 +120,20 @@ class Regression:
         print("Score: %f" % r2)
         if not bool(self.model) or self.model["score"] < r2:
             self.model["score"] = r2
-            #self.model["model"] = regressor
+            # self.model["model"] = regressor
 
 
     def __randomForestRegression(self):
         print("Training with Random Forest Regressor")
-        params={
-                'criterion'   : ['mse', 'mae'],
-                'max_features': ['auto', 'sqrt', 'log2'],
-                'n_estimators': list(arange(10,1001,10))
+        params = {
+            "criterion"    : ["mse", "mae"],
+            "max_features" : ["auto", "sqrt", "log2"],
+            "n_estimators" : list(arange(10, 1001, 10))
         }
 
         search = self.__param_tunning(
             RandomForestRegressor(),
-            params   = params,
+            params = params,
             sqrt = True
         )
         print("The best params found: " + str(search.best_params_))
@@ -129,19 +143,4 @@ class Regression:
         print("Score: %f" % r2)
         if not bool(self.model) or self.model["score"] < r2:
             self.model["score"] = r2
-        #    self.model["model"] = regressor
-        
-
-    def __param_tunning(self, model, params, sqrt = False):
-        n_space = np.prod([ len(params[x]) for x in params.keys()])
-        if sqrt: n_space = np.sqrt(n_space)
-        randomized = RandomizedSearchCV (
-            estimator = model,
-            param_distributions=params,
-            random_state = 0,
-            cv = 5, #TODO not sure how we can choose the best
-#            n_jobs=-1 #uses all available processors #TODO this is killing
-            n_iter=n_space #TODO this should be dynamic, based on the number of features
-        )
-        return randomized.fit( self.X_train, self.Y_train)
-
+            # self.model["model"] = regressor

@@ -1,9 +1,12 @@
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors    import KNeighborsClassifier
-from sklearn.svm          import SVC
-from sklearn.naive_bayes  import *
-from sklearn.tree         import DecisionTreeClassifier
-from sklearn.ensemble     import RandomForestClassifier
+import numpy as np
+
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.linear_model    import LogisticRegression
+from sklearn.neighbors       import KNeighborsClassifier
+from sklearn.svm             import SVC
+from sklearn.naive_bayes     import *
+from sklearn.tree            import DecisionTreeClassifier
+from sklearn.ensemble        import RandomForestClassifier
 
 # import kerastuner
 
@@ -30,6 +33,20 @@ class Classification:
             self.methods[method]()
         return self.model
 
+    def __param_tunning(self, model, params, sqrt = False):
+        n_space = np.prod([ len(params[x]) for x in params.keys()])
+        if sqrt:
+            n_space = np.sqrt(n_space)
+        randomized = RandomizedSearchCV (
+            estimator = model,
+            param_distributions = params,
+            random_state = 0,
+            cv = 5, #TODO not sure how we can choose the best
+            # n_jobs = -1, #uses all available processors #TODO this is killing
+            n_iter = n_space #TODO this should be dynamic, based on the number of features
+        )
+        return randomized.fit( self.X_train, self.Y_train)
+
     #TODO ACABAR !!!
     def __logisticRegression(self):
         print("Training with Logistic Regression")
@@ -42,11 +59,23 @@ class Classification:
             self.model["score"] = score
             self.model["model"] = classifier
 
-    #TODO ACABAR !!!
     def __KNN(self):
-        print("Training with k-Nearest Neighbors (KNN)")
-        knn = KNeighborsClassifier()
-        knn.fit(self.X_train, self.Y_train)
+        print("Training with K-Nearest Neighbors (KNN)")
+
+        params = {
+            "n_neighbors" : list(range(1, 21)), # default = 5
+            "leaf_size"   : list(range(10, 51, 10)), # default = 30
+            "p"           : [1, 2], # default = 2
+            "weights"     : ["uniform", "distance"] # default = "uniform"
+        }
+        
+        knn = self.__param_tunning(
+            KNeighborsClassifier(),
+            params = params
+        )
+        
+        print("The best params found: " + str(knn.best_params_))
+
         knn.predict(self.X_test)
         score = knn.score(self.X_test, self.Y_test)
         print("Score: {0}".format(score))
