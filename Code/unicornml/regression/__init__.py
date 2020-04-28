@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import r2_score
 from sklearn.model_selection import RandomizedSearchCV
@@ -67,16 +67,12 @@ class Regression:
             'kernel' : ['rbf'], #o melhor kernel é o rbf,
             'gamma'  : ['scale', 'auto'],
             'C'      : list(range(1, 5)),
-            'epsilon': list(numpy.arange(0, .1, .01))
+            'epsilon': list(np.arange(0, .1, .01))
         }
-        n_space =1
-        for x in params.keys():
-            n_space *= len(params[x])
 
         search = self.__param_tunning(
             SVR(),
-            params   = params,
-            n_space  = n_space
+            params   = params
         )
         print("The best params found: " + str(search.best_params_))
         #TODO we can use this score >>>>print(search.best_score_)<<<< to check if there's any overfitting
@@ -96,14 +92,10 @@ class Regression:
             'splitter': ['best'],
             'max_features': ['auto', 'sqrt', 'log2'],
         }
-        n_space =1
-        for x in params.keys():
-            n_space *= len(params[x])
 
         search = self.__param_tunning(
             DecisionTreeRegressor(),
             params   = params,
-            n_space  = n_space
         )
 
 
@@ -124,15 +116,11 @@ class Regression:
                 'max_features': ['auto', 'sqrt', 'log2'],
                 'n_estimators': list(arange(10,1001,10))
         }
-        n_space =1
-        for x in params.keys():
-            n_space *= len(params[x])
 
         search = self.__param_tunning(
             RandomForestRegressor(),
             params   = params,
-            n_space  = numpy.sqrt(n_space)
-            #n_space = 1
+            sqrt = True
         )
         print("The best params found: " + str(search.best_params_))
 
@@ -144,7 +132,9 @@ class Regression:
         #    self.model["model"] = regressor
         
 
-    def __param_tunning(self, model, params, n_space = 100):
+    def __param_tunning(self, model, params, sqrt = False):
+        n_space = np.prod([ len(params[x]) for x in params.keys()])
+        if sqrt: n_space = np.sqrt(n_space)
         randomized = RandomizedSearchCV (
             estimator = model,
             param_distributions=params,
