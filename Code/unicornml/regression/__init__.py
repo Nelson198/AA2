@@ -33,6 +33,7 @@ class Regression:
         n_space = np.prod([ len(params[x]) for x in params.keys()])
         if sqrt:
             n_space = np.sqrt(n_space)
+        
         randomized = RandomizedSearchCV (
             estimator = model,
             param_distributions = params,

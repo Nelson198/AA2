@@ -4,9 +4,10 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.linear_model    import LogisticRegression
 from sklearn.neighbors       import KNeighborsClassifier
 from sklearn.svm             import LinearSVC, SVC
-from sklearn.naive_bayes     import *
+from sklearn.naive_bayes     import GaussianNB, MultinomialNB
 from sklearn.tree            import DecisionTreeClassifier
 from sklearn.ensemble        import RandomForestClassifier
+from numpy                   import arange
 
 # import kerastuner
 
@@ -37,6 +38,7 @@ class Classification:
         n_space = np.prod([ len(params[x]) for x in params.keys()])
         if sqrt:
             n_space = np.sqrt(n_space)
+        
         randomized = RandomizedSearchCV (
             estimator = model,
             param_distributions = params,
@@ -63,8 +65,8 @@ class Classification:
         print("Training with K-Nearest Neighbors (KNN)")
 
         params = {
-            "n_neighbors" : list(range(1, 21)), # default = 5
-            "leaf_size"   : list(range(10, 51, 10)), # default = 30
+            "n_neighbors" : list(arange(1, 21)), # default = 5
+            "leaf_size"   : list(arange(10, 51, 10)), # default = 30
             "p"           : [1, 2], # default = 2
             "weights"     : ["uniform", "distance"] # default = "uniform"
         }
@@ -76,8 +78,8 @@ class Classification:
         
         print("The best params found: " + str(knn.best_params_))
 
-        knn.predict(self.X_test)
-        score = knn.score(self.X_test, self.Y_test)
+        y_pred = knn.predict(self.X_test)
+        score = knn.score(self.X_test, y_pred)
         print("Score: {0}".format(score))
         if not bool(self.model) or self.model["score"] < score:
             self.model["score"] = score
@@ -136,17 +138,17 @@ class Classification:
         print("Training with Naive Bayes")
 
         models = []
-        models.append(self.Gaussian())
-
         params = {
             "alpha" : [1.0, 0.5, 0.0],
             "fit_prior" : [True, False]
         }
-        models.append(self.Multinomial(), params)
-        models.append(self.Bernoulli(), params)
+
+        models.append(self.Gaussian())
+        models.append(self.Multinomial(params))
+        models.append(self.Bernoulli(params))
 
         params.update({ "norm" : [True, False] })
-        models.append(self.Complement(), params)
+        models.append(self.Complement(params))
 
         for model in models:
             y_pred = model.predict(self.X_test)
@@ -174,7 +176,7 @@ class Classification:
         params = {
             "criterion"    : ["gini", "entropy"],
             "max_features" : ["auto", None, "log2"],
-            "n_estimators" : list(np.arange(10, 1001, 10))
+            "n_estimators" : list(arange(10, 1001, 10))
         }
 
         search = self.__param_tunning(
