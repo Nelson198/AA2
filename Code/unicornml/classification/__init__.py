@@ -171,6 +171,19 @@ class Classification:
     def __randomForest(self):
         print("Training with Random Forest")
 
+        params = {
+            "criterion"    : ["gini", "entropy"],
+            "max_features" : ["auto", None, "log2"],
+            "n_estimators" : list(np.arange(10, 1001, 10))
+        }
+
+        search = self.__param_tunning(
+            RandomForestClassifier(),
+            params = params,
+            sqrt = True
+        )
+        print("The best params found: " + str(search.best_params_))
+
     def __neuralNetwork(self):
         print("Training with Neural Network")
 
