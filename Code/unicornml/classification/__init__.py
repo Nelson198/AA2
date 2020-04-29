@@ -19,13 +19,13 @@ class Classification:
         self.Y_test  = y_test
         self.methods = {
             "logistic"      : self.__logisticRegression,
-            "knn"           : self.__KNN,
-            "svm"           : self.__SVM,
-            "kernelSVM"     : self.__kernelSVM,
-            "naiveBayes"    : self.__naiveBayes,
-            "decisionTree"  : self.__decisonTree,
-            "randomForest"  : self.__randomForest,
-            "neuralNetwork" : self.__neuralNetwork
+            #"knn"           : self.__KNN,
+            #"svm"           : self.__SVM,
+            #"kernelSVM"     : self.__kernelSVM,
+            #"naiveBayes"    : self.__naiveBayes,
+            #"decisionTree"  : self.__decisonTree,
+            #"randomForest"  : self.__randomForest,
+            #"neuralNetwork" : self.__neuralNetwork
         }
         self.model = {}
 
@@ -52,7 +52,7 @@ class Classification:
     #TODO ACABAR !!!
     def __logisticRegression(self):
         print("Training with Logistic Regression")
-        classifier = LogisticRegression()
+        classifier = LogisticRegression( solver='lbfgs')
         classifier.fit(self.X_train, self.Y_train)
         classifier.predict(self.X_test)
         score = classifier.score(self.X_test, self.Y_test)
