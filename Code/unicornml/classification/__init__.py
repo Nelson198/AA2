@@ -100,8 +100,8 @@ class Classification:
         
         print("The best params found: " + str(svm.best_params_))
 
-        svm.predict(self.X_test)
-        score = svm.score(self.X_test, self.Y_test)
+        y_pred = svm.predict(self.X_test)
+        score = svm.score(self.X_test, y_pred)
         print("Score: {0}".format(score))
         if not bool(self.model) or self.model["score"] < score:
             self.model["score"] = score
@@ -124,8 +124,8 @@ class Classification:
         
         print("The best params found: " + str(kernelsvm.best_params_))
 
-        kernelsvm.predict(self.X_test)
-        score = kernelsvm.score(self.X_test, self.Y_test)
+        y_pred = kernelsvm.predict(self.X_test)
+        score = kernelsvm.score(self.X_test, y_pred)
         print("Score: {0}".format(score))
         if not bool(self.model) or self.model["score"] < score:
             self.model["score"] = score
@@ -149,8 +149,8 @@ class Classification:
         models.append(self.Complement(), params)
 
         for model in models:
-            model.predict(self.X_test)
-            score = model.score(self.X_test, self.Y_test)
+            y_pred = model.predict(self.X_test)
+            score = model.score(self.X_test, y_pred)
             print("Score: {0}".format(score))
             if not bool(self.model) or self.model["score"] < score:
                 self.model["score"] = score
@@ -183,6 +183,13 @@ class Classification:
             sqrt = True
         )
         print("The best params found: " + str(search.best_params_))
+
+        y_pred = search.predict(self.X_test)
+        score = search.score(self.Y_test, y_pred)
+        print("Score: {0}".format(score))
+        if not bool(self.model) or self.model["score"] < score:
+            self.model["score"] = score
+            # self.model["model"] = regressor
 
     def __neuralNetwork(self):
         print("Training with Neural Network")
