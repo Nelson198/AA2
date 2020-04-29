@@ -42,7 +42,7 @@ class Classification:
             param_distributions = params,
             random_state = 0,
             cv = 5, #TODO not sure how we can choose the best
-            # n_jobs = -1, #uses all available processors #TODO this is killing
+            n_jobs = -1, #uses all available processors #TODO this is killing
             n_iter = n_space #TODO this should be dynamic, based on the number of features
         )
         return randomized.fit( self.X_train, self.Y_train)
@@ -85,6 +85,26 @@ class Classification:
 
     def __SVM(self):
         print("Training with Support Vector Machine (SVM)")
+
+        params = {
+            "kernel"  : ["rbf", "poly", "sigmoid"],
+            "gamma"   : ["scale", "auto"], # [0.1,1, 10, 100], better but takes much much longer
+            "C"       : list(range(1, 5))
+        }
+
+        svm = self.__param_tunning(
+            SVC(),
+            params = params
+        )
+        
+        print("The best params found: " + str(svm.best_params_))
+
+        svm.predict(self.X_test)
+        score = svm.score(self.X_test, self.Y_test)
+        print("Score: {0}".format(score))
+        if not bool(self.model) or self.model["score"] < score:
+            self.model["score"] = score
+            self.model["model"] = svm
 
     def __kernelSVM(self):
         print("Training with kernel Support Vector Machine")

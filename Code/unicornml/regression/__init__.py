@@ -101,7 +101,7 @@ class Regression:
         
 
     def __decisionTreeRegression(self):
-        print("training with Decision Tree Regressor")
+        print("Training with Decision Tree Regressor")
         params = {
             "criterion"    : ["mse", "mae", "friedman_mse"],
             "splitter"     : ["best"],
