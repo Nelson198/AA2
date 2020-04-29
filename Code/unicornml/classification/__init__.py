@@ -135,6 +135,27 @@ class Classification:
     def __naiveBayes(self):
         print("Training with Naive Bayes")
 
+        models = []
+        models.append(self.Gaussian())
+
+        params = {
+            "alpha" : [1.0, 0.5, 0.0],
+            "fit_prior" : [True, False]
+        }
+        models.append(self.Multinomial(), params)
+        models.append(self.Bernoulli(), params)
+
+        params.update({ "norm" : [True, False] })
+        models.append(self.Complement(), params)
+
+        for model in models:
+            model.predict(self.X_test)
+            score = model.score(self.X_test, self.Y_test)
+            print("Score: {0}".format(score))
+            if not bool(self.model) or self.model["score"] < score:
+                self.model["score"] = score
+                self.model["model"] = model
+
     #TODO ACABAR !!!
     def __decisonTree(self):
         print("Training with Decison Tree Classification")
@@ -152,3 +173,36 @@ class Classification:
 
     def __neuralNetwork(self):
         print("Training with Neural Network")
+
+
+
+
+    ################### Naive Bayes Classifiers Functions ###################
+    
+    def Gaussian(self):
+        params = {
+            "var_smoothing" : [1.e-09, 1.e-08, 1.e-07, 1.e-06]
+        }
+
+        return self.__param_tunning(
+            GaussianNB(),
+            params = params
+        )
+
+    def Multinomial(self, params):
+        return self.__param_tunning(
+            MultinomialNB(),
+            params = params
+        )
+
+    def Complement(self, params):
+        return self.__param_tunning(
+            MultinomialNB(),
+            params = params
+        )
+
+    def Bernoulli(self, params):
+        return self.__param_tunning(
+            MultinomialNB(),
+            params = params
+        )
