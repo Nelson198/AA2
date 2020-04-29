@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.linear_model    import LogisticRegression
 from sklearn.neighbors       import KNeighborsClassifier
-from sklearn.svm             import SVC
+from sklearn.svm             import LinearSVC, SVC
 from sklearn.naive_bayes     import *
 from sklearn.tree            import DecisionTreeClassifier
 from sklearn.ensemble        import RandomForestClassifier
@@ -83,17 +83,18 @@ class Classification:
             self.model["score"] = score
             self.model["model"] = knn
 
+
     def __SVM(self):
         print("Training with Support Vector Machine (SVM)")
 
         params = {
-            "kernel"  : ["rbf", "poly", "sigmoid"],
-            "gamma"   : ["scale", "auto"], # [0.1,1, 10, 100], better but takes much much longer
+            "dual"    : ["primal", "dual"],
+            "loss"    : ["hinge", "squared_hinge"],
             "C"       : list(range(1, 5))
         }
 
         svm = self.__param_tunning(
-            SVC(),
+            LinearSVC(),
             params = params
         )
         
@@ -106,8 +107,30 @@ class Classification:
             self.model["score"] = score
             self.model["model"] = svm
 
+
     def __kernelSVM(self):
-        print("Training with kernel Support Vector Machine")
+        print("Training with kernel Support Vector Machine (kernel SVM)")
+
+        params = {
+            "kernel"  : ["rbf", "poly", "sigmoid"],
+            "gamma"   : ["scale", "auto"], # [0.1,1, 10, 100], better but takes much much longer
+            "C"       : list(range(1, 5))
+        }
+
+        kernelsvm = self.__param_tunning(
+            SVC(),
+            params = params
+        )
+        
+        print("The best params found: " + str(kernelsvm.best_params_))
+
+        kernelsvm.predict(self.X_test)
+        score = kernelsvm.score(self.X_test, self.Y_test)
+        print("Score: {0}".format(score))
+        if not bool(self.model) or self.model["score"] < score:
+            self.model["score"] = score
+            self.model["model"] = kernelsvm
+
 
     def __naiveBayes(self):
         print("Training with Naive Bayes")
