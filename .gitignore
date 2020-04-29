@@ -11,6 +11,6 @@
 \.*
 
 # Code files
-Code/build*
-Code/dist*
-Code/unicornml.egg*
+Code/build/
+Code/dist/
+Code/unicornml.egg-info
