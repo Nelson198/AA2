@@ -64,7 +64,7 @@ class Regression:
         }
         self.big_model.param_tunning_method(
             SVR(),
-            "Support Vector Regressor",
+            "Support Vector Regression",
             params
         )
 
@@ -76,7 +76,7 @@ class Regression:
         }
         self.big_model.param_tunning_method(
             DecisionTreeRegressor(),
-            "Decision Tree Regressor",
+            "Decision Tree Regression",
             params
         )
 
@@ -89,7 +89,7 @@ class Regression:
 
         self.big_model.param_tunning_method(
             RandomForestRegressor(),
-            "Random Forest Regressor",
+            "Random Forest Regression",
             params,
             True
         )

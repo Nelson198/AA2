@@ -15,13 +15,13 @@ from unicornml.model         import Model
 class Classification:
     def __init__(self, X_train, X_test, y_train, y_test):
         self.methods = {
-            #"logistic"      : self.__logisticRegression,
+            #"logistic"     : self.__logisticRegression,
             "knn"           : self.__KNN,
-            #"svm"           : self.__SVM,
+            #"svm"          : self.__SVM,
             "kernelSVM"     : self.__kernelSVM,
-            #"naiveBayes"    : self.__naiveBayes,
-            #"decisionTree"  : self.__decisonTree,
-            #"randomForest"  : self.__randomForest,
+            #"naiveBayes"   : self.__naiveBayes,
+            "decisionTree"  : self.__decisonTreeClassification,
+            "randomForest"  : self.__randomForestClassification,
             #"neuralNetwork" : self.__neuralNetwork
         }
         self.model = {},
@@ -64,7 +64,7 @@ class Classification:
         params = {
             "dual"    : ["primal", "dual"],
             "loss"    : ["hinge", "squared_hinge"],
-            "C"       : list(range(1, 5))
+            "C"       : list(np.arange(1, 5))
         }
         self.big_model.param_tunning_method(
             LinearSVC(),
@@ -76,7 +76,7 @@ class Classification:
         params = {
             "kernel"  : ["rbf", "poly", "sigmoid"],
             "gamma"   : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
-            "C"       : list(range(1, 5))
+            "C"       : list(np.arange(1, 5))
         }
         self.big_model.param_tunning_method(
             SVC(),
@@ -109,39 +109,25 @@ class Classification:
                 self.model["model"] = model
 
     # TODO : Acabar implementação !
-    def __decisonTree(self):
-        print("Training with Decison Tree Classification")
-        tree = DecisionTreeClassifier()
-        tree.fit(self.X_train, self.Y_train)
-        tree.predict(self.X_test)
-        score = tree.score(self.X_test, self.Y_test)
-        print("Score: {0}".format(score))
-        if not bool(self.model) or self.model["score"] < score:
-            self.model["score"] = score
-            self.model["model"] = tree
+    def __decisonTreeClassification(self):
+        self.big_model.param_tunning_method(
+            DecisionTreeClassifier(),
+            "Decison Tree Classification",
+            {}
+        )
 
-    def __randomForest(self):
-        print("Training with Random Forest")
-
+    def __randomForestClassification(self):
         params = {
             "criterion"    : ["gini", "entropy"],
             "max_features" : ["auto", None, "log2"],
             "n_estimators" : list(np.arange(10, 1001, 10))
         }
-
-        search = self.__param_tunning(
+        self.big_model.param_tunning_method(
             RandomForestClassifier(),
-            params = params,
-            sqrt = True
+            "Random Forest Classification",
+            params,
+            True
         )
-        print("The best params found: " + str(search.best_params_))
-
-        y_pred = search.predict(self.X_test)
-        score = search.score(self.Y_test, y_pred)
-        print("Score: {0}".format(score))
-        if not bool(self.model) or self.model["score"] < score:
-            self.model["score"] = score
-            # self.model["model"] = regressor
 
     def __neuralNetwork(self):
         print("Training with Neural Network")
