@@ -4,7 +4,7 @@ from sklearn.model_selection import RandomizedSearchCV
 from sklearn.linear_model    import LogisticRegression
 from sklearn.neighbors       import KNeighborsClassifier
 from sklearn.svm             import LinearSVC, SVC
-from sklearn.naive_bayes     import GaussianNB, MultinomialNB
+from sklearn.naive_bayes     import GaussianNB, MultinomialNB, BernoulliNB, ComplementNB
 from sklearn.tree            import DecisionTreeClassifier
 from sklearn.ensemble        import RandomForestClassifier
 from sklearn.metrics         import accuracy_score
@@ -15,13 +15,13 @@ from unicornml.model         import Model
 class Classification:
     def __init__(self, X_train, X_test, y_train, y_test):
         self.methods = {
-            #"logistic"     : self.__logisticRegression,
-            "knn"           : self.__KNN,
-            #"svm"          : self.__SVM,
-            "kernelSVM"     : self.__kernelSVM,
-            #"naiveBayes"   : self.__naiveBayes,
-            "decisionTree"  : self.__decisonTreeClassification,
-            "randomForest"  : self.__randomForestClassification,
+            "logistic"     : self.__logisticRegression,
+            "knn"          : self.__KNN,
+            "svm"          : self.__SVM,
+            "kernelSVM"    : self.__kernelSVM,
+            "naiveBayes"   : self.__naiveBayes,
+            "decisionTree" : self.__decisonTreeClassification,
+            "randomForest" : self.__randomForestClassification,
             #"neuralNetwork" : self.__neuralNetwork
         }
         self.model = {},
@@ -34,24 +34,50 @@ class Classification:
             self.methods[method]()
         return self.model
 
-    # TODO : Acabar implementação !
+
     def __logisticRegression(self):
-        print("Training with Logistic Regression")
-        classifier = LogisticRegression(solver = "lbfgs")
-        classifier.fit(self.X_train, self.Y_train)
-        classifier.predict(self.X_test)
-        score = classifier.score(self.X_test, self.Y_test)
-        print("Score: {0}".format(score))
-        if not bool(self.model) or self.model["score"] < score:
-            self.model["score"] = score
-            self.model["model"] = classifier
+        params = {
+            "solver"  : ["newton-cg", "sag", "lbfgs"],
+            "C"       : list(np.arange(1,5))
+        }
+        
+        self.big_model.param_tunning_method(
+            LogisticRegression(),
+            "Logistic Regression with newton-cg, sag and lbfgs",
+            params
+        )
+
+        params = {
+            "solver"  : ["saga"],
+            "C"       : list(np.arange(1,5)),
+            "penalty" : ["l2", "l1", "elasticnet"]
+        }
+
+        self.big_model.param_tunning_method(
+            LogisticRegression(),
+            "Logistic Regression with saga solver",
+            params
+        )
+
+        params = {
+            "solver"  : ["saga", "newton-cg", "sag", "lbfgs"],
+            "penalty" : ["none"]
+        }
+
+        self.big_model.param_tunning_method(
+            LogisticRegression(),
+            "Logistic Regression with no penalty",
+            params
+        )
+
 
     def __KNN(self):
         params = {
             "n_neighbors" : list(np.arange(1, 21)), # default = 5
             "leaf_size"   : list(np.arange(10, 51, 10)), # default = 30
             "p"           : [1, 2], # default = 2
-            "weights"     : ["uniform", "distance"] # default = "uniform"
+            "weights"     : ["uniform", "distance"], # default = "uniform"
+            "algorithm"   : ["auto"]
         }
         self.big_model.param_tunning_method(
             KNeighborsClassifier(),
@@ -62,8 +88,8 @@ class Classification:
     # TODO : Má combinação de parâmetros !
     def __SVM(self):
         params = {
-            "dual"    : ["primal", "dual"],
-            "loss"    : ["hinge", "squared_hinge"],
+            "dual"    : [False],
+            "penalty" : ["l1", "l2"],
             "C"       : list(np.arange(1, 5))
         }
         self.big_model.param_tunning_method(
@@ -74,54 +100,61 @@ class Classification:
 
     def __kernelSVM(self):
         params = {
-            "kernel"  : ["rbf", "poly", "sigmoid"],
+            "kernel"  : ["rbf", "sigmoid"],
             "gamma"   : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
             "C"       : list(np.arange(1, 5))
         }
         self.big_model.param_tunning_method(
             SVC(),
-            "kernel Support Vector Machine (kernel SVM)",
+            "kernel Support Vector Machine (kernels rbf and sigmoid)",
+            params
+        )
+
+        params = {
+            "kernel"  : ["poly"],
+            "gamma"   : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
+            "degree"  : list(np.arange(2, 5)),
+            "C"       : list(np.arange(1, 5))
+        }
+        self.big_model.param_tunning_method(
+            SVC(),
+            "kernel Support Vector Machine (kernel poly)",
             params
         )
 
     def __naiveBayes(self):
-        print("Training with Naive Bayes")
-
-        models = []
         params = {
             "alpha" : [1.0, 0.5, 0.0],
             "fit_prior" : [True, False]
         }
 
-        models.append(self.Gaussian())
-        models.append(self.Multinomial(params))
-        models.append(self.Bernoulli(params))
+        self.Gaussian()
+        self.Multinomial(params)
+        self.Bernoulli(params)
 
         params.update({ "norm" : [True, False] })
-        models.append(self.Complement(params))
-
-        for model in models:
-            y_pred = model.predict(self.X_test)
-            score = model.score(self.X_test, y_pred)
-            print("Score: {0}".format(score))
-            if not bool(self.model) or self.model["score"] < score:
-                self.model["score"] = score
-                self.model["model"] = model
+        self.Complement(params)
 
     # TODO : Acabar implementação !
     def __decisonTreeClassification(self):
+        params = {
+            "criterion"    : ["gini", "entropy"],
+            "max_features" : [None, "sqrt", "log2"]
+        }
+
         self.big_model.param_tunning_method(
             DecisionTreeClassifier(),
             "Decison Tree Classification",
-            {}
+            params
         )
 
     def __randomForestClassification(self):
         params = {
             "criterion"    : ["gini", "entropy"],
-            "max_features" : ["auto", None, "log2"],
-            "n_estimators" : list(np.arange(10, 1001, 10))
+            "max_features" : ["sqrt", None, "log2"],
+            "n_estimators" : list(np.arange(50, 751, 10))
         }
+
         self.big_model.param_tunning_method(
             RandomForestClassifier(),
             "Random Forest Classification",
@@ -140,25 +173,29 @@ class Classification:
             "var_smoothing" : [1.e-09, 1.e-08, 1.e-07, 1.e-06]
         }
 
-        return self.__param_tunning(
+        return self.big_model.param_tunning_method(
             GaussianNB(),
-            params = params
+            "Gaussian Naive Bayes",
+            params
         )
 
     def Multinomial(self, params):
-        return self.__param_tunning(
+        return self.big_model.param_tunning_method(
             MultinomialNB(),
-            params = params
+            "Multinomial Naive Bayes",
+            params
         )
 
     def Complement(self, params):
-        return self.__param_tunning(
-            MultinomialNB(),
-            params = params
+        return self.big_model.param_tunning_method(
+            ComplementNB(),
+            "Complement Naive Bayes",
+            params
         )
 
     def Bernoulli(self, params):
-        return self.__param_tunning(
-            MultinomialNB(),
-            params = params
+        return self.big_model.param_tunning_method(
+            BernoulliNB(),
+            "Bernoulli Naive Bayes",
+            params
         )

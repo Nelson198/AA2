@@ -62,7 +62,7 @@ class Model():
             param_distributions = params,
             random_state = 0,
             cv = 5,  # TODO not sure how we can choose the best
-            # n_jobs = -1, #uses all available processors #TODO this is killing
+            n_jobs = -1, #uses all available processors #TODO this is killing
             n_iter = n_space  # TODO this should be dynamic, based on the number of features
         )
         return randomized.fit(self.X_train, self.y_train)

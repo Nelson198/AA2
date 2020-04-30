@@ -33,7 +33,7 @@ class Regression:
             "Linear Regression"
         )
 
-    """
+    
     def __polynomialRegression(self):
         for degree in range(2, self.X_train.shape[1]):
             print("Training with polynomial Regression (degree: %d)", degree)
@@ -53,7 +53,7 @@ class Regression:
             if not bool(self.model) or self.model["score"] < r2:
                 self.model["score"] = r2
                 self.model["model"] = regressor
-    """
+    
     
     def __SVR(self):
         params = {
