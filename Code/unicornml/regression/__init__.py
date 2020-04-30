@@ -9,7 +9,7 @@ from sklearn.ensemble        import RandomForestRegressor
 from unicornml.model         import Model
 
 class Regression:
-    def __init__(self, x_train, x_test, y_train, y_test):
+    def __init__(self, X_train, X_test, y_train, y_test):
         self.methods = {
             "linear"       : self.__linearRegression,
             #"poly"         : self.__polynomialRegression,
@@ -19,7 +19,7 @@ class Regression:
         }
         self.model = {}
         self.big_model = Model(
-            x_train, x_test, y_train, y_test, (lambda x,y: r2_score(x,y))
+            X_train, X_test, y_train, y_test, (lambda x,y: r2_score(x,y))
         )
 
     def Rainbow(self):
@@ -30,29 +30,30 @@ class Regression:
     def __linearRegression(self):
         self.big_model.param_tunning_method(
             LinearRegression(),
-            "Linear Regression",
+            "Linear Regression"
         )
 
-#    def __polynomialRegression(self):
-#        for degree in range(2, self.X_train.shape[1]):
-#            print("Training with polynomial Regression (degree: %d)", degree)
-#            poly_reg = PolynomialFeatures(degree = degree)
-#            X_poly = poly_reg.fit_transform(self.X_train)
-#            poly_reg.fit(X_poly, self.Y_train)
-#
-#            regressor = LinearRegression()
-#            regressor.fit(X_poly, self.Y_train)
-#
-#            y_pred = regressor.predict(
-#                poly_reg.fit_transform(self.X_test)
-#            )
-#
-#            r2 = r2_score(self.Y_test, y_pred)
-#            print("Score: %f" % r2)
-#            if not bool(self.model) or self.model["score"] < r2:
-#                self.model["score"] = r2
-#                self.model["model"] = regressor
+    """
+    def __polynomialRegression(self):
+        for degree in range(2, self.X_train.shape[1]):
+            print("Training with polynomial Regression (degree: %d)", degree)
+            poly_reg = PolynomialFeatures(degree = degree)
+            X_poly = poly_reg.fit_transform(self.X_train)
+            poly_reg.fit(X_poly, self.Y_train)
 
+            regressor = LinearRegression()
+            regressor.fit(X_poly, self.Y_train)
+
+            y_pred = regressor.predict(
+                poly_reg.fit_transform(self.X_test)
+            )
+
+            r2 = r2_score(self.Y_test, y_pred)
+            print("Score: %f" % r2)
+            if not bool(self.model) or self.model["score"] < r2:
+                self.model["score"] = r2
+                self.model["model"] = regressor
+    """
     
     def __SVR(self):
         params = {
@@ -67,7 +68,6 @@ class Regression:
             params
         )
 
-
     def __decisionTreeRegression(self):
         params = {
             "criterion"    : ["mse", "mae", "friedman_mse"],
@@ -79,7 +79,6 @@ class Regression:
             "Decision Tree Regressor",
             params
         )
-
 
     def __randomForestRegression(self):
         params = {

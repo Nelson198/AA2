@@ -7,18 +7,16 @@ from sklearn.svm             import LinearSVC, SVC
 from sklearn.naive_bayes     import GaussianNB, MultinomialNB
 from sklearn.tree            import DecisionTreeClassifier
 from sklearn.ensemble        import RandomForestClassifier
+from sklearn.metrics         import accuracy_score
+from unicornml.model         import Model
 
 # import kerastuner
 
 class Classification:
-    def __init__(self, x_train, x_test, y_train, y_test):
-        self.X_train = x_train
-        self.X_test  = x_test
-        self.Y_train = y_train
-        self.Y_test  = y_test
+    def __init__(self, X_train, X_test, y_train, y_test):
         self.methods = {
-            "logistic"      : self.__logisticRegression,
-            #"knn"           : self.__KNN,
+            #"logistic"      : self.__logisticRegression,
+            "knn"           : self.__KNN,
             #"svm"           : self.__SVM,
             #"kernelSVM"     : self.__kernelSVM,
             #"naiveBayes"    : self.__naiveBayes,
@@ -26,27 +24,15 @@ class Classification:
             #"randomForest"  : self.__randomForest,
             #"neuralNetwork" : self.__neuralNetwork
         }
-        self.model = {}
+        self.model = {},
+        self.big_model = Model(
+            X_train, X_test, y_train, y_test, (lambda x,y: accuracy_score(x,y))
+        )
 
     def Rainbow(self):
         for method in self.methods:
             self.methods[method]()
         return self.model
-
-    def __param_tunning(self, model, params, sqrt = False):
-        n_space = np.prod([len(params[x]) for x in params.keys()])
-        if sqrt:
-            n_space = np.sqrt(n_space)
-        
-        randomized = RandomizedSearchCV (
-            estimator = model,
-            param_distributions = params,
-            random_state = 0,
-            cv = 5, #TODO not sure how we can choose the best
-            n_jobs = -1, #uses all available processors #TODO this is killing
-            n_iter = n_space #TODO this should be dynamic, based on the number of features
-        )
-        return randomized.fit( self.X_train, self.Y_train)
 
     #TODO ACABAR !!!
     def __logisticRegression(self):
@@ -61,29 +47,18 @@ class Classification:
             self.model["model"] = classifier
 
     def __KNN(self):
-        print("Training with K-Nearest Neighbors (KNN)")
-
         params = {
             "n_neighbors" : list(np.arange(1, 21)), # default = 5
             "leaf_size"   : list(np.arange(10, 51, 10)), # default = 30
             "p"           : [1, 2], # default = 2
             "weights"     : ["uniform", "distance"] # default = "uniform"
         }
-        
-        knn = self.__param_tunning(
+
+        self.big_model.param_tunning_method(
             KNeighborsClassifier(),
-            params = params
+            "K-Nearest Neighbors (KNN)",
+            params
         )
-        
-        print("The best params found: " + str(knn.best_params_))
-
-        y_pred = knn.predict(self.X_test)
-        score = knn.score(self.X_test, y_pred)
-        print("Score: {0}".format(score))
-        if not bool(self.model) or self.model["score"] < score:
-            self.model["score"] = score
-            self.model["model"] = knn
-
 
     def __SVM(self):
         print("Training with Support Vector Machine (SVM)")
