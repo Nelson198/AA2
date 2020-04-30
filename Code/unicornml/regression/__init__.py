@@ -1,11 +1,13 @@
 import numpy as np
 
-from sklearn.linear_model    import LinearRegression
 from sklearn.metrics         import r2_score
+
+from sklearn.linear_model    import LinearRegression
 from sklearn.preprocessing   import PolynomialFeatures
 from sklearn.svm             import SVR
 from sklearn.tree            import DecisionTreeRegressor
 from sklearn.ensemble        import RandomForestRegressor
+
 from unicornml.model         import Model
 
 class Regression:

@@ -1,13 +1,14 @@
 import numpy as np
 
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.metrics         import accuracy_score
+
 from sklearn.linear_model    import LogisticRegression
 from sklearn.neighbors       import KNeighborsClassifier
 from sklearn.svm             import LinearSVC, SVC
 from sklearn.naive_bayes     import GaussianNB, MultinomialNB, BernoulliNB, ComplementNB
 from sklearn.tree            import DecisionTreeClassifier
 from sklearn.ensemble        import RandomForestClassifier
-from sklearn.metrics         import accuracy_score
+
 from unicornml.model         import Model
 
 # import kerastuner
@@ -126,7 +127,7 @@ class Classification:
         self.Gaussian()
         #self.Multinomial(params) # rever dados de input
 
-        params.get("alpha")[-1] = 10.0 ** -10
+        params.get("alpha")[-1] = 1.0e-10
         self.Bernoulli(params)
 
         params.get("alpha")[-1] = 0.0
