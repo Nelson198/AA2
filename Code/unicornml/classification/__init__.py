@@ -18,7 +18,7 @@ class Classification:
             #"logistic"      : self.__logisticRegression,
             "knn"           : self.__KNN,
             #"svm"           : self.__SVM,
-            #"kernelSVM"     : self.__kernelSVM,
+            "kernelSVM"     : self.__kernelSVM,
             #"naiveBayes"    : self.__naiveBayes,
             #"decisionTree"  : self.__decisonTree,
             #"randomForest"  : self.__randomForest,
@@ -34,7 +34,7 @@ class Classification:
             self.methods[method]()
         return self.model
 
-    #TODO ACABAR !!!
+    # TODO : Acabar implementação !
     def __logisticRegression(self):
         print("Training with Logistic Regression")
         classifier = LogisticRegression(solver = "lbfgs")
@@ -53,60 +53,36 @@ class Classification:
             "p"           : [1, 2], # default = 2
             "weights"     : ["uniform", "distance"] # default = "uniform"
         }
-
         self.big_model.param_tunning_method(
             KNeighborsClassifier(),
             "K-Nearest Neighbors (KNN)",
             params
         )
 
+    # TODO : Má combinação de parâmetros !
     def __SVM(self):
-        print("Training with Support Vector Machine (SVM)")
-
         params = {
             "dual"    : ["primal", "dual"],
             "loss"    : ["hinge", "squared_hinge"],
             "C"       : list(range(1, 5))
         }
-
-        svm = self.__param_tunning(
+        self.big_model.param_tunning_method(
             LinearSVC(),
-            params = params
+            "Support Vector Machine (SVM)",
+            params
         )
-        
-        print("The best params found: " + str(svm.best_params_))
-
-        y_pred = svm.predict(self.X_test)
-        score = svm.score(self.X_test, y_pred)
-        print("Score: {0}".format(score))
-        if not bool(self.model) or self.model["score"] < score:
-            self.model["score"] = score
-            self.model["model"] = svm
-
 
     def __kernelSVM(self):
-        print("Training with kernel Support Vector Machine (kernel SVM)")
-
         params = {
             "kernel"  : ["rbf", "poly", "sigmoid"],
-            "gamma"   : ["scale", "auto"], # [0.1,1, 10, 100], better but takes much much longer
+            "gamma"   : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
             "C"       : list(range(1, 5))
         }
-
-        kernelsvm = self.__param_tunning(
+        self.big_model.param_tunning_method(
             SVC(),
-            params = params
+            "kernel Support Vector Machine (kernel SVM)",
+            params
         )
-        
-        print("The best params found: " + str(kernelsvm.best_params_))
-
-        y_pred = kernelsvm.predict(self.X_test)
-        score = kernelsvm.score(self.X_test, y_pred)
-        print("Score: {0}".format(score))
-        if not bool(self.model) or self.model["score"] < score:
-            self.model["score"] = score
-            self.model["model"] = kernelsvm
-
 
     def __naiveBayes(self):
         print("Training with Naive Bayes")
@@ -132,7 +108,7 @@ class Classification:
                 self.model["score"] = score
                 self.model["model"] = model
 
-    #TODO ACABAR !!!
+    # TODO : Acabar implementação !
     def __decisonTree(self):
         print("Training with Decison Tree Classification")
         tree = DecisionTreeClassifier()
