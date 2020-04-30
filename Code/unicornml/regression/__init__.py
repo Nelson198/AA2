@@ -54,7 +54,6 @@ class Regression:
                 self.model["score"] = r2
                 self.model["model"] = regressor
     
-    
     def __SVR(self):
         params = {
             "kernel"  : ["rbf"], # o melhor kernel é o rbf,

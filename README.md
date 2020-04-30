@@ -29,6 +29,6 @@ cd Code/
 python3 setup.py test
 ```
 
-### Documentation
+### Documentação
 - https://scikit-learn.org/stable/supervised_learning.html
 - https://scikit-learn.org/stable/modules/classes.html

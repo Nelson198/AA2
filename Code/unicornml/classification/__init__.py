@@ -15,13 +15,13 @@ from unicornml.model         import Model
 class Classification:
     def __init__(self, X_train, X_test, y_train, y_test):
         self.methods = {
-            "logistic"     : self.__logisticRegression,
-            "knn"          : self.__KNN,
-            "svm"          : self.__SVM,
-            "kernelSVM"    : self.__kernelSVM,
-            "naiveBayes"   : self.__naiveBayes,
-            "decisionTree" : self.__decisonTreeClassification,
-            "randomForest" : self.__randomForestClassification,
+            "logistic"      : self.__logisticRegression,
+            "knn"           : self.__KNN,
+            "svm"           : self.__SVM,
+            "kernelSVM"     : self.__kernelSVM,
+            "naiveBayes"    : self.__naiveBayes,
+            "decisionTree"  : self.__decisonTreeClassification,
+            "randomForest"  : self.__randomForestClassification,
             #"neuralNetwork" : self.__neuralNetwork
         }
         self.model = {},
@@ -34,13 +34,11 @@ class Classification:
             self.methods[method]()
         return self.model
 
-
     def __logisticRegression(self):
         params = {
-            "solver"  : ["newton-cg", "sag", "lbfgs"],
-            "C"       : list(np.arange(1, 5))
+            "solver" : ["newton-cg", "sag", "lbfgs"],
+            "C"      : list(np.arange(1, 5))
         }
-        
         self.big_model.param_tunning_method(
             LogisticRegression(),
             "Logistic Regression with newton-cg, sag and lbfgs",
@@ -53,7 +51,6 @@ class Classification:
             "penalty"  : ["elasticnet"],
             "l1_ratio" : list(np.arange(0, 1.1, 0.2))
         }
-
         self.big_model.param_tunning_method(
             LogisticRegression(),
             "Logistic Regression with saga solver",
@@ -64,13 +61,11 @@ class Classification:
             "solver"  : ["saga", "newton-cg", "sag", "lbfgs"],
             "penalty" : ["none"]
         }
-
         self.big_model.param_tunning_method(
             LogisticRegression(),
             "Logistic Regression with no penalty",
             params
         )
-
 
     def __KNN(self):
         params = {
@@ -86,7 +81,6 @@ class Classification:
             params
         )
 
-
     def __SVM(self):
         params = {
             "dual"    : [False],
@@ -101,9 +95,9 @@ class Classification:
 
     def __kernelSVM(self):
         params = {
-            "kernel"  : ["rbf", "sigmoid"],
-            "gamma"   : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
-            "C"       : list(np.arange(1, 5))
+            "kernel" : ["rbf", "sigmoid"],
+            "gamma"  : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
+            "C"      : list(np.arange(1, 5))
         }
         self.big_model.param_tunning_method(
             SVC(),
@@ -112,10 +106,10 @@ class Classification:
         )
 
         params = {
-            "kernel"  : ["poly"],
-            "gamma"   : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
-            "degree"  : list(np.arange(2, 5)),
-            "C"       : list(np.arange(1, 5))
+            "kernel" : ["poly"],
+            "gamma"  : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
+            "degree" : list(np.arange(2, 5)),
+            "C"      : list(np.arange(1, 5))
         }
         self.big_model.param_tunning_method(
             SVC(),
@@ -125,17 +119,19 @@ class Classification:
 
     def __naiveBayes(self):
         params = {
-            "alpha" : [1.0, 0.5, 0.0],
+            "alpha"     : [1.0, 0.5, 0.0],
             "fit_prior" : [True, False]
         }
 
         self.Gaussian()
         #self.Multinomial(params) # rever dados de input
+
+        params.get("alpha")[-1] = 10.0 ** -10
         self.Bernoulli(params)
 
+        params.get("alpha")[-1] = 0.0
         params.update({ "norm" : [True, False] })
         #self.Complement(params) # rever dados de input
-
     
     def __decisonTreeClassification(self):
         params = {

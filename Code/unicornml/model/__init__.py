@@ -36,7 +36,7 @@ class Model():
         if hasattr(trained_model, "best_params_"):
             print("The best params found: " + str(trained_model.best_params_))
 
-        print("[%s] Score: %f" % (desc, metric))
+        print("[%s] Score: %f\n" % (desc, metric))
         if bool(self.save_results) or not bool(self.results):
             self.results.append(
                 {
