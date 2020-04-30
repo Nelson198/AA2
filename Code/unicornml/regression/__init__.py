@@ -33,7 +33,7 @@ class Regression:
             "Linear Regression"
         )
 
-    
+    # rever esta implementação
     def __polynomialRegression(self):
         for degree in range(2, self.X_train.shape[1]):
             print("Training with polynomial Regression (degree: %d)", degree)
@@ -60,7 +60,7 @@ class Regression:
             "kernel"  : ["rbf"], # o melhor kernel é o rbf,
             "gamma"   : ["scale", "auto"],
             "C"       : list(range(1, 5)),
-            "epsilon" : list(np.arange(0, .1, .01))
+            "epsilon" : list(np.arange(0, .1, .01)) # rever, pode não ser necessário
         }
         self.big_model.param_tunning_method(
             SVR(),

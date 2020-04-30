@@ -130,13 +130,13 @@ class Classification:
         }
 
         self.Gaussian()
-        #self.Multinomial(params)
+        #self.Multinomial(params) # rever dados de input
         self.Bernoulli(params)
 
         params.update({ "norm" : [True, False] })
-        #self.Complement(params)
+        #self.Complement(params) # rever dados de input
 
-    # TODO : Acabar implementação !
+    
     def __decisonTreeClassification(self):
         params = {
             "criterion"    : ["gini", "entropy"],
