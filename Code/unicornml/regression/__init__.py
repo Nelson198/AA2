@@ -6,8 +6,7 @@ from sklearn.preprocessing   import PolynomialFeatures
 from sklearn.svm             import SVR
 from sklearn.tree            import DecisionTreeRegressor
 from sklearn.ensemble        import RandomForestRegressor
-from numpy                   import arange
-from unicornml.model import Model
+from unicornml.model         import Model
 
 class Regression:
     def __init__(self, x_train, x_test, y_train, y_test):
@@ -31,7 +30,7 @@ class Regression:
     def __linearRegression(self):
         self.big_model.param_tunning_method(
             LinearRegression(),
-            'Linear Regression',
+            "Linear Regression",
         )
 
 #    def __polynomialRegression(self):
@@ -64,7 +63,7 @@ class Regression:
         }
         self.big_model.param_tunning_method(
             SVR(),
-            'Support Vector Regressor',
+            "Support Vector Regressor",
             params
         )
 
@@ -77,7 +76,7 @@ class Regression:
         }
         self.big_model.param_tunning_method(
             DecisionTreeRegressor(),
-            'Decision Tree Regressor',
+            "Decision Tree Regressor",
             params
         )
 
@@ -86,12 +85,12 @@ class Regression:
         params = {
             "criterion"    : ["mse", "mae"],
             "max_features" : ["auto", "sqrt", "log2"],
-            "n_estimators" : list(arange(10, 1001, 10))
+            "n_estimators" : list(np.arange(10, 1001, 10))
         }
 
         self.big_model.param_tunning_method(
             RandomForestRegressor(),
-            'Random Forest Regressor',
+            "Random Forest Regressor",
             params,
             True
         )

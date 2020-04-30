@@ -7,7 +7,6 @@ from sklearn.svm             import LinearSVC, SVC
 from sklearn.naive_bayes     import GaussianNB, MultinomialNB
 from sklearn.tree            import DecisionTreeClassifier
 from sklearn.ensemble        import RandomForestClassifier
-from numpy                   import arange
 
 # import kerastuner
 
@@ -35,7 +34,7 @@ class Classification:
         return self.model
 
     def __param_tunning(self, model, params, sqrt = False):
-        n_space = np.prod([ len(params[x]) for x in params.keys()])
+        n_space = np.prod([len(params[x]) for x in params.keys()])
         if sqrt:
             n_space = np.sqrt(n_space)
         
@@ -52,7 +51,7 @@ class Classification:
     #TODO ACABAR !!!
     def __logisticRegression(self):
         print("Training with Logistic Regression")
-        classifier = LogisticRegression( solver='lbfgs')
+        classifier = LogisticRegression(solver = "lbfgs")
         classifier.fit(self.X_train, self.Y_train)
         classifier.predict(self.X_test)
         score = classifier.score(self.X_test, self.Y_test)
@@ -65,8 +64,8 @@ class Classification:
         print("Training with K-Nearest Neighbors (KNN)")
 
         params = {
-            "n_neighbors" : list(arange(1, 21)), # default = 5
-            "leaf_size"   : list(arange(10, 51, 10)), # default = 30
+            "n_neighbors" : list(np.arange(1, 21)), # default = 5
+            "leaf_size"   : list(np.arange(10, 51, 10)), # default = 30
             "p"           : [1, 2], # default = 2
             "weights"     : ["uniform", "distance"] # default = "uniform"
         }
@@ -176,7 +175,7 @@ class Classification:
         params = {
             "criterion"    : ["gini", "entropy"],
             "max_features" : ["auto", None, "log2"],
-            "n_estimators" : list(arange(10, 1001, 10))
+            "n_estimators" : list(np.arange(10, 1001, 10))
         }
 
         search = self.__param_tunning(
@@ -195,8 +194,6 @@ class Classification:
 
     def __neuralNetwork(self):
         print("Training with Neural Network")
-
-
 
 
     ################### Naive Bayes Classifiers Functions ###################
