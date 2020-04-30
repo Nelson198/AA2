@@ -38,7 +38,7 @@ class Classification:
     def __logisticRegression(self):
         params = {
             "solver"  : ["newton-cg", "sag", "lbfgs"],
-            "C"       : list(np.arange(1,5))
+            "C"       : list(np.arange(1, 5))
         }
         
         self.big_model.param_tunning_method(
@@ -48,9 +48,10 @@ class Classification:
         )
 
         params = {
-            "solver"  : ["saga"],
-            "C"       : list(np.arange(1,5)),
-            "penalty" : ["l2", "l1", "elasticnet"]
+            "solver"   : ["saga"],
+            "C"        : list(np.arange(1,5)),
+            "penalty"  : ["elasticnet"],
+            "l1_ratio" : list(np.arange(0, 1.1, 0.2))
         }
 
         self.big_model.param_tunning_method(
@@ -85,7 +86,7 @@ class Classification:
             params
         )
 
-    # TODO : Má combinação de parâmetros !
+
     def __SVM(self):
         params = {
             "dual"    : [False],
@@ -129,11 +130,11 @@ class Classification:
         }
 
         self.Gaussian()
-        self.Multinomial(params)
+        #self.Multinomial(params)
         self.Bernoulli(params)
 
         params.update({ "norm" : [True, False] })
-        self.Complement(params)
+        #self.Complement(params)
 
     # TODO : Acabar implementação !
     def __decisonTreeClassification(self):
