@@ -28,3 +28,7 @@ python3 setup.py install --user
 cd Code/
 python3 setup.py test
 ```
+
+### Documentation
+- https://scikit-learn.org/stable/supervised_learning.html
+- https://scikit-learn.org/stable/modules/classes.html
