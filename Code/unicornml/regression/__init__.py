@@ -14,15 +14,16 @@ class Regression:
     def __init__(self, X_train, X_test, y_train, y_test):
         self.methods = {
             "linear"       : self.__linearRegression,
-            #"poly"         : self.__polynomialRegression,
+            "poly"         : self.__polynomialRegression,
             "svr"          : self.__SVR,
             "decisionTree" : self.__decisionTreeRegression,
             "randomForest" : self.__randomForestRegression
         }
         self.model = {}
-        self.big_model = Model(
-            X_train, X_test, y_train, y_test, (lambda x,y: r2_score(x,y))
+        self.big_model = lambda x_train, x_test: Model(
+            x_train, x_test, y_train, y_test, (lambda x, y: r2_score(x,y))
         )
+        self.data = (X_train, X_test, y_train, y_test)
 
     def Rainbow(self):
         for method in self.methods:
@@ -30,67 +31,68 @@ class Regression:
         return self.model
 
     def __linearRegression(self):
-        self.big_model.param_tunning_method(
-            LinearRegression(),
-            "Linear Regression"
-        )
-
-    # rever esta implementação
-    def __polynomialRegression(self):
-        for degree in range(2, self.X_train.shape[1]):
-            print("Training with polynomial Regression (degree: %d)", degree)
-            poly_reg = PolynomialFeatures(degree = degree)
-            X_poly = poly_reg.fit_transform(self.X_train)
-            poly_reg.fit(X_poly, self.Y_train)
-
-            regressor = LinearRegression()
-            regressor.fit(X_poly, self.Y_train)
-
-            y_pred = regressor.predict(
-                poly_reg.fit_transform(self.X_test)
+        (X_train, X_test, _, _) = self.data
+        self.big_model(X_train, X_test) \
+            .param_tunning_method(
+                LinearRegression(),
+                "Linear Regression"
             )
 
-            r2 = r2_score(self.Y_test, y_pred)
-            print("Score: %f" % r2)
-            if not bool(self.model) or self.model["score"] < r2:
-                self.model["score"] = r2
-                self.model["model"] = regressor
+    def __polynomialRegression(self):
+        (X_train, X_test, y_train, _) = self.data
+        for degree in range(2, X_train.shape[1]):
+            # Preprocessing
+            poly_reg = PolynomialFeatures(degree = degree)
+            X_poly = poly_reg.fit_transform(X_train)
+            poly_reg.fit(X_poly, y_train)
+
+            self.big_model(X_poly, poly_reg.fit_transform(X_test)) \
+                .param_tunning_method(
+                    LinearRegression(),
+                    "Polynomial Regression (degree: {0})".format(degree)
+                )
     
     def __SVR(self):
+        (X_train, X_test, _, _) = self.data
         params = {
             "kernel"  : ["rbf"], # o melhor kernel é o rbf,
             "gamma"   : ["scale", "auto"],
             "C"       : list(range(1, 5)),
             "epsilon" : list(np.arange(0, .1, .01)) # rever, pode não ser necessário
         }
-        self.big_model.param_tunning_method(
-            SVR(),
-            "Support Vector Regression",
-            params
-        )
+        self.big_model(X_train, X_test) \
+            .param_tunning_method(
+                SVR(),
+                "Support Vector Regression",
+                params
+            )
 
     def __decisionTreeRegression(self):
+        (X_train, X_test, _, _) = self.data
         params = {
             "criterion"    : ["mse", "mae", "friedman_mse"],
             "splitter"     : ["best"],
             "max_features" : ["auto", "sqrt", "log2"]
         }
-        self.big_model.param_tunning_method(
-            DecisionTreeRegressor(),
-            "Decision Tree Regression",
-            params
-        )
+        self.big_model(X_train, X_test) \
+            .param_tunning_method(
+                DecisionTreeRegressor(),
+                "Decision Tree Regression",
+                params
+            )
 
     def __randomForestRegression(self):
+        (X_train, X_test, _, _) = self.data
         params = {
             "criterion"    : ["mse", "mae"],
             "max_features" : ["auto", "sqrt", "log2"],
             "n_estimators" : list(np.arange(10, 1001, 10))
         }
 
-        self.big_model.param_tunning_method(
-            RandomForestRegressor(),
-            "Random Forest Regression",
-            params,
-            True
-        )
+        self.big_model(X_train, X_test) \
+            .param_tunning_method(
+                RandomForestRegressor(),
+                "Random Forest Regression",
+                params,
+                True
+            )

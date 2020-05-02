@@ -27,7 +27,7 @@ class Classification:
         }
         self.model = {},
         self.big_model = Model(
-            X_train, X_test, y_train, y_test, (lambda x,y: accuracy_score(x,y))
+            X_train, X_test, y_train, y_test, (lambda x, y: accuracy_score(x,y))
         )
 
     def Rainbow(self):
