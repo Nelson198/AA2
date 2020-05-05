@@ -1,5 +1,5 @@
 import numpy as np
-
+import sys
 from sklearn.metrics         import accuracy_score
 
 from sklearn.linear_model    import LogisticRegression
@@ -14,26 +14,34 @@ from unicornml.model         import Model
 # import kerastuner
 
 class Classification:
-    def __init__(self, X_train, X_test, y_train, y_test):
-        self.methods = {
-            "logistic"      : self.__logisticRegression,
-            "knn"           : self.__KNN,
-            "svm"           : self.__SVM,
-            "kernelSVM"     : self.__kernelSVM,
-            "naiveBayes"    : self.__naiveBayes,
-            "decisionTree"  : self.__decisonTreeClassification,
-            "randomForest"  : self.__randomForestClassification,
-            #"neuralNetwork" : self.__neuralNetwork
-        }
-        self.model = {},
+    __methods: dict
+    def __init__(self, X_train, X_test, y_train, y_test, algorithms=[], metrics=[]):
+        self.__get_methods(algorithms)
+
         self.big_model = Model(
             X_train, X_test, y_train, y_test, (lambda x, y: accuracy_score(x,y))
         )
 
     def Rainbow(self):
-        for method in self.methods:
-            self.methods[method]()
-        return self.model
+        for method in self.__methods:
+            self.__methods[method]()
+
+    def __get_methods(self, algorithms):
+
+        available = {
+            "logistic": self.__logisticRegression,
+            "knn": self.__KNN,
+            "svm": self.__SVM,
+            "kernelSVM": self.__kernelSVM,
+            "naiveBayes": self.__naiveBayes,
+            "decisionTree": self.__decisonTreeClassification,
+            "randomForest": self.__randomForestClassification,
+            # "neuralNetwork" : self.__neuralNetwork
+        }
+        self.__methods = available.copy()
+        if bool(algorithms):
+            for alg in available.keys():
+                if alg not in algorithms: del self.__methods[alg]
 
     def __logisticRegression(self):
         params = {

@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
-from unicornml.classification import Classification
+from unicornml import UnicornML
 
 class TestClassification(unittest.TestCase):
     def test_classification(self):
@@ -18,9 +18,9 @@ class TestClassification(unittest.TestCase):
         X_train = scaler.fit_transform(X_train)
         X_test  = scaler.transform(X_test)
 
-        classificator = Classification(X_train, X_test, y_train, y_test)
+        unicorn = UnicornML(X_train, X_test, y_train, y_test)
 
-        model = classificator.Rainbow()
+        unicorn.Rainbow()
 
 if __name__ == "__main__":
     unittest.main()
