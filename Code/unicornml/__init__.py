@@ -80,14 +80,17 @@ class UnicornML:
         if self.__problem == "Classification":
             classificator = Classification(
                 self.X_train, self.X_test,
-                self.y_train, self.y_test
+                self.y_train, self.y_test,
+                self.__algorithms,
+                self.__metrics
             )
             classificator.Rainbow()
         else:
             regressor = Regression(
                 self.X_train, self.X_test,
-                self.y_train, self.y_test
-
+                self.y_train, self.y_test,
+                self.__algorithms,
+                self.__metrics
             )
 
 
