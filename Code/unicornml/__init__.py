@@ -64,13 +64,11 @@ class UnicornML:
         self.y_train = y_train
         self.y_test  = y_test
 
-        print(
-            "It's a %s problem\nSelected algorithms: [%s]\nSelected metrics: [%s]" % (
-                self.__problem,
-                " ,".join(self.__algorithms),
-                " ,".join(self.__metrics)
-            )
-        )
+        print("It's a %s problem\nSelected algorithms: [%s]\nSelected metrics: [%s]" % (
+            self.__problem,
+            " ,".join(self.__algorithms),
+            " ,".join(self.__metrics)
+        ))
 
     def Rainbow(self):
         if self.__problem == "Classification":

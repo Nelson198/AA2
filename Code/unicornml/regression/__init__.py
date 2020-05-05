@@ -1,6 +1,6 @@
 import numpy as np
 
-from sklearn.metrics         import r2_score
+from sklearn.metrics         import r2_score, mean_squared_error
 
 from sklearn.linear_model    import LinearRegression
 from sklearn.preprocessing   import PolynomialFeatures
@@ -11,13 +11,15 @@ from sklearn.ensemble        import RandomForestRegressor
 from unicornml.model         import Model
 
 class Regression:
-    __methods: dict
+    __methods : dict
+    __metrics : dict
 
-    def __init__(self, X_train, X_test, y_train, y_test, algorithms=[], metrics=[]):
+    def __init__(self, X_train, X_test, y_train, y_test, algorithms = [], metrics = []):
         self.__get_methods(algorithms)
-
+        self.__get_metrics(metrics)
+        # TODO : Choose the apropriate metric
         self.big_model = lambda x_train, x_test: Model(
-            x_train, x_test, y_train, y_test, (lambda x, y: r2_score(x,y))
+            x_train, x_test, y_train, y_test, (lambda x,y : r2_score(x, y))
         )
         self.data = (X_train, X_test, y_train, y_test)
 
@@ -26,18 +28,29 @@ class Regression:
             self.__methods[method]()
 
     def __get_methods(self, algorithms):
-
         available = {
-            "linear": self.__linearRegression,
-            "poly": self.__polynomialRegression,
-            "svr": self.__SVR,
-            "decisionTree": self.__decisionTreeRegression,
-            "randomForest": self.__randomForestRegression
+            "linear"       : self.__linearRegression,
+            "poly"         : self.__polynomialRegression,
+            "svr"          : self.__SVR,
+            "decisionTree" : self.__decisionTreeRegression,
+            "randomForest" : self.__randomForestRegression
         }
         self.__methods = available.copy()
         if bool(algorithms):
             for alg in available.keys():
-                if alg not in algorithms: del self.__methods[alg]
+                if alg not in algorithms:
+                    del self.__methods[alg]
+
+    def __get_metrics(self, metrics):
+        available = {
+            "r2"  : lambda x,y : r2_score(x, y),
+            "mse" : lambda x,y : mean_squared_error(x, y)
+        }
+        self.__metrics = available.copy()
+        if bool(metrics):
+            for metric in available.keys():
+                if metric not in metrics:
+                    del self.__methods[metric]
 
     def __linearRegression(self):
         (X_train, X_test, _, _) = self.data

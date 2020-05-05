@@ -1,6 +1,6 @@
 import numpy as np
-import sys
-from sklearn.metrics         import accuracy_score
+
+from sklearn.metrics         import accuracy_score, f1_score, precision_score, recall_score
 
 from sklearn.linear_model    import LogisticRegression
 from sklearn.neighbors       import KNeighborsClassifier
@@ -14,12 +14,15 @@ from unicornml.model         import Model
 # import kerastuner
 
 class Classification:
-    __methods: dict
-    def __init__(self, X_train, X_test, y_train, y_test, algorithms=[], metrics=[]):
-        self.__get_methods(algorithms)
+    __methods : dict
+    __metrics : dict
 
+    def __init__(self, X_train, X_test, y_train, y_test, algorithms = [], metrics = []):
+        self.__get_methods(algorithms)
+        self.__get_metrics(metrics)
+        # TODO : Choose the apropriate metric
         self.big_model = Model(
-            X_train, X_test, y_train, y_test, (lambda x, y: accuracy_score(x,y))
+            X_train, X_test, y_train, y_test, (lambda x,y : accuracy_score(x, y))
         )
 
     def Rainbow(self):
@@ -27,21 +30,34 @@ class Classification:
             self.__methods[method]()
 
     def __get_methods(self, algorithms):
-
         available = {
-            "logistic": self.__logisticRegression,
-            "knn": self.__KNN,
-            "svm": self.__SVM,
-            "kernelSVM": self.__kernelSVM,
-            "naiveBayes": self.__naiveBayes,
-            "decisionTree": self.__decisonTreeClassification,
-            "randomForest": self.__randomForestClassification,
+            "logistic"      : self.__logisticRegression,
+            "knn"           : self.__KNN,
+            "svm"           : self.__SVM,
+            "kernelSVM"     : self.__kernelSVM,
+            "naiveBayes"    : self.__naiveBayes,
+            "decisionTree"  : self.__decisonTreeClassification,
+            "randomForest"  : self.__randomForestClassification
             # "neuralNetwork" : self.__neuralNetwork
         }
         self.__methods = available.copy()
         if bool(algorithms):
             for alg in available.keys():
-                if alg not in algorithms: del self.__methods[alg]
+                if alg not in algorithms:
+                    del self.__methods[alg]
+
+    def __get_metrics(self, metrics):
+        available = {
+            "accuracy"  : lambda x,y : accuracy_score(x, y),
+            "f1"        : lambda x,y : f1_score(x, y),
+            "precision" : lambda x,y : precision_score(x, y),
+            "recall"    : lambda x,y : recall_score(x, y)
+        }
+        self.__metrics = available.copy()
+        if bool(metrics):
+            for metric in available.keys():
+                if metric not in metrics:
+                    del self.__methods[metric]
 
     def __logisticRegression(self):
         params = {
