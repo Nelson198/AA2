@@ -2,7 +2,6 @@ import sys
 import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
 
-
 class Model():
     def __init__(
         self, X_train, X_test, y_train, y_test,

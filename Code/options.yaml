@@ -1,28 +1,28 @@
 Problem:
-  Classification:
-    algorithms:
-      - logistic
-      - knn
-      - svm
-      - kernelSVM
-      - naiveBayes
-      - decisionTree
-      - randomForest
-      - neuralNetwork
-    metrics:
-      - accuracy
-      - f1
-      - precision
-      - recall
+    Classification:
+        algorithms:
+            - logistic
+            - knn
+            - svm
+            - kernelSVM
+            - naiveBayes
+            - decisionTree
+            - randomForest
+            - neuralNetwork
+        metrics:
+            - accuracy
+            - f1
+            - precision
+            - recall
 
-  Regression:
-    algorithms:
-      - linear
-      - poly
-      - svr
-      - decisionTree
-      - randomForest
-      - neuralNetwork
-    metrics:
-      - r2
-      - mse
+    Regression:
+        algorithms:
+            - linear
+            - poly
+            - svr
+            - decisionTree
+            - randomForest
+            - neuralNetwork
+        metrics:
+            - r2
+            - mse
