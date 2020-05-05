@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 import numpy as np
-from unicornml.regression import Regression
+from unicornml import UnicornML
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.compose import ColumnTransformer
@@ -23,13 +23,13 @@ class TestStringMethods(unittest.TestCase):
 
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .2, random_state = 0)
 
-        foo = Regression (
+        unicorn = UnicornML(
             X_train,
             X_test,
             Y_train,
             Y_test
         )
-        model = foo.Rainbow()
+        unicorn.Rainbow()
 
         self.assertEqual("foo".upper(), "FOO")
 

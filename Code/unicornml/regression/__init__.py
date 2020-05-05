@@ -11,24 +11,33 @@ from sklearn.ensemble        import RandomForestRegressor
 from unicornml.model         import Model
 
 class Regression:
-    def __init__(self, X_train, X_test, y_train, y_test):
-        self.methods = {
-            "linear"       : self.__linearRegression,
-            "poly"         : self.__polynomialRegression,
-            "svr"          : self.__SVR,
-            "decisionTree" : self.__decisionTreeRegression,
-            "randomForest" : self.__randomForestRegression
-        }
-        self.model = {}
+    __methods: dict
+
+    def __init__(self, X_train, X_test, y_train, y_test, algorithms=[], metrics=[]):
+        self.__get_methods(algorithms)
+
         self.big_model = lambda x_train, x_test: Model(
             x_train, x_test, y_train, y_test, (lambda x, y: r2_score(x,y))
         )
         self.data = (X_train, X_test, y_train, y_test)
 
     def Rainbow(self):
-        for method in self.methods:
-            self.methods[method]()
-        return self.model
+        for method in self.__methods:
+            self.__methods[method]()
+
+    def __get_methods(self, algorithms):
+
+        available = {
+            "linear": self.__linearRegression,
+            "poly": self.__polynomialRegression,
+            "svr": self.__SVR,
+            "decisionTree": self.__decisionTreeRegression,
+            "randomForest": self.__randomForestRegression
+        }
+        self.__methods = available.copy()
+        if bool(algorithms):
+            for alg in available.keys():
+                if alg not in algorithms: del self.__methods[alg]
 
     def __linearRegression(self):
         (X_train, X_test, _, _) = self.data
