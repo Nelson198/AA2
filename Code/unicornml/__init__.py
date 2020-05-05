@@ -1,6 +1,5 @@
 import sys
 import yaml
-from sklearn.model_selection import train_test_split
 from .regression     import Regression
 from .classification import Classification
 
