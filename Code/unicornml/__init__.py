@@ -1,36 +1,96 @@
 import sys
 import yaml
+from sklearn.model_selection import train_test_split
 from .regression     import Regression
 from .classification import Classification
 
 
 class UnicornML:
-    def __init__(self, X, y, options = {}):
+    __problem:    str
+    __algorithms: list
+    __metrics:    list
 
+    def __init__(self, X_train, X_test, y_train, y_test, options = {}):
         config = None
         with open('options.yaml') as file:
             config = yaml.full_load(file)
-        print(config, type(config))
 
-        self.__params = {}
+
         if "Problem" in options:
             if options["Problem"] not in config["Problem"]:
                 sys.exit("Invalid problem defined! Just accepting [%s]" % ' ,'.join(config["Problem"]))
-            self.__params["Problem"] = options["Problem"]
+            self.__problem = options["Problem"]
         else:
             # Check if it's a classification or regression problem
-            self.__params["Problem"] = self.__detect_problem(y.tolist())
-        # it's unsupervised learning
-        '''if bool(re.search('^int', str(y_train.dtype))):
-            self.model = Classification(
-                    x_train, x_test,
-                    y_train, y_test
+            self.__problem = self.__detect_problem(y_train.tolist())
+
+
+        if "algorithms" in options:
+            if not isinstance(options["algorithms"], list):
+                sys.exit("The algorithms paramater needs to be a list")
+
+            for alg in options["algorithms"]:
+                if not isinstance(alg,str):
+                    sys.exit("The algorithm need to be a str")
+                if alg not in config["Problem"][self.__problem]["algorithms"]:
+                    sys.exit(
+                        "Invalid algorithm %s for a %s problem. Algorithms available:[%s]" % (
+                            alg,
+                            self.__problem,
+                            ' ,'.join(config["Problem"][self.__problem]["algorithms"])
+                        )
+                    )
+            self.__algorithms = options["algorithms"]
+        else: self.__algorithms = config["Problem"][self.__problem]["algorithms"]
+
+
+        if "metrics" in options:
+            if not isinstance(options["metrics"], list):
+                sys.exit("The metrics paramater needs to be a list")
+
+            for metric in options["metrics"]:
+                if not isinstance(metric,str):
+                    sys.exit("The metric need to be a str")
+                if metric not in config["Problem"][self.__problem]["metrics"]:
+                    sys.exit(
+                        "Invalid algorithm %s for a %s problem. Algorithms available:[%s]" % (
+                            metric,
+                            self.__problem,
+                            ' ,'.join(config["Problem"][self.__problem]["metrics"])
+                        )
+                    )
+            self.__metrics = options["algorithms"]
+        else: self.__metrics = config["Problem"][self.__problem]["metrics"]
+
+        self.X_train = X_train
+        self.X_test  = X_test
+        self.y_train = y_train
+        self.y_test  = y_test
+
+        print(
+            "It's a %s problem\nSelected algorithms: [%s]\nSelected metrics: [%s]"
+                                       %
+            (
+                self.__problem,
+                ' ,'.join(self.__algorithms),
+                ' ,'.join(self.__metrics)
             )
+        )
+
+    def Rainbow(self):
+        if self.__problem == "Classification":
+            classificator = Classification(
+                self.X_train, self.X_test,
+                self.y_train, self.y_test
+            )
+            classificator.Rainbow()
         else:
-            self.model = Regression(
-                x_train, x_test,
-                y_train, y_test
-        )  '''
+            regressor = Regression(
+                self.X_train, self.X_test,
+                self.y_train, self.y_test
+
+            )
+
 
     #TODO improve
     def __detect_problem(self, y):
