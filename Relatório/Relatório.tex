@@ -5,6 +5,7 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
+\usepackage[hyphens]{url}
 \usepackage{hyperref}
 \usepackage{indentfirst}
 
@@ -35,7 +36,7 @@
 }
 \author{
 	\begin{tabular}{ll}
-		\textbf{Grupo nº 8}
+		\textbf{Grupo nº 11}
 		\\
 		\hline
 		PG41080 & João Ribeiro Imperadeiro
@@ -65,113 +66,109 @@
 
 \chapter{Introdução} \label{ch:Introduction}
 \large {
-	No âmbito da unidade curricular (UC) "Aprendizagem Automática II" (AA2), foi rquerida a realização de um trabalho prático para avaliação.
-	Tal como proposto a 23 de abril, o grupo decidiu-se pela opção do "desenvolvimento de algoritmos/\textit{software} no âmbito da Aprendizagem Máquina".
-	Mais especificamente, foi decidido o desenvolvimento de uma \textit{framework} de AutoML, com o objetivo de obter o melhor modelo para problemas de \textit{supervised learning} e \textit{unsupervised learning}, 
-	de forma automática e com a menor intervenção possível por parte do programador. Esta \textit{framework} terá o nome UnicornML.
+	No âmbito da unidade curricular (UC) \textsl{Aprendizagem Automática II} (AA2), foi requerida a realização de um trabalho prático para avaliação.
+	Tal como foi proposto a 23 de abril, o grupo escolheu a opção relativa ao "desenvolvimento de algoritmos/\textit{software} no âmbito da Aprendizagem Máquina".
+	Mais especificamente, optou-se pelo desenvolvimento de uma \textit{framework} de \textsl{AutoML}, com o objetivo de obter o melhor modelo para problemas de \textit{supervised learning} e \textit{unsupervised learning}, 
+	de forma automática e com a menor intervenção possível por parte do programador. À \textit{framework} idealizada foi atribuído o nome \textsl{UnicornML}.
 
 	Por sugestão do docente da UC, foram postos de parte os problemas de \textit{unsupervised learning}, pela sua complexidade e menor atenção dada durante as aulas.
 	Assim, sobram apenas os problemas de \textit{supervised learning} que podem ser divididos em duas categorias: classificação e regressão. Mais à frente serão abordadas as duas categorias em pormenor.
 
-	No momento, a UnicornML é capaz de identificar se se trata de um problema de regressão ou classificação, 
-	sendo que existe também a possibilidade de o utilizador fornecer essa informação, através de uma flag, poupando esse trabalho extra.
-	Para além disto, o utilizador pode ainda indicar, da mesma forma, quais os algoritmos e métricas que pretende que sejam testados e, ainda, qual das otimizações prefere (\textit{grid search} ou otimização bayesiana).
-	Tudo isto será detalhado e explicado nos próximos capítulos. 
-
+	Atualmente, a \textsl{UnicornML} é capaz de proceder à identificação e distinção entre problemas de regressão e de classificação, 
+	sendo que existe também a possibilidade de o utilizador fornecer essa informação, através de uma \textit{flag}, poupando esse trabalho extra.
+	Para além disto, o utilizador pode ainda indicar, da mesma forma, quais os algoritmos e métricas que pretende que sejam testados e, ainda, qual das otimizações prefere (\textit{randomized search}, otimização bayesiana ou nenhuma).
+	Todos estes detalhes são devidamente explicados nos próximos capítulos.
 }
 
 \chapter{Implementação} \label{ch:Implementation}
 \large {
-	\section{Estrutura} \label{sec:A}
-	A UnicornML tem um estrutura simples. Existe uma classe principal, com o mesmo nome da \textit{framework}, que permite treinar dados supervisionados para problemas de classificação e regressão.
+	\section{Estrutura} \label{sec:Structure}
+	A \textsl{UnicornML} tem um estrutura simples. Existe uma classe principal, com o mesmo nome da \textit{framework}, que permite treinar dados supervisionados para problemas de classificação e regressão.
 	Neste nível, são processadas todas as informações iniciais, que podem incluir:
 	\begin{itemize}
-		\item \textbf{Problema} - se se trata de um problema de regressão ou classificação; caso não seja fornecida, é identificado o tipo do problema.
-		\item \textbf{Algoritmos} - quais os algoritmos, dentro dos disponibilizados, que o utilizador pretende que sejam testados; passado em forma de lista.
-		\item \textbf{Métricas} - métricas a avaliar; passado em forma de lista.
+		\item \textbf{Problema} - se se trata de um problema de regressão ou classificação; caso não seja fornecida essa informação, é identificado o tipo do problema em questão.
+		\item \textbf{Algoritmos} - quais os algoritmos, dentro dos disponibilizados, que o utilizador pretende que sejam testados (passado em forma de lista);
+		\item \textbf{Métricas} - métricas a avaliar (passado em forma de lista).
 	\end{itemize}
 
 	Todas estas informações são passadas pelo terminal e são opcionais. Caso não sejam fornecidas, serão testadas todas as hipóteses oferecidas pela \textit{framework}.
-	O utilizador pode indicar o problema e os algoritmos, só os algoritmos, só o problema ou nenhum dos dois, mas deverá sempre ter em conta as limitações e consequências de cada uma das escolhas.
+	O utilizador pode indicar o problema e os algoritmos, só os algoritmos, só o problema ou nenhum dos dois, mas deverá sempre ter em conta as limitações e consequências de cada uma das escolhas tomadas.
 
-
-		\subsection{Problema} \label{subsec:A-1}
-		Os problemas de aprendizagem supervisionada podem ser divididos em dois conjuntos: problemas de regressão e problemas de classificação. 
+		\subsection{Problema} \label{subsec:Problem}
+		Os problemas de aprendizagem supervisionada podem ser divididos em dois conjuntos: problemas de regressão e problemas de classificação.
 		Como tal, é importante perceber-se qual dos dois problemas enfrentamos, de forma a que se possa poupar tempo e recursos de computação na procura do melhor modelo.
-		Para isso, foi pensada uma forma de identificar o tipo do problema. No entanto, tal como referido na proposta já entregue, esta não é uma prioridade, 
+		Para isso, foi pensada uma forma de identificar o tipo do problema. No entanto, tal como referido na proposta já entregue, esta não é uma prioridade,
 		pelo que o método para já utilizado é simples e identifica apenas a presença de inteiros ou \textit{floats} para fazer esta distinção.
 
-		No entanto, este processamento é evitado se o utilizador indicar qual dos problemas os seus dados representam. 
-		Esta indicação é dada através de uma opção, sendo passada uma de duas \textit{strings}: \texttt{"Regression"} ou \texttt{"Classification"}.
+		No entanto, este processamento é evitado se o utilizador indicar qual dos problemas os seus dados representam.
+		Esta indicação é dada através de uma opção, sendo passada uma de duas \textit{strings}: \textit{\texttt{Regression}} ou \textit{\texttt{Classification}}.
 
-		\subsection{Algoritmos} \label{subsec:A-2}
-		A UnicornML oferece diversos algoritmos para cada um dos tipos de problemas. 
+		\subsection{Algoritmos} \label{subsec:Algorithms}
+		A \textsl{UnicornML} oferece diversos algoritmos para cada um dos tipos de problemas. 
 		O utilizador pode escolher, dentro dos algoritmos disponíveis, quais os que quer que sejam testados. 
 		No entanto, os algoritmos só serão testados se estiverem disponíveis para o tipo de problema identificado pela \textit{framework} ou indicado pelo mesmo.
 
-		Caso o utilizador não indique quais os algoritmos que prefere que sejam testados, a \textit{framework} testará todos os algoritmos disponíveis para o tipo de problema identificado pela mesma ou indicado utilizador.
+		Caso o utilizador não indique quais os algoritmos que prefere que sejam testados, a \textit{framework} testará todos os algoritmos disponíveis para o tipo de problema identificado pela mesma ou indicado pelo utilizador.
             
-			\subsubsection{Classificação} \label{sssec:A-2-1}
+			\subsubsection{Classificação} \label{sssec:Classification1}
 			Os algoritmos disponíveis para problemas de classificação são os seguintes:
 			\begin{itemize}
-				\item Regressão logística
-				\item \textit{K-Nearest Neighbors} (KNN)
-				\item Support Vector Classifier (SVC) - uma Support Vector Machine (SVM) para classificação.
-				\item kernel SVM - uma SVM com uma função kernel, que permite a classificação em espaços de dimensão superiores.
-				\item Classificadores Bayesianos - família de classificadores baseados na teoria de Bayes; foram implementados quatro algoritmos diferentes: Gaussian, Multinomial, Bernoulli e Complement.
-				\item Árvore de decisão
+				\item Regressão logística;
+				\item \textit{K-Nearest Neighbors} (KNN);
+				\item \textit{Support Vector Classifier} (SVC) - uma \textit{Support Vector Machine} (SVM) para classificação;
+				\item \textit{kernel} SVM - uma SVM com uma função \textit{kernel}, que permite a classificação em espaços de dimensão superiores;
+				\item Classificadores Bayesianos - família de classificadores baseados na teoria de Bayes. Foram implementados quatro algoritmos diferentes: \textit{Gaussian}, \textit{Multinomial}, \textit{Bernoulli} e \textit{Complement};
+				\item Árvore de decisão;
 				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão.
 			\end{itemize}
 
 			Estes algoritmos encontram-se na classe \texttt{Regression}, em \texttt{unicornML/regression/\_\_init\_\_.py}.
             
-			\subsubsection{Regressão} \label{sssec:A-2-2}
+			\subsubsection{Regressão} \label{sssec:Regression1}
 			Os algoritmos disponíveis para problemas de classificação são os seguintes:
 			\begin{itemize}
-				\item Regressão linear
-				\item Regressão polinomial - os polinómios testados variam entre grau 2 e grau igual ao número de colunas da base de dados.
-				\item Support Vector Regressor (SVR) - uma SVM para regressão.
-				\item Árvore de decisão
+				\item Regressão linear;
+				\item Regressão polinomial - os polinómios testados variam entre grau 2 e grau igual ao número de colunas da base de dados;
+				\item \textit{Support Vector Regressor} (SVR) - uma SVM para regressão;
+				\item Árvore de decisão;
 				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão.
 			\end{itemize}
 
 			Estes algoritmos encontram-se na classe \texttt{Classification}, em \texttt{unicornML/classification/\_\_init\_\_.py}.
 
-		\subsection{Métricas} \label{subsec:A-3}
+		\subsection{Métricas} \label{subsec:Metrics}
 		As métricas permitem avaliar o desempenho de um certo modelo. 
-		O utilizador também pode escolher que métricas pretende que sejam tidas em conta e apresentadas.
+		O utilizador também pode escolher as métricas que irão ser tomadas em consideração e, posteriormente, apresentadas.
 		Mais uma vez, isso está limitado às métricas disponíveis para cada tipo de problema.
-		De realçar que nem todas as métricas podem estar disponíveis no momento presente.
+		De realçar que nem todas as métricas podem estar disponíveis num determinado momento.
 
-            \subsubsection{Classificação} \label{sssec:A-3-1}
+            \subsubsection{Classificação} \label{sssec:Classification2}
 			As métricas disponíveis para problemas de classificação são as seguintes:
 			\begin{itemize}
-				\item Accuracy
-				\item F1
-				\item Precision
-				\item Recall
+				\item \textit{Accuracy};
+				\item \textit{F1};
+				\item \textit{Precision};
+				\item \textit{Recall}.
 			\end{itemize}
 
-            \subsubsection{Regressão} \label{sssec:A-3-2}
-			Os métricas disponíveis para problemas de regressão são as seguintes:
+            \subsubsection{Regressão} \label{sssec:Regression2}
+			As métricas disponíveis para problemas de regressão são as seguintes:
 			\begin{itemize}
-				\item R-squared ($R^{2}$) 
-				\item Mean Square Error (MSE)
+				\item \textit{R-squared} ($R^{2}$);
+				\item \textit{Mean Square Error} (MSE).
 			\end{itemize}
 
-
-		\subsection{Otimização} \label{subsec:A-4}
+		\subsection{Otimização} \label{subsec:Optimization}
 		A classe \texttt{Model}, em \texttt{unicornML/model/\_\_init\_\_.py}, é o coração de toda a \textit{framework}.
 		A mesma foi pensada de forma a simplificar o restante código e reduzir duplicações do mesmo. 
 		É, ainda, onde é feita a procura do melhor modelo, segundo as opções escolhidas pelo utilizador.
 		Esta classe é utilizada pelas classes \texttt{Regression} e \texttt{Classification}.
 		
-		Encontramos aqui mais uma opção que será futuramente disponibilizada ao utilizador: a escolha do método de otimização - \textit{grid search} ("randomizedSearch") ou otimização bayesiana ("Bayes").
+		Encontramos aqui mais uma opção que será futuramente disponibilizada ao utilizador: a escolha do método de otimização - \textit{grid search} (\textit{randomizedSearch}) ou otimização bayesiana (Bayes).
 		Por defeito, o método de otimização utilizado será \texttt{randomizedSearch}. Futuramente será também possível optar pela otimização bayesiana, embora esta ainda não esteja implementada.
-
 }
 
-\chapter{Retrospetiva e Prospetiva} \label{ch:futureWork}
+\chapter{Retrospetiva e Prospetiva} \label{ch:FutureWork}
 \large{
 	O trabalho realizado até agora incidiu muito no planeamento da UnicornML, de forma a que a mesma fosse o mais simples possível de implementar, perceber e modificar.
 	Numa primeira fase, muitos dos esforços se dedicaram à estrutura que a \textit{framework} hoje apresenta e que serviu de base para todo o trabalho até agora desenvolvido e todo o que virá ainda a realizar-se.
@@ -182,7 +179,7 @@
 	Para o futuro próximo e até ao prazo limite, prevê-se o seguinte:
 	\begin{itemize}
 		\item Implementação de redes neuronais, tanto para  problemas de classificação como de regressão;
-		\item Verificar a existência ou não de overfitting e sua resolução;
+		\item Verificar a existência ou não de \textit{overfitting} e sua resolução;
 		\item Disponibilização de todas as métricas apresentadas;
 		\item Disponibilização do método de otimização bayesiana;
 		\item Correção de eventuais \textit{bugs};
@@ -194,19 +191,19 @@
 
 \chapter{Conclusão} \label{ch:Conclusion}
 \large{
-	Será um pouco anti-natural tentar tirar ilações de um trabalho incompleto, pelo que esta conclusão permite apenas refletir sobre as perspetivas existentes, tendo em conta o trabalho desenvolvido até agora.
-	No entanto, é possível perceber que a UnicornML está no bom caminho, tendo em conta os resultados obtidos para os métodos já implementados e a ideia do que será possível ainda desenvolver.
+	Será um pouco prematuro tentar tirar ilações de um trabalho incompleto, pelo que esta conclusão permite apenas refletir sobre as perspetivas existentes, tendo em conta o trabalho desenvolvido até agora.
+	No entanto, é possível perceber que a \textsl{UnicornML} está no bom caminho, tendo em conta os resultados obtidos para os métodos já implementados e a ideia do que será possível ainda desenvolver.
 }
 
 \appendix
 \chapter{Observações} \label{ch:Observations}
 \begin{itemize}
     \item Documentação \textit{Python} 3:
-    \par \textit{\url{https://docs.python.org/3/}}
-
-	\item Documentação \textit{scikit-learn} para \textit{supervised learning}:
-	\par \textit{\url{https://scikit-learn.org/stable/supervised_learning.html#supervised-learning}}
+	\par \textit{\url{https://docs.python.org/3/}}
+	\item Documentação \textit{scikit-learn} - API:
+    \par \textit{\url{https://scikit-learn.org/stable/modules/classes.html}}
+	\item Documentação \textit{scikit-learn} - \textit{supervised learning}:
+	\par \textit{\url{https://scikit-learn.org/stable/supervised_learning.html\#supervised-learning}}
 \end{itemize}
-
 
 \end{document}
