@@ -15,7 +15,7 @@ class UnicornML:
 
         if "Problem" in options:
             if options["Problem"] not in config["Problem"]:
-                sys.exit("Invalid problem defined! Just accepting [%s]" % " ,".join(config["Problem"]))
+                sys.exit("Invalid problem defined! Just accepting [%s]" % ", ".join(config["Problem"]))
             self.__problem = options["Problem"]
         else:
             # Check if it's a classification or regression problem
@@ -33,7 +33,7 @@ class UnicornML:
                         "Invalid algorithm %s for a %s problem. Algorithms available:[%s]" % (
                             alg,
                             self.__problem,
-                            " ,".join(config["Problem"][self.__problem]["algorithms"])
+                            ", ".join(config["Problem"][self.__problem]["algorithms"])
                         )
                     )
             self.__algorithms = options["algorithms"]
@@ -52,7 +52,7 @@ class UnicornML:
                         "Invalid metric %s for a %s problem. Metrics available:[%s]" % (
                             metric,
                             self.__problem,
-                            " ,".join(config["Problem"][self.__problem]["metrics"])
+                            ", ".join(config["Problem"][self.__problem]["metrics"])
                         )
                     )
             self.__metrics = options["metrics"]
@@ -64,10 +64,10 @@ class UnicornML:
         self.y_train = y_train
         self.y_test  = y_test
 
-        print("It's a %s problem\nSelected algorithms: [%s]\nSelected metrics: [%s]" % (
+        print("\nIt's a %s problem\nSelected algorithms: [%s]\nSelected metrics: [%s]\n" % (
             self.__problem,
-            " ,".join(self.__algorithms),
-            " ,".join(self.__metrics)
+            ", ".join(self.__algorithms),
+            ", ".join(self.__metrics)
         ))
 
     def Rainbow(self):
