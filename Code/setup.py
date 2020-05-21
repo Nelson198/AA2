@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name = "unicornml",
-      version = "0.1",
+      version = "1.0",
       description = "An AutoML framework",
       # url = "http://github.com/storborg/funniest",
       author = "João Imperadeiro, José Boticas, Nelson Teixeira, Rui Meira",

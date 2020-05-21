@@ -69,5 +69,6 @@ class Model():
     def __train_without_optimizer(self, estimator):
         return estimator.fit(self.X_train, self.y_train)
 
+    # TODO : Acabar implementação
     def __bayes(self, estimator, params, sqrt):
         pass
