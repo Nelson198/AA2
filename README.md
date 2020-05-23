@@ -1,6 +1,9 @@
 # Mestrado em Engenharia Informática - UMinho
+
 ## Aprendizagem Automática 2
 ## Trabalho Prático - 2019/2020
+
+![Logo](https://github.com/Nelson198/AA2/blob/master/Logo.png)
 
 ### Contribuidores
 
@@ -87,6 +90,7 @@ python3 setup.py install --user
 ```
 
 ### Testes
+
 ```bash
 cd Code/
 python3 setup.py test
