@@ -65,20 +65,29 @@ Na eventualidade da plataforma estar terminada e ainda existir tempo para tal, s
     │  │  │  └─ __init__.py
     │  │  ├─ model
     │  │  │  └─ __init__.py
+    │  │  ├─ neuralnetwork
+    │  │  │  └─ __init__.py
     │  │  ├─ regression
     │  │  │  └─ __init__.py
     │  │  └─ __init__.py
     │  ├─ options.yaml
     │  └─ setup.py
-    ├─ Proposta
-    │  ├─ Proposta.pdf
-    │  └─ Proposta.tex
-    ├─ Relatório
-    │  ├─ Relatório.pdf
-    │  └─ Relatório.tex
+    ├─ Presentation
+    │  ├─ Diagram.png
+    │  ├─ Presentation.md
+    │  └─ Presentation.pptx
+    ├─ Proposal
+    │  ├─ Proposal.pdf
+    │  └─ Proposal.tex
+    ├─ Report
+    │  ├─ Image
+    │  │  └─ EEUM_logo.png
+    │  ├─ Report.pdf
+    │  └─ Report.tex
     ├─ .gitignore
-    ├─ Enunciado.pdf
     ├─ LICENSE
+    ├─ Logo.png
+    ├─ Project.pdf
     └─ README.md
 
 ---
