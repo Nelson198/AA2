@@ -11,8 +11,6 @@ from sklearn.ensemble        import RandomForestClassifier
 
 from unicornml.model         import Model
 
-# import kerastuner
-
 class Classification:
     __methods : dict
     __metrics : dict
@@ -149,14 +147,14 @@ class Classification:
         }
 
         self.Gaussian()
-        #self.Multinomial(params) # rever dados de input
+        # self.Multinomial(params) # rever dados de input
 
         params.get("alpha")[-1] = 1.0e-10
         self.Bernoulli(params)
 
         params.get("alpha")[-1] = 0.0
         params.update({ "norm" : [True, False] })
-        #self.Complement(params) # rever dados de input
+        # self.Complement(params) # rever dados de input
     
     def __decisonTreeClassification(self):
         params = {
