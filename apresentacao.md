@@ -1,0 +1,21 @@
+# Apresentação
+
+- Introdução à ideia;
+  - Falar de como surgiu a ideia;
+  - Introduzir o problema e a proposta;
+  - O que é AutoML?
+  - Bibliotecas já existentes
+- Falar da estrutura
+  - Problemas que encontramos
+  - Porque estruturamos assim a framework
+- O que já desenvolvemos
+  - Ferramentas utilizadas
+  - Processo de descoberta, estudo e escolhas
+  - Algoritmos já implementados
+  - Métricas usadas
+  - Randomized Search
+- O que falta desenvolver
+  - Mais métricas
+  - Redes neuronais
+  - Otimização bayesiana
+  - Otimizações e tratamento de bugs

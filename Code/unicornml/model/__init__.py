@@ -5,13 +5,13 @@ from sklearn.model_selection import RandomizedSearchCV
 class Model():
     def __init__(
         self, X_train, X_test, y_train, y_test,
-        metric, optmization_method = "randomizedSearch",
+        metric, optimization_method = "randomizedSearch",
         save_results = True
     ):
-        if optmization_method not in ["randomizedSearch", "Bayes"]:
-            sys.exit("Invalid optmization method")
+        if optimization_method not in ["randomizedSearch", "Bayes"]:
+            sys.exit("Invalid optimization method")
             
-        self.method = optmization_method
+        self.method = optimization_method
         self.save_results = save_results
         self.metric = metric
         self.results = []
@@ -19,6 +19,11 @@ class Model():
         self.X_test = X_test
         self.y_train = y_train
         self.y_test = y_test
+
+    # TODO: Parametrizar o cálculo do melhor modelo segundo as métricas de cada problema
+    def getBestModel(self):
+        model = sorted(self.results, key = lambda x : x.score, reverse = True)[0]
+        return "Best model: {0}\n Score: {1}".format(model.name, model.score)
 
     def param_tunning_method(self, estimator, desc, params = {}, sqrt = False):
         trained_model = None
