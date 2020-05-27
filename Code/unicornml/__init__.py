@@ -2,11 +2,13 @@ import sys
 import yaml
 from .regression     import Regression
 from .classification import Classification
+from .model import Model
 
 class UnicornML:
     __problem    : str
     __algorithms : list
     __metrics    : list
+    model        : object
 
     def __init__(self, X_train, X_test, y_train, y_test, options = {}):
         config = None
@@ -71,14 +73,27 @@ class UnicornML:
         ))
 
     def Rainbow(self):
+        for algorithm in self.__get_model_algorithms():
+            sqrt = True if "sqrt" in algorithm.keys() else False
+            self.model.param_tunning_method(
+                algorithm["estimator"],
+                algorithm["desc"],
+                algorithm["params"],
+                sqrt
+            )
+
+    def __get_model_algorithms(self):
+        algorithms = None
         if self.__problem == "Classification":
             classificator = Classification(
-                self.X_train, self.X_test,
-                self.y_train, self.y_test,
                 self.__algorithms,
                 self.__metrics
             )
-            classificator.Rainbow()
+            self.model = Model(
+                self.X_train, self.X_test, self.y_train, self.y_test,
+                classificator.get_metrics()
+            )
+            algorithms = classificator.get_algorithms()
         else:
             regressor = Regression(
                 self.X_train, self.X_test,
@@ -86,7 +101,13 @@ class UnicornML:
                 self.__algorithms,
                 self.__metrics
             )
-            regressor.Rainbow()
+            self.model = Model(
+                self.X_train, self.X_test, self.y_train, self.y_test,
+                regressor.get_metrics()
+            )
+            algorithms = regressor.get_algorithms()
+
+        return algorithms
 
     def __detect_problem(self, y):
         # Just ints -> Classification
