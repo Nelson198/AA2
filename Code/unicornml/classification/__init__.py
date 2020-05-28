@@ -9,23 +9,24 @@ from sklearn.naive_bayes     import GaussianNB, MultinomialNB, BernoulliNB, Comp
 from sklearn.tree            import DecisionTreeClassifier
 from sklearn.ensemble        import RandomForestClassifier
 
-from unicornml.model         import Model
-
 class Classification:
     __methods : dict
     __metrics : dict
 
-    def __init__(self, X_train, X_test, y_train, y_test, algorithms = [], metrics = []):
+    def __init__(self, algorithms = [], metrics = []):
         self.__get_methods(algorithms)
         self.__get_metrics(metrics)
-        # TODO : Choose the apropriate metric
-        self.big_model = Model(
-            X_train, X_test, y_train, y_test, (lambda x,y : accuracy_score(x, y))
-        )
 
-    def Rainbow(self):
-        for method in self.__methods:
-            self.__methods[method]()
+    def get_algorithms(self):
+        list = []
+        for alg in self.__methods:
+            list.append(self.__methods[alg]())
+        return list
+
+    def get_metrics(self):
+        return (lambda x, y: accuracy_score(x, y))
+#        return self.__metrics
+
 
     def __get_methods(self, algorithms):
         available = {
@@ -33,7 +34,7 @@ class Classification:
             "knn"           : self.__KNN,
             "svm"           : self.__SVM,
             "kernelSVM"     : self.__kernelSVM,
-            "naiveBayes"    : self.__naiveBayes,
+#            "naiveBayes"    : self.__naiveBayes,
             "decisionTree"  : self.__decisonTreeClassification,
             "randomForest"  : self.__randomForestClassification
             # "neuralNetwork" : self.__neuralNetwork
@@ -58,129 +59,109 @@ class Classification:
                     del self.__methods[metric]
 
     def __logisticRegression(self):
-        params = {
-            "solver" : ["newton-cg", "sag", "lbfgs"],
-            "C"      : list(np.arange(1, 5))
+        return {
+            "params": {
+                "solver" : ["newton-cg", "sag", "lbfgs"],
+                "C"      : list(np.arange(1, 5))
+            },
+            "estimator": LogisticRegression(),
+            "desc":"Logistic Regression with newton-cg, sag and lbfgs"
         }
-        self.big_model.param_tunning_method(
-            LogisticRegression(),
-            "Logistic Regression with newton-cg, sag and lbfgs",
-            params
-        )
 
-        params = {
-            "solver"   : ["saga"],
-            "C"        : list(np.arange(1,5)),
-            "penalty"  : ["elasticnet"],
-            "l1_ratio" : list(np.arange(0, 1.1, 0.2))
-        }
-        self.big_model.param_tunning_method(
-            LogisticRegression(),
-            "Logistic Regression with saga solver",
-            params
-        )
+        #list.append({
+        #    "params": {
+        #        "solver"   : ["saga"],
+        #        "C"        : list(np.arange(1,5)),
+        #        "penalty"  : ["elasticnet"],
+        #        "l1_ratio" : list(np.arange(0, 1.1, 0.2))
+        #    },
+        #    "estimator":            LogisticRegression(),
+        #    "desc":   "Logistic Regression with saga solver"
+        #})
 
-        params = {
-            "solver"  : ["saga", "newton-cg", "sag", "lbfgs"],
-            "penalty" : ["none"]
-        }
-        self.big_model.param_tunning_method(
-            LogisticRegression(),
-            "Logistic Regression with no penalty",
-            params
-        )
+        #list.append({
+        #    "params": {
+        #        "solver"  : ["saga", "newton-cg", "sag", "lbfgs"],
+        #        "penalty" : ["none"]
+        #    },
+        #    "estimator":    LogisticRegression(),
+        #    "desc":    "Logistic Regression with no penalty",
+        #})
+        #return list
 
     def __KNN(self):
-        params = {
-            "n_neighbors" : list(np.arange(1, 21)), # default = 5
-            "leaf_size"   : list(np.arange(10, 51, 10)), # default = 30
-            "p"           : [1, 2], # default = 2
-            "weights"     : ["uniform", "distance"], # default = "uniform"
-            "algorithm"   : ["auto"]
+        return {
+            "params": {
+                "n_neighbors": list(np.arange(1, 21)),  # default = 5
+                "leaf_size": list(np.arange(10, 51, 10)),  # default = 30
+                "p": [1, 2],  # default = 2
+                "weights": ["uniform", "distance"],  # default = "uniform"
+                "algorithm": ["auto"]
+            },
+            "estimator": KNeighborsClassifier(),
+            "desc":"K-Nearest Neighbors (KNN)"
         }
-        self.big_model.param_tunning_method(
-            KNeighborsClassifier(),
-            "K-Nearest Neighbors (KNN)",
-            params
-        )
 
     def __SVM(self):
-        params = {
-            "dual"    : [False],
-            "penalty" : ["l1", "l2"],
-            "C"       : list(np.arange(1, 5))
+        return {
+            "params": {
+                "dual"    : [False],
+                "penalty" : ["l1", "l2"],
+                "C"       : list(np.arange(1, 5))
+            },
+            "estimator":LinearSVC(),
+            "desc":"Support Vector Machine (SVM)"
         }
-        self.big_model.param_tunning_method(
-            LinearSVC(),
-            "Support Vector Machine (SVM)",
-            params
-        )
 
     def __kernelSVM(self):
-        params = {
-            "kernel" : ["rbf", "sigmoid"],
-            "gamma"  : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
-            "C"      : list(np.arange(1, 5))
-        }
-        self.big_model.param_tunning_method(
-            SVC(),
-            "kernel Support Vector Machine (kernels rbf and sigmoid)",
-            params
-        )
-
-        params = {
-            "kernel" : ["poly"],
-            "gamma"  : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
-            "degree" : list(np.arange(2, 5)),
-            "C"      : list(np.arange(1, 5))
-        }
-        self.big_model.param_tunning_method(
-            SVC(),
-            "kernel Support Vector Machine (kernel poly)",
-            params
-        )
-
-    def __naiveBayes(self):
-        params = {
-            "alpha"     : [1.0, 0.5, 0.0],
-            "fit_prior" : [True, False]
+        return {
+            "params": {
+                "kernel" : ["rbf", "sigmoid"],
+                "gamma"  : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
+                "C"      : list(np.arange(1, 5))
+            },
+            "estimator":SVC(),
+            "desc": "kernel Support Vector Machine (kernels rbf and sigmoid)"
         }
 
-        self.Gaussian()
-        # self.Multinomial(params) # rever dados de input
 
-        params.get("alpha")[-1] = 1.0e-10
-        self.Bernoulli(params)
+    #def __naiveBayes(self):
+    #    params = {
+    #        "alpha"     : [1.0, 0.5, 0.0],
+    #        "fit_prior" : [True, False]
+    #    }
 
-        params.get("alpha")[-1] = 0.0
-        params.update({ "norm" : [True, False] })
-        # self.Complement(params) # rever dados de input
+    #    self.Gaussian()
+    #    # self.Multinomial(params) # rever dados de input
+
+    #    params.get("alpha")[-1] = 1.0e-10
+    #    self.Bernoulli(params)
+
+    #    params.get("alpha")[-1] = 0.0
+    #    params.update({ "norm" : [True, False] })
+    #    # self.Complement(params) # rever dados de input
     
     def __decisonTreeClassification(self):
-        params = {
-            "criterion"    : ["gini", "entropy"],
-            "max_features" : [None, "sqrt", "log2"]
+        return {
+            "params": {
+                "criterion"    : ["gini", "entropy"],
+                "max_features" : [None, "sqrt", "log2"]
+            },
+            "estimator":DecisionTreeClassifier(),
+            "desc":    "Decison Tree Classification"
         }
-
-        self.big_model.param_tunning_method(
-            DecisionTreeClassifier(),
-            "Decison Tree Classification",
-            params
-        )
 
     def __randomForestClassification(self):
-        params = {
-            "criterion"    : ["gini", "entropy"],
-            "max_features" : ["sqrt", None, "log2"],
-            "n_estimators" : list(np.arange(50, 751, 10))
+        return {
+            "params": {
+                "criterion"    : ["gini", "entropy"],
+                "max_features" : ["sqrt", None, "log2"],
+                "n_estimators" : list(np.arange(50, 751, 10))
+            },
+            "estimator":RandomForestClassifier(),
+            "desc":   "Random Forest Classification",
+            "sqrt": True
         }
-
-        self.big_model.param_tunning_method(
-            RandomForestClassifier(),
-            "Random Forest Classification",
-            params,
-            True
-        )
 
     def __neuralNetwork(self):
         print("Training with Neural Network")
@@ -188,34 +169,34 @@ class Classification:
 
     ################### Naive Bayes Classifiers Functions ###################
     
-    def Gaussian(self):
-        params = {
-            "var_smoothing" : [1.e-09, 1.e-08, 1.e-07, 1.e-06]
-        }
+    #def Gaussian(self):
+    #    params = {
+    #        "var_smoothing" : [1.e-09, 1.e-08, 1.e-07, 1.e-06]
+    #    }
 
-        return self.big_model.param_tunning_method(
-            GaussianNB(),
-            "Gaussian Naive Bayes",
-            params
-        )
+    #    return self.big_model.param_tunning_method(
+    #        GaussianNB(),
+    #        "Gaussian Naive Bayes",
+    #        params
+    #    )
 
-    def Multinomial(self, params):
-        return self.big_model.param_tunning_method(
-            MultinomialNB(),
-            "Multinomial Naive Bayes",
-            params
-        )
+    #def Multinomial(self, params):
+    #    return self.big_model.param_tunning_method(
+    #        MultinomialNB(),
+    #        "Multinomial Naive Bayes",
+    #        params
+    #    )
 
-    def Complement(self, params):
-        return self.big_model.param_tunning_method(
-            ComplementNB(),
-            "Complement Naive Bayes",
-            params
-        )
+    #def Complement(self, params):
+    #    return self.big_model.param_tunning_method(
+    #        ComplementNB(),
+    #        "Complement Naive Bayes",
+    #        params
+    #    )
 
-    def Bernoulli(self, params):
-        return self.big_model.param_tunning_method(
-            BernoulliNB(),
-            "Bernoulli Naive Bayes",
-            params
-        )
+    #def Bernoulli(self, params):
+    #    return self.big_model.param_tunning_method(
+    #        BernoulliNB(),
+    #        "Bernoulli Naive Bayes",
+    #        params
+    #    )

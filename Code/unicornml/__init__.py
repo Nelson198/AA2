@@ -1,27 +1,49 @@
 import sys
 import yaml
+import pandas as pd
+import numpy as np
 from .regression     import Regression
 from .classification import Classification
 from .model import Model
+from .preprocessing import Preprocessing, file_split_X_y
 
 class UnicornML:
     __problem    : str
     __algorithms : list
     __metrics    : list
     model        : object
+    X_train      : np.ndarray
+    X_test       : np.ndarray
+    y_train      : np.ndarray
+    y_test       : np.ndarray
 
-    def __init__(self, X_train, X_test, y_train, y_test, options = {}):
+    def __init__(self, input = {}, options = {}):
+        if not bool(input):
+            sys.exit("Undefined input data")
+
+        X, y = None, None
+        if "file" in input:
+            data = pd.read_csv(input["file"])
+            label_index = input["label_col"] if "label_col" in input else -1
+            X, y = file_split_X_y(data, label_index)
+        elif "X" in input and "y" in input:
+            X, y = input["X"], input["Y"]
+        else:
+            sys.exit("Invalid options for input")
+
+        self.X_train, self.X_test, self.y_train, self.y_test, self.__problem = Preprocessing(X,y)
+
         config = None
         with open("options.yaml") as file:
             config = yaml.full_load(file)
 
-        if "Problem" in options:
-            if options["Problem"] not in config["Problem"]:
-                sys.exit("Invalid problem defined! Just accepting [%s]" % ", ".join(config["Problem"]))
-            self.__problem = options["Problem"]
-        else:
-            # Check if it's a classification or regression problem
-            self.__problem = self.__detect_problem(y_train.tolist())
+        ##if "Problem" in options:
+        ##    if options["Problem"] not in config["Problem"]:
+        ##        sys.exit("Invalid problem defined! Just accepting [%s]" % ", ".join(config["Problem"]))
+        ##    self.__problem = options["Problem"]
+        ##else:
+        ##    # Check if it's a classification or regression problem
+        ##    self.__problem = self.__detect_problem(y_train.tolist())
 
         if "algorithms" in options:
             if not isinstance(options["algorithms"], list):
@@ -61,10 +83,6 @@ class UnicornML:
         else:
             self.__metrics = config["Problem"][self.__problem]["metrics"]
 
-        self.X_train = X_train
-        self.X_test  = X_test
-        self.y_train = y_train
-        self.y_test  = y_test
 
         print("\nIt's a %s problem\nSelected algorithms: [%s]\nSelected metrics: [%s]\n" % (
             self.__problem,
@@ -96,8 +114,6 @@ class UnicornML:
             algorithms = classificator.get_algorithms()
         else:
             regressor = Regression(
-                self.X_train, self.X_test,
-                self.y_train, self.y_test,
                 self.__algorithms,
                 self.__metrics
             )
@@ -108,6 +124,18 @@ class UnicornML:
             algorithms = regressor.get_algorithms()
 
         return algorithms
+
+    # TODO: Parametrizar o cálculo do melhor modelo segundo as métricas de cada problema
+    def get_best_model(self):
+        model = sorted(self.model.results, key=lambda x: x["score"], reverse=True)[0]
+        print( "Best model: {0}\t Score: {1}".format(model["name"], model["score"]))
+        return model["model"]
+
+    def predict(self, X):
+        return self.get_best_model().predict(X)
+
+    def evaluate(self, y, yatt):
+        return self.model.metric(y, yatt)
 
     def __detect_problem(self, y):
         # Just ints -> Classification

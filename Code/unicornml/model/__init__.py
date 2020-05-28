@@ -20,10 +20,6 @@ class Model():
         self.y_train = y_train
         self.y_test = y_test
 
-    # TODO: Parametrizar o cálculo do melhor modelo segundo as métricas de cada problema
-    def getBestModel(self):
-        model = sorted(self.results, key = lambda x : x.score, reverse = True)[0]
-        return "Best model: {0}\n Score: {1}".format(model.name, model.score)
 
     def param_tunning_method(self, estimator, desc, params = {}, sqrt = False):
         trained_model = None
