@@ -4,23 +4,19 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from unicornml import UnicornML
+import numpy as np
 
 class TestClassification(unittest.TestCase):
     def test_classification(self):
-        dataset = pd.read_csv("./data/Social_Network_Ads.csv")
-        X = dataset.iloc[:,2:-1].values
-        y = dataset.iloc[:,-1].values
-
-
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = .2, random_state = 0)
-
-        scaler = StandardScaler()
-        X_train = scaler.fit_transform(X_train)
-        X_test  = scaler.transform(X_test)
-
-        unicorn = UnicornML(X_train, X_test, y_train, y_test)
-
+        unicorn = UnicornML(
+            { "file": "./data/Social_Network_Ads.csv"}
+        )
+        X = np.concatenate((unicorn.X_train, unicorn.X_test), axis=0)
+        y = np.concatenate((unicorn.y_train, unicorn.y_test), axis=0)
         unicorn.Rainbow()
+        yatt = unicorn.predict(X)
+        accuracy = unicorn.evaluate(y, yatt)
+        print("Accuracy %f" % accuracy)
 
 if __name__ == "__main__":
     unittest.main()

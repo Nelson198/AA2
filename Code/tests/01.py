@@ -8,28 +8,15 @@ from sklearn.compose import ColumnTransformer
 
 class TestStringMethods(unittest.TestCase):
     def test_linearRegression(self):
-        data = pd.read_csv("./data/50_Startups.csv")
-        X = data.iloc[:,:-1].values
-        Y = data.iloc[:,-1].values
-
-        ct = ColumnTransformer (
-            [
-                ("encoder", OneHotEncoder(), [3])
-            ],
-            remainder= "passthrough"
-        )
-        X = np.array(ct.fit_transform(X), dtype = np.float)
-        X = X[:,1:]
-
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size = .2, random_state = 0)
-
         unicorn = UnicornML(
-            X_train,
-            X_test,
-            Y_train,
-            Y_test
+            { "file": "./data/50_Startups.csv"}
         )
+        X = np.concatenate((unicorn.X_train, unicorn.X_test), axis=0)
+        y = np.concatenate((unicorn.y_train, unicorn.y_test), axis=0)
         unicorn.Rainbow()
+        yatt = unicorn.predict(X)
+        r2 = unicorn.evaluate(y, yatt)
+        print("R2: %f" % r2)
 
         self.assertEqual("foo".upper(), "FOO")
 
