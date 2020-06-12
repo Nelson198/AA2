@@ -39,7 +39,7 @@ def scaling_normalize_x(X):
 
 
 def one_hot_encoder(col):
-    return OneHotEncoder(sparse=False, drop="first").fit_transform(
+    return OneHotEncoder(sparse=False, drop="first", categories='auto').fit_transform(
         LabelEncoder().fit_transform(col).reshape((-1,1))
     )
 
