@@ -82,10 +82,16 @@ Na eventualidade da plataforma estar terminada e ainda existir tempo para tal, s
     │  ├─ Proposal.pdf
     │  └─ Proposal.tex
     ├─ Report
-    │  ├─ Image
-    │  │  └─ EEUM_logo.png
-    │  ├─ Report.pdf
-    │  └─ Report.tex
+    │  ├─ V1 - Initial
+    │  │  ├─ Image
+    │  │  │  └─ EEUM_logo.png
+    │  │  ├─ Report.pdf
+    │  │  └─ Report.tex
+    │  ├─ V2 - Final
+    │  │  ├─ Image
+    │  │  │  └─ EEUM_logo.png
+    │  │  ├─ Report.pdf
+    │  │  └─ Report.tex
     ├─ .gitignore
     ├─ LICENSE
     ├─ Logo.png
