@@ -65,20 +65,20 @@ class UnicornML:
             self.__algorithms = config["Problem"][self.__problem]["algorithms"]
 
         if "metrics" in options:
-            if not isinstance(options["metrics"], list):
-                sys.exit("The \"metrics\" paramater needs to be a list")
+            if not isinstance(options["metrics"], str):
+                sys.exit("The \"metrics\" paramater needs to be a string (choose only one metric, please)")
 
-            for metric in options["metrics"]:
-                if not isinstance(metric, str):
-                    sys.exit("The metric need to be a string")
-                if metric not in config["Problem"][self.__problem]["metrics"]:
-                    sys.exit(
-                        "Invalid metric %s for a %s problem. Metrics available:[%s]" % (
-                            metric,
-                            self.__problem,
-                            ", ".join(config["Problem"][self.__problem]["metrics"])
-                        )
+            #for metric in options["metrics"]:
+            #    if not isinstance(metric, str):
+            #        sys.exit("The metric need to be a string")
+            if options["metrics"] not in config["Problem"][self.__problem]["metrics"]:
+                sys.exit(
+                    "Invalid metric %s for a %s problem. Metrics available:[%s]" % (
+                        options["metrics"],
+                        self.__problem,
+                        ", ".join(config["Problem"][self.__problem]["metrics"])
                     )
+                )
             self.__metrics = options["metrics"]
         else:
             self.__metrics = config["Problem"][self.__problem]["metrics"]
@@ -109,7 +109,7 @@ class UnicornML:
             )
             self.model = Model(
                 self.X_train, self.X_test, self.y_train, self.y_test,
-                classificator.get_metrics()
+                classificator.get_metrics(), 1
             )
             algorithms = classificator.get_algorithms()
         else:
@@ -119,7 +119,7 @@ class UnicornML:
             )
             self.model = Model(
                 self.X_train, self.X_test, self.y_train, self.y_test,
-                regressor.get_metrics()
+                regressor.get_metrics(), regressor.get_metrics_sign()
             )
             algorithms = regressor.get_algorithms()
 

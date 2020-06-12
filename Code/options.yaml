@@ -11,7 +11,7 @@ Problem:
             - neuralNetwork
         metrics:
             - accuracy
-            - f1
+            - auc
             - precision
             - recall
 
@@ -24,5 +24,6 @@ Problem:
             - randomForest
             - neuralNetwork
         metrics:
-            - r2
             - mse
+            - mae
+            - r2

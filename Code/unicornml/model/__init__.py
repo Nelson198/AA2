@@ -5,7 +5,7 @@ from sklearn.model_selection import RandomizedSearchCV
 class Model():
     def __init__(
         self, X_train, X_test, y_train, y_test,
-        metric, optimization_method = "randomizedSearch",
+        metric, metric_sign, optimization_method = "randomizedSearch",
         save_results = True
     ):
         if optimization_method not in ["randomizedSearch", "Bayes"]:
@@ -14,6 +14,7 @@ class Model():
         self.method = optimization_method
         self.save_results = save_results
         self.metric = metric
+        self.metric_sign = metric_sign
         self.results = []
         self.X_train = X_train
         self.X_test = X_test
@@ -45,7 +46,7 @@ class Model():
                     "score" : metric
                 }
             )
-        elif bool(self.results) and metric > self.results[0]["score"]:
+        elif bool(self.results) and (metric * self.metric_sign) > self.results[0]["score"]:
             self.results[0] = {
                 "name"  : desc,
                 "model" : trained_model,

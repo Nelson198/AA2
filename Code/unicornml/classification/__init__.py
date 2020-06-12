@@ -1,6 +1,6 @@
 import numpy as np
 
-from sklearn.metrics         import accuracy_score, f1_score, precision_score, recall_score
+from sklearn.metrics         import accuracy_score, auc, precision_score, recall_score
 
 from sklearn.linear_model    import LogisticRegression
 from sklearn.neighbors       import KNeighborsClassifier
@@ -11,7 +11,6 @@ from sklearn.ensemble        import RandomForestClassifier
 
 class Classification:
     __methods : dict
-    __metrics : dict
 
     def __init__(self, algorithms = [], metrics = []):
         self.__get_methods(algorithms)
@@ -24,9 +23,7 @@ class Classification:
         return list
 
     def get_metrics(self):
-        return (lambda x, y: accuracy_score(x, y))
-#        return self.__metrics
-
+        return self.__metrics
 
     def __get_methods(self, algorithms):
         available = {
@@ -46,17 +43,14 @@ class Classification:
                     del self.__methods[alg]
 
     def __get_metrics(self, metrics):
-        available = {
-            "accuracy"  : lambda x,y : accuracy_score(x, y),
-            "f1"        : lambda x,y : f1_score(x, y),
-            "precision" : lambda x,y : precision_score(x, y),
-            "recall"    : lambda x,y : recall_score(x, y)
-        }
-        self.__metrics = available.copy()
-        if bool(metrics):
-            for metric in available.keys():
-                if metric not in metrics:
-                    del self.__methods[metric]
+        if metrics == "recall":
+            self.__metrics = lambda x,y : recall_score(x, y)
+        elif metrics == "auc":
+            self.__metrics = lambda x,y : auc(x, y),
+        elif metrics == "precision":
+            self.__metrics = lambda x,y : precision_score(x, y),
+        else: # metrics == "accuracy" (default metric)
+            self.__metrics = lambda x,y : accuracy_score(x,y)
 
     def __logisticRegression(self):
         return {
