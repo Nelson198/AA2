@@ -79,7 +79,7 @@
 
 \titlepic{
 	\vspace{2cm}
-	\includegraphics[scale=0.065]{Image/EEUM_logo.png}
+	\includegraphics[scale=0.065]{Images/EEUM_logo.png}
 }
 
 \begin{document}
@@ -253,6 +253,13 @@ Problem:
 		Numa fase final, é corretamente exibido, para o utilizador, não só o tipo do problema em questão como também os algoritmos e as métricas selecionadas.
 		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervided learning} escolhido, procedendo-se, em última instância, à computação do melhor modelo, ou seja, o que se ajusta de forma adequada ao conjunto de dados em causa.
 
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=1.0\textwidth]{Images/Diagram.png}
+			\caption{Fluxo de execução da \textit{framework}}
+			\label{fig:3}
+		\end{figure}
+
         \subsection{Pré-processamento} \label{subsec:Pre-Processing}
 
 		\subsection{Problema} \label{subsec:Problem}
@@ -319,7 +326,7 @@ Problem:
 				\item \textit{Mean Square Error} (MSE).
 			\end{itemize}
 
-		\subsection{Otimização} \label{subsec:Optimization}
+		\subsection{Otimização de hiperparâmetros} \label{subsec:Optimization}
 		A classe \texttt{Model}, em \texttt{unicornML/model/\_\_init\_\_.py}, é o coração de toda a \textit{framework}.
 		A mesma foi pensada de forma a simplificar o restante código e reduzir duplicações do mesmo. 
 		É, ainda, onde é feita a procura do melhor modelo, segundo as opções escolhidas pelo utilizador.

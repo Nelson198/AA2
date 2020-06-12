@@ -88,7 +88,8 @@ Na eventualidade da plataforma estar terminada e ainda existir tempo para tal, s
     │  │  ├─ Report.pdf
     │  │  └─ Report.tex
     │  ├─ V2 - Final
-    │  │  ├─ Image
+    │  │  ├─ Images
+    │  │  │  ├─ Diagram.png
     │  │  │  └─ EEUM_logo.png
     │  │  ├─ Report.pdf
     │  │  └─ Report.tex
