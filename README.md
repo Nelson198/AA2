@@ -67,6 +67,8 @@ Na eventualidade da plataforma estar terminada e ainda existir tempo para tal, s
     │  │  │  └─ __init__.py
     │  │  ├─ neuralnetwork
     │  │  │  └─ __init__.py
+    │  │  ├─ preprocessing
+    │  │  │  └─ __init__.py
     │  │  ├─ regression
     │  │  │  └─ __init__.py
     │  │  └─ __init__.py
