@@ -1,11 +1,20 @@
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
+from sklearn.decomposition import PCA
 
 def Preprocessing( X, y):
     new_X = scaling_normalize_x(X)
     new_y, problem = scaling_normalize_y(y)#np.array([[]])
+
     X_train, X_test, y_train, y_test = train_test_split(new_X, new_y, test_size=.2, random_state=0)
+
+    # Principal component analysis
+    pca = PCA(0.95)
+    pca.fit(X_train)
+    pca.transform(X_train)
+    pca.transform(X_test)
+
     return X_train, X_test, y_train, y_test, problem
 
 
