@@ -111,6 +111,21 @@
 	% Todos estes detalhes são devidamente explicados nos próximos capítulos.
 }
 
+\chapter{Planificação} \label{ch:Planning}
+\large {
+	Uma vez feita a escolha acerca do tema que este grupo de trabalho se propôs a efetuar, segue-se a planificação do que vai ser realizado.
+	\begin{itemize}
+		\item Criação do \textit{package} \textsl{UnicornML} com diversas classes;
+		\item Implementação de testes unitários para validar as funcionalidades;
+		\item Utilização das bibliotecas \textit{scikit-learn}, \textit{tensorflow} e \textit{kerastuner};
+		\item Código \textit{open source} disponível para todos os utilizadores de \texttt{Python} no \textit{PyPI};
+		\item Desenvolver uma \textit{framework} que seja capaz de encontrar um modelo com uma exatidão alta;
+		\item Implementar uma aplicação simples de utilizar, sendo apenas necessário fornecer os dados;
+		\item Garantir a busca do modelo ótimo para um determinado conjunto de dados de forma rápida, eficiente e robusta;
+		\item Servir esta \textit{framework} como uma excelente base para um projeto de maiores dimensões.
+	\end{itemize}
+}
+
 \chapter{Implementação} \label{ch:Implementation}
 \large {
 	\section{Estrutura} \label{sec:Structure}
@@ -176,22 +191,24 @@
 				child { node {setup.py} };
         \end{tikzpicture}
         \caption{Estrutura da \textit{framework}}
-        \label{fig:2}
+        \label{fig:1}
     \end{figure}
 
-    
-	Existe uma classe principal, com o mesmo nome da \textit{framework}, que permite treinar dados supervisionados para problemas de classificação e regressão.
+	Neste esquema evidenciam-se as pastas \textsl{data} e \textsl{tests}.
+	Na primeira encontram-se disponíveis todos os \textit{datasets} que servem de \textit{input} à \textit{framework} implementada.
+	Na segunda localizam-se os testes unitários associados a cada um dos \textit{datasets} mencionados anteriormente.
+	Para além disso, existe uma classe principal, com o mesmo nome da \textit{framework}, que permite treinar dados supervisionados para problemas de classificação e regressão.
 	Numa fase inicial, é despoletado o mecanismo associado ao pré-processamento dos dados fornecidos, etapa essa que se encontra implementada na respetiva classe.
 	Posteriormente, são processadas todas as informações iniciais, que podem incluir:
 	\begin{itemize}
-		\item \textbf{Problema} - se se trata de um problema de regressão ou classificação; caso não seja fornecida essa informação, é identificado o tipo do problema em questão durante a etapa de pré-processamento;
+		\item \textbf{Problema} - tratamento de um problema de regressão ou classificação; caso não seja fornecida essa informação, é identificado o tipo do problema em questão durante a etapa de pré-processamento;
 		\item \textbf{Algoritmos} - quais os algoritmos, dentro dos disponibilizados, que o utilizador pretende que sejam testados (passado em forma de lista);
 		\item \textbf{Métricas} - métricas a avaliar (passado em forma de lista).
 	\end{itemize}
 
 	Todas estas informações são passadas pelo terminal e são opcionais. Caso não sejam fornecidas, serão testadas todas as hipóteses oferecidas pela \textit{framework}.
     O utilizador pode indicar o problema, os algoritmos e as métricas que pretender, no entanto pode sempre optar por escolher apenas alguns destes campos.
-    A decisão tomada deve, obviamente, ter sempre em conta as limitações e consequências da própria.
+    A decisão tomada deve, obviamente, ter sempre em consideração as limitações e consequências da própria.
     
     Todas as opções indicadas pelo utilizador desta \textit{framework} são verificadas e validadas através de um ficheiro previamente definido, isto é, \textbf{\textsl{options.yaml}}.
 	Neste encontram-se todos os parâmetros suportados pela aplicação desenvolvida, ou seja, o tipo de problemas, os algoritmos e, ainda, as respetivas métricas.
@@ -233,9 +250,10 @@ Problem:
         \label{fig:2}
 	\end{figure}
 
-		Numa fase final, é corretamente exibido, para o utilizador, não só tipo de problema em questão como também os algoritmos e as métricas associados.
+		Numa fase final, é corretamente exibido, para o utilizador, não só o tipo do problema em questão como também os algoritmos e as métricas selecionadas.
+		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervided learning} escolhido, procedendo-se, em última instância, à computação do melhor modelo, ou seja, o que se ajusta de forma adequada ao conjunto de dados em causa.
 
-        \subsection{Pré-processamento} \label{subsec:PreP}
+        \subsection{Pré-processamento} \label{subsec:Pre-Processing}
 
 		\subsection{Problema} \label{subsec:Problem}
 		Os problemas de aprendizagem supervisionada podem ser divididos em dois conjuntos: problemas de regressão e problemas de classificação.
@@ -309,6 +327,8 @@ Problem:
 		
 		Encontramos aqui mais uma opção que será futuramente disponibilizada ao utilizador: a escolha do método de otimização - \textit{grid search} (\textit{randomizedSearch}) ou otimização bayesiana (Bayes).
 		Por defeito, o método de otimização utilizado será \texttt{randomizedSearch}. Futuramente será também possível optar pela otimização bayesiana, embora esta ainda não esteja implementada.
+
+		\subsection{Modelo} \label{subsec:Model}
 }
 
 \chapter{Testes e análise de resultados} \label{ch:Test&Analysis}
