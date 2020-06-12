@@ -58,15 +58,25 @@ class Model():
         if sqrt:
             n_space = np.sqrt(n_space)
 
-        randomized = RandomizedSearchCV(
-            estimator = estimator,
-            param_distributions = params,
-            random_state = 0,
-            cv = 5,  # TODO not sure how we can choose the best
-            # n_jobs = -1, #uses all available processors #TODO this is killing
-            n_iter = n_space  # TODO this should be dynamic, based on the number of features
-        )
-        return randomized.fit(self.X_train, self.y_train)
+        try:
+            randomized = RandomizedSearchCV(
+                estimator = estimator,
+                param_distributions = params,
+                random_state = 0,
+                cv = 5,  # TODO not sure how we can choose the best
+                n_jobs = -1, #uses all available processors
+                n_iter = n_space  # TODO this should be dynamic, based on the number of features
+            )
+            return randomized.fit(self.X_train, self.y_train)
+        except:
+            randomized = RandomizedSearchCV(
+                estimator = estimator,
+                param_distributions = params,
+                random_state = 0,
+                cv = 5,  # TODO not sure how we can choose the best
+                n_iter = n_space  # TODO this should be dynamic, based on the number of features
+            )
+            return randomized.fit(self.X_train, self.y_train)
 
     def __train_without_optimizer(self, estimator):
         return estimator.fit(self.X_train, self.y_train)
