@@ -21,7 +21,6 @@ class Model():
         self.y_train = y_train
         self.y_test = y_test
 
-
     def param_tunning_method(self, estimator, desc, params = {}, sqrt = False):
         trained_model = None
         if not bool(params):
