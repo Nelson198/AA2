@@ -34,7 +34,8 @@ class Classification:
             "knn"           : self.__KNN,
             "svm"           : self.__SVM,
             "kernelSVM"     : self.__kernelSVM,
-#            "naiveBayes"    : self.__naiveBayes,
+            "gaussianNB"    : self.__gaussianNB,
+            "bernoulliNB"   : self.__bernoulliNB,
             "decisionTree"  : self.__decisonTreeClassification,
             "randomForest"  : self.__randomForestClassification
              "neuralNetwork" : self.__neuralNetwork
@@ -114,8 +115,8 @@ class Classification:
                 "penalty" : ["l1", "l2"],
                 "C"       : list(np.arange(1, 5))
             },
-            "estimator":LinearSVC(),
-            "desc":"Support Vector Machine (SVM)"
+            "estimator": LinearSVC(),
+            "desc": "Support Vector Machine (SVM)"
         }
 
     def __kernelSVM(self):
@@ -125,26 +126,30 @@ class Classification:
                 "gamma"  : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
                 "C"      : list(np.arange(1, 5))
             },
-            "estimator":SVC(),
+            "estimator": SVC(),
             "desc": "kernel Support Vector Machine (kernels rbf and sigmoid)"
         }
 
 
-    #def __naiveBayes(self):
-    #    params = {
-    #        "alpha"     : [1.0, 0.5, 0.0],
-    #        "fit_prior" : [True, False]
-    #    }
+    def __gaussianNB(self):
+        return {
+            "params": {
+                "var_smoothing" : [1.e-09, 1.e-08, 1.e-07, 1.e-06]
+            },
+            "estimator": GaussianNB(),
+            "desc": "Gaussian Naive Bayes"
+        }
+        
+    def __bernoulliNB(self):
+        return {
+            "params": {
+                "alpha"     : [1.0, 0.5, 1.0e-10],
+                "fit_prior" : [True, False]
+            },
+            "estimator": BernoulliNB(),
+            "desc": "Bernoulli Naive Bayes"
+        }
 
-    #    self.Gaussian()
-    #    # self.Multinomial(params) # rever dados de input
-
-    #    params.get("alpha")[-1] = 1.0e-10
-    #    self.Bernoulli(params)
-
-    #    params.get("alpha")[-1] = 0.0
-    #    params.update({ "norm" : [True, False] })
-    #    # self.Complement(params) # rever dados de input
     
     def __decisonTreeClassification(self):
         return {
@@ -152,8 +157,8 @@ class Classification:
                 "criterion"    : ["gini", "entropy"],
                 "max_features" : [None, "sqrt", "log2"]
             },
-            "estimator":DecisionTreeClassifier(),
-            "desc":    "Decison Tree Classification"
+            "estimator": DecisionTreeClassifier(),
+            "desc": "Decison Tree Classification"
         }
 
     def __randomForestClassification(self):
@@ -163,43 +168,7 @@ class Classification:
                 "max_features" : ["sqrt", None, "log2"],
                 "n_estimators" : list(np.arange(50, 751, 10))
             },
-            "estimator":RandomForestClassifier(),
-            "desc":   "Random Forest Classification",
+            "estimator": RandomForestClassifier(),
+            "desc": "Random Forest Classification",
             "sqrt": True
         }
-
-
-
-    ################### Naive Bayes Classifiers Functions ###################
-    
-    #def Gaussian(self):
-    #    params = {
-    #        "var_smoothing" : [1.e-09, 1.e-08, 1.e-07, 1.e-06]
-    #    }
-
-    #    return self.big_model.param_tunning_method(
-    #        GaussianNB(),
-    #        "Gaussian Naive Bayes",
-    #        params
-    #    )
-
-    #def Multinomial(self, params):
-    #    return self.big_model.param_tunning_method(
-    #        MultinomialNB(),
-    #        "Multinomial Naive Bayes",
-    #        params
-    #    )
-
-    #def Complement(self, params):
-    #    return self.big_model.param_tunning_method(
-    #        ComplementNB(),
-    #        "Complement Naive Bayes",
-    #        params
-    #    )
-
-    #def Bernoulli(self, params):
-    #    return self.big_model.param_tunning_method(
-    #        BernoulliNB(),
-    #        "Bernoulli Naive Bayes",
-    #        params
-    #    )

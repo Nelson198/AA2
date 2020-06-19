@@ -79,7 +79,7 @@
 
 \titlepic{
 	\vspace{2cm}
-	\includegraphics[scale=0.065]{Image/EEUM_logo.png}
+	\includegraphics[scale=0.065]{Images/EEUM_logo.png}
 }
 
 \begin{document}
@@ -104,11 +104,28 @@
 
 	Por sugestão do docente da UC, foram postos de parte os problemas de \textit{unsupervised learning}, pela sua complexidade e menor atenção dada durante as aulas.
 	Assim, sobram apenas os problemas de \textit{supervised learning} que podem ser divididos em duas categorias: classificação e regressão. Mais à frente serão abordadas as duas categorias em pormenor.
-
+	Para proceder à avaliação dos modelos disponibilizados pela \textit{framework}, adotaram-se algumas métricas para cada um dos tipos de problemas mencionados acima.
+	
+	De salientar que o grupo teve o cuidado de avaliar situações relacionadas com o \textit{underfitting} e \textit{overfitting} dos modelos gerados. Para tal foram utilizadas, na generalidade, metodologias intrínsecas à otimização de hiperparâmetros.
 	% Atualmente, a \textsl{UnicornML} é capaz de proceder à identificação e distinção entre problemas de regressão e de classificação, 
 	% sendo que existe também a possibilidade de o utilizador fornecer essa informação, através de uma \textit{flag}, poupando esse trabalho extra.
 	% Para além disto, o utilizador pode ainda indicar, da mesma forma, quais os algoritmos e métricas que pretende que sejam testados e, ainda, qual das otimizações prefere (\textit{randomized search}, otimização bayesiana ou nenhuma).
 	% Todos estes detalhes são devidamente explicados nos próximos capítulos.
+}
+
+\chapter{Planificação} \label{ch:Planning}
+\large {
+	Uma vez feita a escolha acerca do tema que este grupo de trabalho se propôs a efetuar, segue-se a planificação do que vai ser realizado.
+	\begin{itemize}
+		\item Criação do \textit{package} \textsl{UnicornML} com diversas classes;
+		\item Implementação de testes unitários para validar as funcionalidades;
+		\item Utilização das bibliotecas \textit{scikit-learn}, \textit{tensorflow} e \textit{kerastuner};
+		\item Código \textit{open source} disponível para todos os utilizadores de \texttt{Python} no \textit{PyPI};
+		\item Desenvolver uma \textit{framework} que seja capaz de encontrar um modelo com uma exatidão alta;
+		\item Implementar uma aplicação simples de utilizar, sendo apenas necessário fornecer os dados;
+		\item Garantir a busca do modelo ótimo para um determinado conjunto de dados de forma rápida, eficiente e robusta;
+		\item Servir esta \textit{framework} como uma excelente base para um projeto de maiores dimensões.
+	\end{itemize}
 }
 
 \chapter{Implementação} \label{ch:Implementation}
@@ -176,22 +193,24 @@
 				child { node {setup.py} };
         \end{tikzpicture}
         \caption{Estrutura da \textit{framework}}
-        \label{fig:2}
+        \label{fig:1}
     \end{figure}
 
-    
-	Existe uma classe principal, com o mesmo nome da \textit{framework}, que permite treinar dados supervisionados para problemas de classificação e regressão.
+	Neste esquema evidenciam-se as pastas \textsl{data} e \textsl{tests}.
+	Na primeira encontram-se disponíveis todos os \textit{datasets} que servem de \textit{input} à \textit{framework} implementada.
+	Na segunda localizam-se os testes unitários associados a cada um dos \textit{datasets} mencionados anteriormente.
+	Para além disso, existe uma classe principal, com o mesmo nome da \textit{framework}, que permite treinar dados supervisionados para problemas de classificação e regressão.
 	Numa fase inicial, é despoletado o mecanismo associado ao pré-processamento dos dados fornecidos, etapa essa que se encontra implementada na respetiva classe.
 	Posteriormente, são processadas todas as informações iniciais, que podem incluir:
 	\begin{itemize}
-		\item \textbf{Problema} - se se trata de um problema de regressão ou classificação; caso não seja fornecida essa informação, é identificado o tipo do problema em questão durante a etapa de pré-processamento;
+		\item \textbf{Problema} - tratamento de um problema de regressão ou classificação; caso não seja fornecida essa informação, é identificado o tipo do problema em questão durante a etapa de pré-processamento;
 		\item \textbf{Algoritmos} - quais os algoritmos, dentro dos disponibilizados, que o utilizador pretende que sejam testados (passado em forma de lista);
 		\item \textbf{Métricas} - métricas a avaliar (passado em forma de lista).
 	\end{itemize}
 
 	Todas estas informações são passadas pelo terminal e são opcionais. Caso não sejam fornecidas, serão testadas todas as hipóteses oferecidas pela \textit{framework}.
     O utilizador pode indicar o problema, os algoritmos e as métricas que pretender, no entanto pode sempre optar por escolher apenas alguns destes campos.
-    A decisão tomada deve, obviamente, ter sempre em conta as limitações e consequências da própria.
+    A decisão tomada deve, obviamente, ter sempre em consideração as limitações e consequências da própria.
     
     Todas as opções indicadas pelo utilizador desta \textit{framework} são verificadas e validadas através de um ficheiro previamente definido, isto é, \textbf{\textsl{options.yaml}}.
 	Neste encontram-se todos os parâmetros suportados pela aplicação desenvolvida, ou seja, o tipo de problemas, os algoritmos e, ainda, as respetivas métricas.
@@ -233,9 +252,17 @@ Problem:
         \label{fig:2}
 	\end{figure}
 
-		Numa fase final, é corretamente exibido, para o utilizador, não só tipo de problema em questão como também os algoritmos e as métricas associados.
+		Numa fase final, é corretamente exibido, para o utilizador, não só o tipo do problema em questão como também os algoritmos e as métricas selecionadas.
+		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervided learning} escolhido, procedendo-se, em última instância, à computação do melhor modelo, ou seja, o que se ajusta de forma adequada ao conjunto de dados em causa.
 
-        \subsection{Pré-processamento} \label{subsec:PreP}
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=1.0\textwidth]{Images/Diagram.png}
+			\caption{Fluxo de execução da \textit{framework}}
+			\label{fig:3}
+		\end{figure}
+
+        \subsection{Pré-processamento} \label{subsec:Pre-Processing}
 
 		\subsection{Problema} \label{subsec:Problem}
 		Os problemas de aprendizagem supervisionada podem ser divididos em dois conjuntos: problemas de regressão e problemas de classificação.
@@ -261,23 +288,25 @@ Problem:
 				\item \textit{Support Vector Classifier} (SVC) - uma \textit{Support Vector Machine} (SVM) para classificação;
 				\item \textit{kernel} SVM - uma SVM com uma função \textit{kernel}, que permite a classificação em espaços de dimensão superiores;
 				\item Classificadores Bayesianos - família de classificadores baseados na teoria de Bayes. Foram implementados quatro algoritmos diferentes: \textit{Gaussian}, \textit{Multinomial}, \textit{Bernoulli} e \textit{Complement};
-				\item Árvore de decisão;
+				\item Árvores de decisão;
 				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão.
+				\item Redes neuronais artificiais.
 			\end{itemize}
 
-			Estes algoritmos encontram-se na classe \texttt{Regression}, em \texttt{unicornML/regression/\_\_init\_\_.py}.
-            
+			Estes algoritmos encontram-se na classe \texttt{Regression}, tal como se pode observar na figura \hyperref[fig:1]{1}.
+
 			\subsubsection{Regressão} \label{sssec:Regression1}
-			Os algoritmos disponíveis para problemas de classificação são os seguintes:
+			Os algoritmos disponíveis para problemas de regressão são os seguintes:
 			\begin{itemize}
 				\item Regressão linear;
 				\item Regressão polinomial - os polinómios testados variam entre grau 2 e grau igual ao número de colunas da base de dados;
 				\item \textit{Support Vector Regressor} (SVR) - uma SVM para regressão;
-				\item Árvore de decisão;
-				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão.
+				\item Árvores de decisão;
+				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão;
+				\item Redes neuronais artificiais.
 			\end{itemize}
 
-			Estes algoritmos encontram-se na classe \texttt{Classification}, em \texttt{unicornML/classification/\_\_init\_\_.py}.
+			Estes algoritmos encontram-se na classe \texttt{Classification}, presente na estrutura da \textit{framework} desta aplicação (consultar a figura \hyperref[fig:1]{1}).
 
 		\subsection{Métricas} \label{subsec:Metrics}
 		As métricas permitem avaliar o desempenho de um certo modelo. 
@@ -288,20 +317,21 @@ Problem:
             \subsubsection{Classificação} \label{sssec:Classification2}
 			As métricas disponíveis para problemas de classificação são as seguintes:
 			\begin{itemize}
-				\item \textit{Accuracy};
-				\item \textit{F1};
-				\item \textit{Precision};
-				\item \textit{Recall}.
+				\item \textit{Accuracy} - Percentagem de exemplos corretamente classificados (PECC). Esta métrica foi definida por omissão;
+				\item \textit{Auc};
+				\item \textit{Precision} - Valor preditivo positivo;
+				\item \textit{Recall} - Sensibilidade.
 			\end{itemize}
 
             \subsubsection{Regressão} \label{sssec:Regression2}
 			As métricas disponíveis para problemas de regressão são as seguintes:
 			\begin{itemize}
-				\item \textit{R-squared} ($R^{2}$);
-				\item \textit{Mean Square Error} (MSE).
+				\item \textit{Mean Square Error} (MSE) - métrica definida por omissão;
+				\item \textit{Mean Absolute Error} (MAE);
+				\item \textit{R-squared} ($R^{2}$).
 			\end{itemize}
 
-		\subsection{Otimização} \label{subsec:Optimization}
+		\subsection{Otimização de hiperparâmetros} \label{subsec:Optimization}
 		A classe \texttt{Model}, em \texttt{unicornML/model/\_\_init\_\_.py}, é o coração de toda a \textit{framework}.
 		A mesma foi pensada de forma a simplificar o restante código e reduzir duplicações do mesmo. 
 		É, ainda, onde é feita a procura do melhor modelo, segundo as opções escolhidas pelo utilizador.
@@ -309,6 +339,8 @@ Problem:
 		
 		Encontramos aqui mais uma opção que será futuramente disponibilizada ao utilizador: a escolha do método de otimização - \textit{grid search} (\textit{randomizedSearch}) ou otimização bayesiana (Bayes).
 		Por defeito, o método de otimização utilizado será \texttt{randomizedSearch}. Futuramente será também possível optar pela otimização bayesiana, embora esta ainda não esteja implementada.
+
+		\subsection{Modelo} \label{subsec:Model}
 }
 
 \chapter{Testes e análise de resultados} \label{ch:Test&Analysis}

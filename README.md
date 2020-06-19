@@ -88,7 +88,8 @@ Na eventualidade da plataforma estar terminada e ainda existir tempo para tal, s
     │  │  ├─ Report.pdf
     │  │  └─ Report.tex
     │  ├─ V2 - Final
-    │  │  ├─ Image
+    │  │  ├─ Images
+    │  │  │  ├─ Diagram.png
     │  │  │  └─ EEUM_logo.png
     │  │  ├─ Report.pdf
     │  │  └─ Report.tex
@@ -98,7 +99,12 @@ Na eventualidade da plataforma estar terminada e ainda existir tempo para tal, s
     ├─ Project.pdf
     └─ README.md
 
+Dado que este trabalho diverge de outros propostos pelos alunos desta unidade curricular, os elementos que compõem este grupo optaram pela elaboração de um relatório. Neste evidenciam-se todos os detalhes do trabalho prático, quer a nível computacional quer ao nível da estrutura da *framework* desenvolvida.
+
+O documento em causa pode ser consultado a partir do seguinte [link](https://github.com/Nelson198/AA2/blob/master/Report/V2%20-%20Final/Report.pdf) ou, de forma mais simples, pode ser vizualizado diretamente a partir da diretoria `Report/V2 - Final/Report.pdf`.
+
 ---
+
 
 ### Instalação
 ```bash
