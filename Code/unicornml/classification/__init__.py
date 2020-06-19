@@ -31,7 +31,7 @@ class Classification:
             "knn"           : self.__KNN,
             "svm"           : self.__SVM,
             "kernelSVM"     : self.__kernelSVM,
-#            "naiveBayes"    : self.__naiveBayes,
+            # "naiveBayes"    : self.__naiveBayes,
             "decisionTree"  : self.__decisonTreeClassification,
             "randomForest"  : self.__randomForestClassification
             # "neuralNetwork" : self.__neuralNetwork
@@ -103,8 +103,8 @@ class Classification:
                 "penalty" : ["l1", "l2"],
                 "C"       : list(np.arange(1, 5))
             },
-            "estimator":LinearSVC(),
-            "desc":"Support Vector Machine (SVM)"
+            "estimator": LinearSVC(),
+            "desc": "Support Vector Machine (SVM)"
         }
 
     def __kernelSVM(self):
@@ -114,7 +114,7 @@ class Classification:
                 "gamma"  : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
                 "C"      : list(np.arange(1, 5))
             },
-            "estimator":SVC(),
+            "estimator": SVC(),
             "desc": "kernel Support Vector Machine (kernels rbf and sigmoid)"
         }
 
@@ -141,8 +141,8 @@ class Classification:
                 "criterion"    : ["gini", "entropy"],
                 "max_features" : [None, "sqrt", "log2"]
             },
-            "estimator":DecisionTreeClassifier(),
-            "desc":    "Decison Tree Classification"
+            "estimator": DecisionTreeClassifier(),
+            "desc": "Decison Tree Classification"
         }
 
     def __randomForestClassification(self):
@@ -152,8 +152,8 @@ class Classification:
                 "max_features" : ["sqrt", None, "log2"],
                 "n_estimators" : list(np.arange(50, 751, 10))
             },
-            "estimator":RandomForestClassifier(),
-            "desc":   "Random Forest Classification",
+            "estimator": RandomForestClassifier(),
+            "desc": "Random Forest Classification",
             "sqrt": True
         }
 
