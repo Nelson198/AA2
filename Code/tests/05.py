@@ -11,8 +11,8 @@ class TestStringMethods(unittest.TestCase):
         y = np.concatenate((unicorn.y_train, unicorn.y_test), axis=0)
         unicorn.Rainbow()
         yatt = unicorn.predict(X)
-        r2 = unicorn.evaluate(y, yatt)
-        print("R2: %f" % r2)
+        accuracy = unicorn.evaluate(y, yatt)
+        print("Accuracy: %f" % accuracy)
 
         self.assertEqual("foo".upper(), "FOO")
 

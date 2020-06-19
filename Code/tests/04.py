@@ -11,8 +11,8 @@ class TestWine(unittest.TestCase):
         y = np.concatenate((unicorn.y_train, unicorn.y_test), axis=0)
         unicorn.Rainbow()
         yatt = unicorn.predict(X)
-        r2 = unicorn.evaluate(y, yatt)
-        print("R2: %f" % r2)
+        mse = unicorn.evaluate(y, yatt)
+        print("mse: %f" % mse)
 
         self.assertEqual("foo".upper(), "FOO")
 
