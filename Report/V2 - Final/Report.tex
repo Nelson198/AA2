@@ -104,7 +104,9 @@
 
 	Por sugestão do docente da UC, foram postos de parte os problemas de \textit{unsupervised learning}, pela sua complexidade e menor atenção dada durante as aulas.
 	Assim, sobram apenas os problemas de \textit{supervised learning} que podem ser divididos em duas categorias: classificação e regressão. Mais à frente serão abordadas as duas categorias em pormenor.
-
+	Para proceder à avaliação dos modelos disponibilizados pela \textit{framework}, adotaram-se algumas métricas para cada um dos tipos de problemas mencionados acima.
+	
+	De salientar que o grupo teve o cuidado de avaliar situações relacionadas com o \textit{underfitting} e \textit{overfitting} dos modelos gerados. Para tal foram utilizadas, na generalidade, metodologias intrínsecas à otimização de hiperparâmetros.
 	% Atualmente, a \textsl{UnicornML} é capaz de proceder à identificação e distinção entre problemas de regressão e de classificação, 
 	% sendo que existe também a possibilidade de o utilizador fornecer essa informação, através de uma \textit{flag}, poupando esse trabalho extra.
 	% Para além disto, o utilizador pode ainda indicar, da mesma forma, quais os algoritmos e métricas que pretende que sejam testados e, ainda, qual das otimizações prefere (\textit{randomized search}, otimização bayesiana ou nenhuma).
@@ -288,6 +290,7 @@ Problem:
 				\item Classificadores Bayesianos - família de classificadores baseados na teoria de Bayes. Foram implementados quatro algoritmos diferentes: \textit{Gaussian}, \textit{Multinomial}, \textit{Bernoulli} e \textit{Complement};
 				\item Árvores de decisão;
 				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão.
+				\item Redes neuronais artificiais.
 			\end{itemize}
 
 			Estes algoritmos encontram-se na classe \texttt{Regression}, tal como se pode observar na figura \hyperref[fig:1]{1}.
@@ -298,11 +301,12 @@ Problem:
 				\item Regressão linear;
 				\item Regressão polinomial - os polinómios testados variam entre grau 2 e grau igual ao número de colunas da base de dados;
 				\item \textit{Support Vector Regressor} (SVR) - uma SVM para regressão;
-				\item Árvore de decisão;
-				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão.
+				\item Árvores de decisão;
+				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão;
+				\item Redes neuronais artificiais.
 			\end{itemize}
 
-			Estes algoritmos encontram-se na classe \texttt{Classification} (consultar a figura \hyperref[fig:1]{1}).
+			Estes algoritmos encontram-se na classe \texttt{Classification}, presente na estrutura da \textit{framework} desta aplicação (consultar a figura \hyperref[fig:1]{1}).
 
 		\subsection{Métricas} \label{subsec:Metrics}
 		As métricas permitem avaliar o desempenho de um certo modelo. 
@@ -313,18 +317,18 @@ Problem:
             \subsubsection{Classificação} \label{sssec:Classification2}
 			As métricas disponíveis para problemas de classificação são as seguintes:
 			\begin{itemize}
-				\item \textit{Accuracy} - (PECC) métrica definida por omissão;
-				\item \textit{Precision};
+				\item \textit{Accuracy} - Percentagem de exemplos corretamente classificados (PECC). Esta métrica foi definida por omissão;
 				\item \textit{Auc};
-				\item \textit{Recall}.
+				\item \textit{Precision} - Valor preditivo positivo;
+				\item \textit{Recall} - Sensibilidade.
 			\end{itemize}
 
             \subsubsection{Regressão} \label{sssec:Regression2}
 			As métricas disponíveis para problemas de regressão são as seguintes:
 			\begin{itemize}
 				\item \textit{Mean Square Error} (MSE) - métrica definida por omissão;
-				\item \textit{R-squared} ($R^{2}$);
-				\item \textit{Mean Absolute Error} (MAE).
+				\item \textit{Mean Absolute Error} (MAE);
+				\item \textit{R-squared} ($R^{2}$).
 			\end{itemize}
 
 		\subsection{Otimização de hiperparâmetros} \label{subsec:Optimization}
