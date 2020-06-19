@@ -107,10 +107,10 @@
 	Para proceder à avaliação dos modelos disponibilizados pela \textit{framework}, adotaram-se algumas métricas para cada um dos tipos de problemas mencionados acima.
 	
 	De salientar que o grupo teve o cuidado de avaliar situações relacionadas com o \textit{underfitting} e \textit{overfitting} dos modelos gerados. Para tal foram utilizadas, na generalidade, metodologias intrínsecas à otimização de hiperparâmetros.
-	% Atualmente, a \textsl{UnicornML} é capaz de proceder à identificação e distinção entre problemas de regressão e de classificação, 
-	% sendo que existe também a possibilidade de o utilizador fornecer essa informação, através de uma \textit{flag}, poupando esse trabalho extra.
-	% Para além disto, o utilizador pode ainda indicar, da mesma forma, quais os algoritmos e métricas que pretende que sejam testados e, ainda, qual das otimizações prefere (\textit{randomized search}, otimização bayesiana ou nenhuma).
-	% Todos estes detalhes são devidamente explicados nos próximos capítulos.
+
+	Relativamente à estrutura deste documento, será, de seguida, exibido a planificação deste projeto, definindo alguns dos objetivos a serem alcançados.
+	Posteriormente, parte-se para a implementação da \textit{framework} proposta, evidenciando-se questões relacionadas com o pré-processamento de dados, os problemas e algoritmos suportados pela aplicação e também com as métricas utilizadas no momento da avaliação dos modelos.
+	Por fim, é demonstrada uma análise sobre os vários testes realizados sobre a \textit{framework}, sumariando os objetivos atingidos neste projeto.
 }
 
 \chapter{Planificação} \label{ch:Planning}
@@ -262,7 +262,8 @@ Problem:
 			\label{fig:3}
 		\end{figure}
 
-        \subsection{Pré-processamento} \label{subsec:Pre-Processing}
+		\subsection{Pré-processamento} \label{subsec:Pre-Processing}
+		% ---------> ACABAR <---------
 
 		\subsection{Problema} \label{subsec:Problem}
 		Os problemas de aprendizagem supervisionada podem ser divididos em dois conjuntos: problemas de regressão e problemas de classificação.
@@ -331,16 +332,16 @@ Problem:
 				\item \textit{R-squared} ($R^{2}$).
 			\end{itemize}
 
-		\subsection{Otimização de hiperparâmetros} \label{subsec:Optimization}
+		\subsection{Modelo}
 		A classe \texttt{Model}, em \texttt{unicornML/model/\_\_init\_\_.py}, é o coração de toda a \textit{framework}.
-		A mesma foi pensada de forma a simplificar o restante código e reduzir duplicações do mesmo. 
-		É, ainda, onde é feita a procura do melhor modelo, segundo as opções escolhidas pelo utilizador.
-		Esta classe é utilizada pelas classes \texttt{Regression} e \texttt{Classification}.
-		
-		Encontramos aqui mais uma opção que será futuramente disponibilizada ao utilizador: a escolha do método de otimização - \textit{grid search} (\textit{randomizedSearch}) ou otimização bayesiana (Bayes).
-		Por defeito, o método de otimização utilizado será \texttt{randomizedSearch}. Futuramente será também possível optar pela otimização bayesiana, embora esta ainda não esteja implementada.
+		Esta classe é utilizada tanto pela classe \texttt{Regression} como pela classe \texttt{Classification}.
+		A mesma foi pensada de forma a simplificar o restante código e reduzir duplicações do mesmo.
+		Nesta são incorporados vários tipos de informação, nomeadamente o conjunto de dados (treino e teste), a métrica selecionada para realizar a estimação do erro associada ao modelo escolhido e, ainda, os resultados obtidos após efetuar a otimização dos hiperparâmetros.
 
-		\subsection{Modelo} \label{subsec:Model}
+			\subsubsection{Otimização de hiperparâmetros} \label{sssec:Optimization}
+			Tal como foi referido anteriormente, é nesta classe onde é realizada a procura do melhor modelo, segundo as opções escolhidas pelo utilizador.
+			Para desempenhar a otimização de hiperparâmetros dos modelos considerados, o utilizador desta \textit{framework} de \textit{AutoML} pode indicar qual a otimização que pretende realizar.
+			Nesta tomada de decisão este pode explicitamente indicar que não quer realizar tal tarefa. Por omissão, é realizada uma procura aleatória dos melhores parâmetros (\textit{RandomizedSearch}).
 }
 
 \chapter{Testes e análise de resultados} \label{ch:Test&Analysis}
@@ -359,6 +360,10 @@ Problem:
 \begin{itemize}
     \item Documentação \textit{Python} 3:
 	\par \textit{\url{https://docs.python.org/3/}}
+	\item Documentação \textit{Pandas}:
+	\par \textit{\url{https://pandas.pydata.org/docs/}}
+	\item Documentação \textit{Numpy}:
+	\par \textit{\url{https://numpy.org/doc/}}
 	\item Documentação \textit{scikit-learn} - API:
     \par \textit{\url{https://scikit-learn.org/stable/modules/classes.html}}
 	\item Documentação \textit{scikit-learn} - \textit{supervised learning}:
