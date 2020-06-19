@@ -68,8 +68,9 @@ class Classification:
     def __logisticRegression(self):
         return {
             "params": {
-                "solver" : ["newton-cg", "sag", "lbfgs"],
-                "C"      : list(np.arange(1, 5))
+                "solver"      : ["newton-cg", "sag", "lbfgs"],
+                "C"           : list(np.arange(1, 5)),
+                "multi_class" : ["auto"]
             },
             "estimator": LogisticRegression(),
             "desc":"Logistic Regression with newton-cg, sag and lbfgs"
