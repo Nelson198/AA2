@@ -286,14 +286,14 @@ Problem:
 				\item \textit{Support Vector Classifier} (SVC) - uma \textit{Support Vector Machine} (SVM) para classificação;
 				\item \textit{kernel} SVM - uma SVM com uma função \textit{kernel}, que permite a classificação em espaços de dimensão superiores;
 				\item Classificadores Bayesianos - família de classificadores baseados na teoria de Bayes. Foram implementados quatro algoritmos diferentes: \textit{Gaussian}, \textit{Multinomial}, \textit{Bernoulli} e \textit{Complement};
-				\item Árvore de decisão;
+				\item Árvores de decisão;
 				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão.
 			\end{itemize}
 
-			Estes algoritmos encontram-se na classe \texttt{Regression}, em \texttt{unicornML/regression/\_\_init\_\_.py}.
-            
+			Estes algoritmos encontram-se na classe \texttt{Regression}, tal como se pode observar na figura \hyperref[fig:1]{1}.
+
 			\subsubsection{Regressão} \label{sssec:Regression1}
-			Os algoritmos disponíveis para problemas de classificação são os seguintes:
+			Os algoritmos disponíveis para problemas de regressão são os seguintes:
 			\begin{itemize}
 				\item Regressão linear;
 				\item Regressão polinomial - os polinómios testados variam entre grau 2 e grau igual ao número de colunas da base de dados;
@@ -302,7 +302,7 @@ Problem:
 				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão.
 			\end{itemize}
 
-			Estes algoritmos encontram-se na classe \texttt{Classification}, em \texttt{unicornML/classification/\_\_init\_\_.py}.
+			Estes algoritmos encontram-se na classe \texttt{Classification} (consultar a figura \hyperref[fig:1]{1}).
 
 		\subsection{Métricas} \label{subsec:Metrics}
 		As métricas permitem avaliar o desempenho de um certo modelo. 
@@ -313,17 +313,18 @@ Problem:
             \subsubsection{Classificação} \label{sssec:Classification2}
 			As métricas disponíveis para problemas de classificação são as seguintes:
 			\begin{itemize}
-				\item \textit{Accuracy};
-				\item \textit{F1};
+				\item \textit{Accuracy} - (PECC) métrica definida por omissão;
 				\item \textit{Precision};
+				\item \textit{Auc};
 				\item \textit{Recall}.
 			\end{itemize}
 
             \subsubsection{Regressão} \label{sssec:Regression2}
 			As métricas disponíveis para problemas de regressão são as seguintes:
 			\begin{itemize}
+				\item \textit{Mean Square Error} (MSE) - métrica definida por omissão;
 				\item \textit{R-squared} ($R^{2}$);
-				\item \textit{Mean Square Error} (MSE).
+				\item \textit{Mean Absolute Error} (MAE).
 			\end{itemize}
 
 		\subsection{Otimização de hiperparâmetros} \label{subsec:Optimization}

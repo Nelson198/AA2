@@ -47,7 +47,7 @@ class Regression:
 
     def __get_metrics(self, metrics):
         if metrics == "r2":
-            self.__metrics = lambda x,y : 1 - (1-r2_score(x, y))*(len(y)-1)/(len(y)-x.shape[1]-1)
+            self.__metrics = lambda x,y : 1 - (1 - r2_score(x, y)) * (len(y) - 1) / (len(y) - x.shape[1] - 1)
             self.__metrics_sign = 1
         elif metrics == "mae":
             self.__metrics = lambda x,y : mean_absolute_error(x,y)
