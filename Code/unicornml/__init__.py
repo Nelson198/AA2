@@ -34,6 +34,7 @@ class UnicornML:
             sys.exit("Invalid options for input")
 
         self.X_train, self.X_test, self.y_train, self.y_test, (self.__problem, self.output_classes) = Preprocessing(X,y)
+        self.input_shape = self.X_train.shape
 
         config = None
         with open("options.yaml") as file:

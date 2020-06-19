@@ -7,11 +7,13 @@ from sklearn.preprocessing   import PolynomialFeatures
 from sklearn.svm             import SVR
 from sklearn.tree            import DecisionTreeRegressor
 from sklearn.ensemble        import RandomForestRegressor
+from ..neuralnetwork          import UnicornHyperModel
 
 class Regression:
     __methods : dict
 
-    def __init__(self, algorithms = [], metrics = []):
+    def __init__(self, input_shape, algorithms = [], metrics = []):
+        self.__input_shape = input_shape
         self.__get_methods(algorithms)
         self.__get_metrics(metrics)
 
@@ -33,11 +35,12 @@ class Regression:
 
     def __get_methods(self, algorithms):
         available = {
-            "linear"       : self.__linearRegression,
-    #        "poly"         : self.__polynomialRegression,
-            "svr"          : self.__SVR,
-            "decisionTree" : self.__decisionTreeRegression,
-            "randomForest" : self.__randomForestRegression
+            "linear"        : self.__linearRegression,
+    #        "poly"          : self.__polynomialRegression,
+            "svr"           : self.__SVR,
+            "decisionTree"  : self.__decisionTreeRegression
+            #"randomForest"  : self.__randomForestRegression,
+            #"neuralNetwork" : self.__neuralNetwork
         }
         self.__methods = available.copy()
         if bool(algorithms):
@@ -112,4 +115,11 @@ class Regression:
             "estimator": RandomForestRegressor(),
             "desc": "Random Forest Regression",
             "sqrt": True
+        }
+
+    def __neuralNetwork(self):
+        return {
+            "estimator": UnicornHyperModel(self.__input_shape, 1, "regression"),
+            "desc": "Neural Networks",
+            "params": {}
         }

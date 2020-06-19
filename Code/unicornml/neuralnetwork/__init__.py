@@ -12,15 +12,19 @@ class UnicornHyperModel(HyperModel):
         if problem not in [ "classification", "regression" ]:
             sys.exit("Invalid problem to solve [%s]" % problem)
 
-            if problem == "regression":
-                self.__act_output = "linear"
-                self.__loss = 'mse'
-                self.__metrics = ['mse']
+        if problem == "regression":
+            self.__act_output = "linear"
+            self.__loss = 'mse'
+            self.__metrics = ['mse']
+        else:
+            if self.__output_units > 2:
+                self.__act_output = "softmax"
+                self.__loss = "categorical_crossentropy"
+                self.__metrics = ["accuracy"]
             else:
-                if self.__output_units > 2:
-                    self.__act_output = "softmax"
-                else:
-                    self.__act_output = "sigmoid"
+                self.__act_output = "sigmoid"
+                self.__loss = "binary_crossentropy"
+                self.__metrics = ["accuracy"]
 
     def build(self, hp):
         model = Sequential()
@@ -37,7 +41,7 @@ class UnicornHyperModel(HyperModel):
 
         model.add(
             Dense(
-                units=hp.Int('units', 16, 64, 4, default=16),
+                units=hp.Int('units', 16, 128, 8, default=16),
                 activation=hp.Choice(
                     'dense_activation',
                     values=['relu', 'tanh', 'sigmoid'],

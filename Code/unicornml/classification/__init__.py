@@ -8,7 +8,7 @@ from sklearn.svm             import LinearSVC, SVC
 from sklearn.naive_bayes     import GaussianNB, MultinomialNB, BernoulliNB, ComplementNB
 from sklearn.tree            import DecisionTreeClassifier
 from sklearn.ensemble        import RandomForestClassifier
-from .neuralnetwork          import UnicornHyperModel
+from ..neuralnetwork          import UnicornHyperModel
 
 class Classification:
     __methods : dict
@@ -36,9 +36,9 @@ class Classification:
             "kernelSVM"     : self.__kernelSVM,
             "gaussianNB"    : self.__gaussianNB,
             "bernoulliNB"   : self.__bernoulliNB,
-            "decisionTree"  : self.__decisonTreeClassification,
-            "randomForest"  : self.__randomForestClassification
-             "neuralNetwork" : self.__neuralNetwork
+            "decisionTree"  : self.__decisonTreeClassification
+            #"randomForest"  : self.__randomForestClassification,
+            #"neuralNetwork" : self.__neuralNetwork
         }
         self.__methods = available.copy()
         if bool(algorithms):
@@ -59,7 +59,8 @@ class Classification:
     def __neuralNetwork(self):
         return {
             "estimator": UnicornHyperModel(self.__input_shape, self.__output_units, "classification"),
-            "desc": "Neural Networks"
+            "desc": "Neural Networks",
+            "params": {}
         }
 
 
