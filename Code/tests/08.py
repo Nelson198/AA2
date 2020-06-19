@@ -5,7 +5,7 @@ import numpy as np
 class TestClassification(unittest.TestCase):
     def test_classification(self):
         unicorn = UnicornML(
-            { "file": "./data/Social_Network_Ads.csv"}
+            { "file": "./data/iris.csv"}
         )
         X = np.concatenate((unicorn.X_train, unicorn.X_test), axis=0)
         y = np.concatenate((unicorn.y_train, unicorn.y_test), axis=0)
