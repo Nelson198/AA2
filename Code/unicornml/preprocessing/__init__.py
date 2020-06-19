@@ -22,14 +22,14 @@ def scaling_normalize_y(y):
     new_y = [] # we are considering y with just one dimension (m,1)
     problem = None
     if any([not is_digit(v) for v in y]):
-        problem = "Classification"
-        new_y = LabelEncoder.fit_transform(y.reshape(-1,1))
+        new_y = LabelEncoder().fit_transform(y.reshape(-1,1))
+        problem = ("Classification", len(np.unique(new_y)))
     elif all([isinstance(v,np.int64) or isinstance(v,np.int32) for v in y]):
-        problem = "Classification"
         new_y = y
+        problem = ("Classification", len(np.unique(new_y)))
     else:
         new_y = MinMaxScaler().fit_transform(y.reshape(-1,1))
-        problem = "Regression"
+        problem = ("Regression", -1)
     return np.array(new_y).reshape(-1,), problem
 
 

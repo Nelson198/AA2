@@ -8,14 +8,16 @@ from .model import Model
 from .preprocessing import Preprocessing, file_split_X_y
 
 class UnicornML:
-    __problem    : str
-    __algorithms : list
-    __metrics    : list
-    model        : object
-    X_train      : np.ndarray
-    X_test       : np.ndarray
-    y_train      : np.ndarray
-    y_test       : np.ndarray
+    __problem       : str
+    __algorithms    : list
+    __metrics       : list
+    model           : object
+    output_classes  : int
+    input_shape     : int
+    X_train         : np.ndarray
+    X_test          : np.ndarray
+    y_train         : np.ndarray
+    y_test          : np.ndarray
 
     def __init__(self, input = {}, options = {}):
         if not bool(input):
@@ -31,19 +33,11 @@ class UnicornML:
         else:
             sys.exit("Invalid options for input")
 
-        self.X_train, self.X_test, self.y_train, self.y_test, self.__problem = Preprocessing(X,y)
+        self.X_train, self.X_test, self.y_train, self.y_test, (self.__problem, self.output_classes) = Preprocessing(X,y)
 
         config = None
         with open("options.yaml") as file:
             config = yaml.full_load(file)
-
-        ##if "Problem" in options:
-        ##    if options["Problem"] not in config["Problem"]:
-        ##        sys.exit("Invalid problem defined! Just accepting [%s]" % ", ".join(config["Problem"]))
-        ##    self.__problem = options["Problem"]
-        ##else:
-        ##    # Check if it's a classification or regression problem
-        ##    self.__problem = self.__detect_problem(y_train.tolist())
 
         if "algorithms" in options:
             if not isinstance(options["algorithms"], list):
@@ -104,8 +98,10 @@ class UnicornML:
         algorithms = None
         if self.__problem == "Classification":
             classificator = Classification(
+                self.input_shape,
                 self.__algorithms,
-                self.__metrics
+                self.__metrics,
+                self.output_classes
             )
             self.model = Model(
                 self.X_train, self.X_test, self.y_train, self.y_test,
@@ -114,6 +110,7 @@ class UnicornML:
             algorithms = classificator.get_algorithms()
         else:
             regressor = Regression(
+                self.input_shape,
                 self.__algorithms,
                 self.__metrics
             )
@@ -136,11 +133,3 @@ class UnicornML:
 
     def evaluate(self, y, yatt):
         return self.model.metric(y, yatt)
-
-    def __detect_problem(self, y):
-        # Just ints -> Classification
-        if all([isinstance(v, int) for v in y]):
-            return "Classification"
-        # If they are floats -> Regression
-        else:
-            return "Regression"
