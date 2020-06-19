@@ -8,13 +8,16 @@ from sklearn.svm             import LinearSVC, SVC
 from sklearn.naive_bayes     import GaussianNB, MultinomialNB, BernoulliNB, ComplementNB
 from sklearn.tree            import DecisionTreeClassifier
 from sklearn.ensemble        import RandomForestClassifier
+from .neuralnetwork          import UnicornHyperModel
 
 class Classification:
     __methods : dict
 
-    def __init__(self, algorithms = [], metrics = []):
+    def __init__(self, input_shape, algorithms = [], metrics = [], output_units=2):
         self.__get_methods(algorithms)
         self.__get_metrics(metrics)
+        self.__output_units = output_units
+        self.__input_shape = input_shape
 
     def get_algorithms(self):
         list = []
@@ -34,7 +37,7 @@ class Classification:
 #            "naiveBayes"    : self.__naiveBayes,
             "decisionTree"  : self.__decisonTreeClassification,
             "randomForest"  : self.__randomForestClassification
-            # "neuralNetwork" : self.__neuralNetwork
+             "neuralNetwork" : self.__neuralNetwork
         }
         self.__methods = available.copy()
         if bool(algorithms):
@@ -51,6 +54,14 @@ class Classification:
             self.__metrics = lambda x,y : precision_score(x, y),
         else: # metrics == "accuracy" (default metric)
             self.__metrics = lambda x,y : accuracy_score(x,y)
+
+    def __neuralNetwork(self):
+        return {
+            "estimator": UnicornHyperModel(self.__input_shape, self.__output_units, "classification"),
+            "desc": "Neural Networks"
+        }
+
+
 
     def __logisticRegression(self):
         return {
@@ -157,8 +168,6 @@ class Classification:
             "sqrt": True
         }
 
-    def __neuralNetwork(self):
-        print("Training with Neural Network")
 
 
     ################### Naive Bayes Classifiers Functions ###################
