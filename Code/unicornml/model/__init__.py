@@ -5,7 +5,7 @@ from sklearn.model_selection import RandomizedSearchCV
 class Model():
     def __init__(
         self, X_train, X_test, y_train, y_test,
-        metric, optimization_method = "randomizedSearch",
+        metric, metric_sign, optimization_method = "randomizedSearch",
         save_results = True
     ):
         if optimization_method not in ["randomizedSearch", "Bayes"]:
@@ -14,6 +14,7 @@ class Model():
         self.method = optimization_method
         self.save_results = save_results
         self.metric = metric
+        self.metric_sign = metric_sign
         self.results = []
         self.X_train = X_train
         self.X_test = X_test
@@ -45,7 +46,7 @@ class Model():
                     "score" : metric
                 }
             )
-        elif bool(self.results) and metric > self.results[0]["score"]:
+        elif bool(self.results) and (metric * self.metric_sign) > self.results[0]["score"]:
             self.results[0] = {
                 "name"  : desc,
                 "model" : trained_model,
@@ -57,15 +58,25 @@ class Model():
         if sqrt:
             n_space = np.sqrt(n_space)
 
-        randomized = RandomizedSearchCV(
-            estimator = estimator,
-            param_distributions = params,
-            random_state = 0,
-            cv = 5,  # TODO not sure how we can choose the best
-            # n_jobs = -1, #uses all available processors #TODO this is killing
-            n_iter = n_space  # TODO this should be dynamic, based on the number of features
-        )
-        return randomized.fit(self.X_train, self.y_train)
+        try:
+            randomized = RandomizedSearchCV(
+                estimator = estimator,
+                param_distributions = params,
+                random_state = 0,
+                cv = 5,  # TODO not sure how we can choose the best
+                n_jobs = -1, #uses all available processors
+                n_iter = n_space  # TODO this should be dynamic, based on the number of features
+            )
+            return randomized.fit(self.X_train, self.y_train)
+        except:
+            randomized = RandomizedSearchCV(
+                estimator = estimator,
+                param_distributions = params,
+                random_state = 0,
+                cv = 5,  # TODO not sure how we can choose the best
+                n_iter = n_space  # TODO this should be dynamic, based on the number of features
+            )
+            return randomized.fit(self.X_train, self.y_train)
 
     def __train_without_optimizer(self, estimator):
         return estimator.fit(self.X_train, self.y_train)

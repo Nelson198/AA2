@@ -1,6 +1,6 @@
 import numpy as np
 
-from sklearn.metrics         import r2_score, mean_squared_error
+from sklearn.metrics         import r2_score, mean_squared_error, mean_absolute_error
 
 from sklearn.linear_model    import LinearRegression
 from sklearn.preprocessing   import PolynomialFeatures
@@ -10,7 +10,6 @@ from sklearn.ensemble        import RandomForestRegressor
 
 class Regression:
     __methods : dict
-    __metrics : dict
 
     def __init__(self, algorithms = [], metrics = []):
         self.__get_methods(algorithms)
@@ -23,8 +22,10 @@ class Regression:
         return list
 
     def get_metrics(self):
-        return (lambda x, y: r2_score(x, y))
+        return self.__metrics
 
+    def get_metrics_sign(self):
+        return self.__metrics_sign
 
     def Rainbow(self):
         for method in self.__methods:
@@ -45,15 +46,15 @@ class Regression:
                     del self.__methods[alg]
 
     def __get_metrics(self, metrics):
-        available = {
-            "r2"  : lambda x,y : r2_score(x, y),
-            "mse" : lambda x,y : mean_squared_error(x, y)
-        }
-        self.__metrics = available.copy()
-        if bool(metrics):
-            for metric in available.keys():
-                if metric not in metrics:
-                    del self.__methods[metric]
+        if metrics == "r2":
+            self.__metrics = lambda x,y : 1 - (1 - r2_score(x, y)) * (len(y) - 1) / (len(y) - x.shape[1] - 1)
+            self.__metrics_sign = 1
+        elif metrics == "mae":
+            self.__metrics = lambda x,y : mean_absolute_error(x,y)
+            self.__metrics_sign = -1
+        else: # metrics == "mse" (default metric)
+            self.__metrics = lambda x,y : mean_squared_error(x, y)
+            self.__metrics_sign = -1
 
     def __linearRegression(self):
         return {

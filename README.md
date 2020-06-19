@@ -67,6 +67,8 @@ Na eventualidade da plataforma estar terminada e ainda existir tempo para tal, s
     │  │  │  └─ __init__.py
     │  │  ├─ neuralnetwork
     │  │  │  └─ __init__.py
+    │  │  ├─ preprocessing
+    │  │  │  └─ __init__.py
     │  │  ├─ regression
     │  │  │  └─ __init__.py
     │  │  └─ __init__.py
@@ -80,17 +82,29 @@ Na eventualidade da plataforma estar terminada e ainda existir tempo para tal, s
     │  ├─ Proposal.pdf
     │  └─ Proposal.tex
     ├─ Report
-    │  ├─ Image
-    │  │  └─ EEUM_logo.png
-    │  ├─ Report.pdf
-    │  └─ Report.tex
+    │  ├─ V1 - Initial
+    │  │  ├─ Image
+    │  │  │  └─ EEUM_logo.png
+    │  │  ├─ Report.pdf
+    │  │  └─ Report.tex
+    │  ├─ V2 - Final
+    │  │  ├─ Images
+    │  │  │  ├─ Diagram.png
+    │  │  │  └─ EEUM_logo.png
+    │  │  ├─ Report.pdf
+    │  │  └─ Report.tex
     ├─ .gitignore
     ├─ LICENSE
     ├─ Logo.png
     ├─ Project.pdf
     └─ README.md
 
+Dado que este trabalho diverge de outros propostos pelos alunos desta unidade curricular, os elementos que compõem este grupo optaram pela elaboração de um relatório. Neste evidenciam-se todos os detalhes do trabalho prático, quer a nível computacional quer ao nível da estrutura da *framework* desenvolvida.
+
+O documento em causa pode ser consultado a partir do seguinte [link](https://github.com/Nelson198/AA2/blob/master/Report/V2%20-%20Final/Report.pdf) ou, de forma mais simples, pode ser vizualizado diretamente a partir da diretoria `Report/V2 - Final/Report.pdf`.
+
 ---
+
 
 ### Instalação
 ```bash
