@@ -1,14 +1,14 @@
 import numpy as np
 
-from sklearn.metrics         import accuracy_score, auc, precision_score, recall_score
+from sklearn.metrics      import accuracy_score, auc, precision_score, recall_score
 
-from sklearn.linear_model    import LogisticRegression
-from sklearn.neighbors       import KNeighborsClassifier
-from sklearn.svm             import LinearSVC, SVC
-from sklearn.naive_bayes     import GaussianNB, MultinomialNB, BernoulliNB, ComplementNB
-from sklearn.tree            import DecisionTreeClassifier
-from sklearn.ensemble        import RandomForestClassifier
-from ..neuralnetwork          import UnicornHyperModel
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors    import KNeighborsClassifier
+from sklearn.svm          import LinearSVC, SVC
+from sklearn.naive_bayes  import GaussianNB, MultinomialNB, BernoulliNB, ComplementNB
+from sklearn.tree         import DecisionTreeClassifier
+from sklearn.ensemble     import RandomForestClassifier
+from ..neuralnetwork      import UnicornHyperModel
 
 class Classification:
     __methods : dict

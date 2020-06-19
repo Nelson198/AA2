@@ -1,8 +1,8 @@
 import sys
-from kerastuner import HyperModel
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
-
+from kerastuner              import HyperModel
 
 class UnicornHyperModel(HyperModel):
     def __init__(self, input_shape, output_units, problem):
@@ -65,6 +65,3 @@ class UnicornHyperModel(HyperModel):
         model.compile(
             optimizer='rmsprop', loss=self.__loss, metrics=self.__metrics
         )
-
-
-

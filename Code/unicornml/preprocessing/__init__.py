@@ -1,7 +1,8 @@
 import numpy as np
-from sklearn.preprocessing import OneHotEncoder, LabelEncoder, MinMaxScaler
+
+from sklearn.preprocessing   import OneHotEncoder, LabelEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
-from sklearn.decomposition import PCA
+from sklearn.decomposition   import PCA
 
 def Preprocessing( X, y):
     new_X = scaling_normalize_x(X)
@@ -17,7 +18,6 @@ def Preprocessing( X, y):
 
     return X_train, X_test, y_train, y_test, problem
 
-
 def scaling_normalize_y(y):
     new_y = [] # we are considering y with just one dimension (m,1)
     problem = None
@@ -32,7 +32,6 @@ def scaling_normalize_y(y):
         problem = ("Regression", -1)
     return np.array(new_y).reshape(-1,), problem
 
-
 def scaling_normalize_x(X):
     new_X = []
     for col_index in range(X.shape[1]):
@@ -46,20 +45,16 @@ def scaling_normalize_x(X):
 
     return np.array(new_X).T
 
-
 def one_hot_encoder(col):
     return OneHotEncoder(sparse=False, drop="first", categories='auto').fit_transform(
         LabelEncoder().fit_transform(col).reshape((-1,1))
     )
 
-
 def scaling(col):
     return MinMaxScaler().fit_transform(col)
 
-
 def file_split_X_y(data, label_index):
     return data.iloc[:,:label_index].values, data.iloc[:,label_index].values
-
 
 def is_digit(n):
     try:

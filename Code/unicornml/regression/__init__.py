@@ -1,13 +1,12 @@
 import numpy as np
 
-from sklearn.metrics         import r2_score, mean_squared_error, mean_absolute_error
-
-from sklearn.linear_model    import LinearRegression
-from sklearn.preprocessing   import PolynomialFeatures
-from sklearn.svm             import SVR
-from sklearn.tree            import DecisionTreeRegressor
-from sklearn.ensemble        import RandomForestRegressor
-from ..neuralnetwork          import UnicornHyperModel
+from sklearn.metrics       import r2_score, mean_squared_error, mean_absolute_error
+from sklearn.linear_model  import LinearRegression
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.svm           import SVR
+from sklearn.tree          import DecisionTreeRegressor
+from sklearn.ensemble      import RandomForestRegressor
+from ..neuralnetwork       import UnicornHyperModel
 
 class Regression:
     __methods : dict
@@ -36,10 +35,10 @@ class Regression:
     def __get_methods(self, algorithms):
         available = {
             "linear"        : self.__linearRegression,
-    #        "poly"          : self.__polynomialRegression,
+            #"poly"          : self.__polynomialRegression,
             "svr"           : self.__SVR,
             "decisionTree"  : self.__decisionTreeRegression
-            #"randomForest"  : self.__randomForestRegression,
+            #"randomForest"  : self.__randomForestRegression
             #"neuralNetwork" : self.__neuralNetwork
         }
         self.__methods = available.copy()
@@ -92,7 +91,6 @@ class Regression:
             "desc": "Support Vector Regression",
         }
 
-
     def __decisionTreeRegression(self):
         return {
             "params": {
@@ -103,7 +101,6 @@ class Regression:
             "estimator": DecisionTreeRegressor(),
             "desc": "Decision Tree Regression"
         }
-
 
     def __randomForestRegression(self):
         return {
