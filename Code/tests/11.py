@@ -2,10 +2,11 @@ import unittest
 from unicornml import UnicornML
 import numpy as np
 
+
 class TestClassification(unittest.TestCase):
     def test_classification(self):
         unicorn = UnicornML(
-            { "file": "./data/wheat.csv"}
+            {"file": "./data/wheat.csv"}
         )
         X = np.concatenate((unicorn.X_train, unicorn.X_test), axis=0)
         y = np.concatenate((unicorn.y_train, unicorn.y_test), axis=0)
@@ -15,6 +16,7 @@ class TestClassification(unittest.TestCase):
         print("Accuracy %f" % accuracy)
 
         self.assertEqual("foo".upper(), "FOO")
+
 
 if __name__ == "__main__":
     unittest.main()
