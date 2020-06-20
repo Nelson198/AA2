@@ -6,7 +6,7 @@ from sklearn.decomposition   import PCA
 
 def Preprocessing( X, y):
     new_X = scaling_normalize_x(X)
-    new_y, problem = scaling_normalize_y(y)#np.array([[]])
+    new_y, problem = scaling_normalize_y(y) # np.array([[]])
 
     X_train, X_test, y_train, y_test = train_test_split(new_X, new_y, test_size=.2, random_state=0)
 
@@ -46,9 +46,10 @@ def scaling_normalize_x(X):
     return np.array(new_X).T
 
 def one_hot_encoder(col):
-    return OneHotEncoder(sparse=False, drop="first", categories='auto').fit_transform(
-        LabelEncoder().fit_transform(col).reshape((-1,1))
-    )
+    return OneHotEncoder(sparse = False, drop = "first", categories = "auto") \
+           .fit_transform(
+               LabelEncoder().fit_transform(col).reshape((-1,1))
+           )
 
 def scaling(col):
     return MinMaxScaler().fit_transform(col)

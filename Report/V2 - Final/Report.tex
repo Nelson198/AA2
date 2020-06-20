@@ -266,7 +266,22 @@ Problem:
 		\end{figure}
 
 		\subsection{Pré-processamento} \label{subsec:Pre-Processing}
-		% ---------> ACABAR <---------
+		Na classe de pré-processamento realizam-se várias tarefas sobre os conjuntos de dados disponibilizados.
+		Exibem-se de seguida as mesmas:
+
+		\begin{itemize}
+			\item Transformação dos dados:
+			\begin{itemize}
+				\item Separação entre os dados relativos às variáveis independentes dos dados associados à variável de interesse ou de saída;
+				\item Resolução de valores omissos: colunas com mais de 40\% de valores nulos são eliminadas. Os valores numéricos são substituídos pela média dos valores da coluna enquanto que os categóricos são alterados para a moda;
+				\item Redimensionamento e normalização: utilização de mecanismos de \textit{scaling} e \textit{label encoding} da biblioteca \texttt{scikit-learn}.
+			\end{itemize}
+			\item Seleção de \textit{features}:
+			\begin{itemize}
+				\item Utilização do \textit{PCA} para obter os principais componentes das \textit{features} com maior correlação e, por isso, com maior relevância.
+			\end{itemize}
+			
+		\end{itemize}
 
 		\subsection{Problema} \label{subsec:Problem}
 		Os problemas de aprendizagem supervisionada podem ser divididos em dois conjuntos: problemas de regressão e problemas de classificação.
@@ -349,7 +364,9 @@ Problem:
 
 \chapter{Testes e análise de resultados} \label{ch:Test&Analysis}
 \large{
-	
+	Para validar todos os aspetos considerados durante a implementação deste trabalho, foram incorporados nesta \textit{framework} vários conjuntos de dados que servem de teste à mesma.
+	Como tal, foram adicionados no total 12 conjuntos de dados distintos entre si, havendo tanto problemas de regressão como de classificação a serem modelados.
+
 }
 
 \chapter{Conclusão} \label{ch:Conclusion}
