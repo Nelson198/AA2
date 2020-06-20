@@ -1,11 +1,12 @@
 import unittest
-from unicornml import UnicornML
 import numpy as np
+from unicornml import UnicornML
+
 
 class TestWine(unittest.TestCase):
     def test_wine(self):
         unicorn = UnicornML(
-            { "file": "./data/swedish.csv"}
+            {"file": "./data/swedish.csv"}
         )
         X = np.concatenate((unicorn.X_train, unicorn.X_test), axis=0)
         y = np.concatenate((unicorn.y_train, unicorn.y_test), axis=0)
@@ -15,6 +16,7 @@ class TestWine(unittest.TestCase):
         print("mse: %f" % mse)
 
         self.assertEqual("foo".upper(), "FOO")
+
 
 if __name__ == "__main__":
     unittest.main()
