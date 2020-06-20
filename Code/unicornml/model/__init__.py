@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
+from kerastuner.tuners import Hyperband
 
 class Model():
     def __init__(
@@ -24,7 +25,10 @@ class Model():
     def param_tunning_method(self, estimator, desc, params = {}, sqrt = False):
         trained_model = None
         if not bool(params):
-            trained_model = self.__train_without_optimizer(estimator)
+            if desc == "Neural Networks":
+                trained_model = self.__train_neural_networks(estimator)
+            else:
+                trained_model = self.__train_without_optimizer(estimator)
         elif self.method == "randomizedSearch":
             trained_model = self.__randomized_search(estimator, params, sqrt)
         else:
@@ -79,6 +83,25 @@ class Model():
 
     def __train_without_optimizer(self, estimator):
         return estimator.fit(self.X_train, self.y_train)
+
+    def __train_neural_networks(self, estimator):
+        if estimator.get_metrics()[0] == 'mse':
+            tuner = Hyperband(
+                        estimator,
+                        max_epochs=20,
+                        objective='mse',
+                        executions_per_trial=1
+                    )
+        else:    
+            tuner = Hyperband(
+                        estimator,
+                        max_epochs=20,
+                        objective='accuracy',
+                        executions_per_trial=1
+                    )
+        tuner.search(self.X_train, self.y_train, epochs=1, validation_split=.1)
+
+        return tuner.get_best_models(num_models=1)[0]
 
     # TODO : Acabar implementação
     def __bayes(self, estimator, params, sqrt):

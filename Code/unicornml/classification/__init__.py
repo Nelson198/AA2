@@ -36,9 +36,9 @@ class Classification:
             "kernelSVM"     : self.__kernelSVM,
             "gaussianNB"    : self.__gaussianNB,
             "bernoulliNB"   : self.__bernoulliNB,
-            "decisionTree"  : self.__decisonTreeClassification
+            "decisionTree"  : self.__decisonTreeClassification,
             #"randomForest"  : self.__randomForestClassification,
-            #"neuralNetwork" : self.__neuralNetwork
+            "neuralNetwork" : self.__neuralNetwork
         }
         self.__methods = available.copy()
         if bool(algorithms):

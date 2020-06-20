@@ -37,9 +37,9 @@ class Regression:
             "linear"        : self.__linearRegression,
             #"poly"          : self.__polynomialRegression,
             "svr"           : self.__SVR,
-            "decisionTree"  : self.__decisionTreeRegression
+            "decisionTree"  : self.__decisionTreeRegression,
             #"randomForest"  : self.__randomForestRegression
-            #"neuralNetwork" : self.__neuralNetwork
+            "neuralNetwork" : self.__neuralNetwork
         }
         self.__methods = available.copy()
         if bool(algorithms):

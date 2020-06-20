@@ -65,3 +65,6 @@ class UnicornHyperModel(HyperModel):
         model.compile(
             optimizer='rmsprop', loss=self.__loss, metrics=self.__metrics
         )
+
+    def get_metrics(self):
+        return self.__metrics
