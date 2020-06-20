@@ -47,10 +47,10 @@ class Regression:
                     del self.__methods[alg]
 
     def __get_metrics(self, metrics):
-        if metrics == "r2":
+        if metrics[0] == "r2":
             self.__metrics = lambda x,y : 1 - (1 - r2_score(x, y)) * (len(y) - 1) / (len(y) - x.shape[1] - 1)
             self.__metrics_sign = 1
-        elif metrics == "mae":
+        elif metrics[0] == "mae":
             self.__metrics = lambda x,y : mean_absolute_error(x,y)
             self.__metrics_sign = -1
         else: # metrics == "mse" (default metric)
@@ -67,10 +67,10 @@ class Regression:
     def __SVR(self):
         return {
             "params": {
-                "kernel"  : ["rbf"], # o melhor kernel é o rbf,
+                "kernel"  : ["rbf"], # melhor kernel
                 "gamma"   : ["scale", "auto"],
                 "C"       : list(range(1, 5)),
-                "epsilon" : list(np.arange(0, .1, .01)) # rever, pode não ser necessário
+                "epsilon" : list(np.arange(0, .1, .01))
             },
             "estimator": SVR(),
             "desc": "Support Vector Regression",

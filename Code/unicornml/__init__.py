@@ -63,9 +63,6 @@ class UnicornML:
             if not isinstance(options["metrics"], str):
                 sys.exit("The \"metrics\" paramater needs to be a string (choose only one metric, please)")
 
-            #for metric in options["metrics"]:
-            #    if not isinstance(metric, str):
-            #        sys.exit("The metric need to be a string")
             if options["metrics"] not in config["Problem"][self.__problem]["metrics"]:
                 sys.exit(
                     "Invalid metric %s for a %s problem. Metrics available:[%s]" % (
@@ -94,6 +91,13 @@ class UnicornML:
                 algorithm["params"],
                 sqrt
             )
+            if 'mse' in self.__metrics and self.get_best_model(False) < 0.01:
+                print("Stopping training early, because a good enough result was achieved")
+                break
+            elif 'accuracy' in self.__metrics and self.get_best_model(False) > 0.95:
+                print("Stopping training early, because a good enough result was achieved")
+                break
+
 
     def __get_model_algorithms(self):
         algorithms = None
@@ -123,14 +127,16 @@ class UnicornML:
 
         return algorithms
 
-    # TODO: Parametrizar o cálculo do melhor modelo segundo as métricas de cada problema
-    def get_best_model(self):
+    def get_best_model(self, verbose=True):
         if self.model.metric_sign == -1:
             model = sorted(self.model.results, key=lambda x: x["score"], reverse=False)[0]
         else:
             model = sorted(self.model.results, key=lambda x: x["score"], reverse=True)[0]
-        print( "Best model: {0}\t Score: {1}".format(model["name"], model["score"]))
-        return model["model"]
+        if verbose:
+            print( "Best model: {0}\t Score: {1}".format(model["name"], model["score"]))
+            return model["model"]
+        else:
+            return model["score"]
 
     def predict(self, X):
         return self.get_best_model().predict(X)

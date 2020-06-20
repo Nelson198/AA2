@@ -1,4 +1,6 @@
 import sys
+import random
+
 import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
 from kerastuner.tuners import Hyperband
@@ -34,10 +36,14 @@ class Model():
             trained_model = self.__bayes(estimator, params, sqrt)
 
         y_pred = trained_model.predict(self.X_test)
-        if desc == "Neural Networks" and estimator.get_output_units() == 2:
-            y_pred[y_pred>.5] = 1
-            y_pred[y_pred<=.5] = 0
-        metric = self.metric(self.y_test, y_pred)  # this metric should have a sign
+        if desc == "Neural Networks":
+            if estimator.get_output_units() == 2:
+                y_pred[y_pred>.5] = 1
+                y_pred[y_pred<=.5] = 0
+            else:
+                y_pred = np.argmax(y_pred, axis=1)
+
+        metric = self.metric(self.y_test, y_pred)
 
         if hasattr(trained_model, "best_params_"):
             print("The best params found: " + str(trained_model.best_params_))
@@ -61,9 +67,9 @@ class Model():
                 estimator = estimator,
                 param_distributions = params,
                 random_state = 0,
-                cv = 5,  # TODO not sure how we can choose the best
+                cv = 5,
                 n_jobs = -1, #uses all available processors
-                n_iter = n_space  # TODO this should be dynamic, based on the number of features
+                n_iter = n_space
             )
             return randomized.fit(self.X_train, self.y_train)
         except:
@@ -71,8 +77,8 @@ class Model():
                 estimator = estimator,
                 param_distributions = params,
                 random_state = 0,
-                cv = 5,  # TODO not sure how we can choose the best
-                n_iter = n_space  # TODO this should be dynamic, based on the number of features
+                cv = 5,
+                n_iter = n_space
             )
             return randomized.fit(self.X_train, self.y_train)
 
@@ -86,7 +92,7 @@ class Model():
                         max_epochs=20,
                         objective='val_mse',
                         executions_per_trial=1,
-                        directory='regression_nn'
+                        directory='regression_nn' + str(random.randint(0,1000))
                     )
         else:    
             tuner = Hyperband(
@@ -94,7 +100,7 @@ class Model():
                         max_epochs=20,
                         objective='val_accuracy',
                         executions_per_trial=1,
-                        directory='classification_nn'
+                        directory='classification_nn' + str(random.randint(0,1000))
                     )
         tuner.search(self.X_train, self.y_train, epochs=1, validation_split=.1)
 

@@ -47,11 +47,11 @@ class Classification:
                     del self.__methods[alg]
 
     def __get_metrics(self, metrics):
-        if metrics == "recall":
+        if metrics[0] == "recall":
             self.__metrics = lambda x,y : recall_score(x, y)
-        elif metrics == "auc":
+        elif metrics[0] == "auc":
             self.__metrics = lambda x,y : auc(x, y),
-        elif metrics == "precision":
+        elif metrics[0] == "precision":
             self.__metrics = lambda x,y : precision_score(x, y),
         else: # metrics == "accuracy" (default metric)
             self.__metrics = lambda x,y : accuracy_score(x,y)
@@ -73,29 +73,8 @@ class Classification:
                 "multi_class" : ["auto"]
             },
             "estimator": LogisticRegression(),
-            "desc":"Logistic Regression with newton-cg, sag and lbfgs"
+            "desc":"Logistic Regression"
         }
-
-        #list.append({
-        #    "params": {
-        #        "solver"   : ["saga"],
-        #        "C"        : list(np.arange(1,5)),
-        #        "penalty"  : ["elasticnet"],
-        #        "l1_ratio" : list(np.arange(0, 1.1, 0.2))
-        #    },
-        #    "estimator":            LogisticRegression(),
-        #    "desc":   "Logistic Regression with saga solver"
-        #})
-
-        #list.append({
-        #    "params": {
-        #        "solver"  : ["saga", "newton-cg", "sag", "lbfgs"],
-        #        "penalty" : ["none"]
-        #    },
-        #    "estimator":    LogisticRegression(),
-        #    "desc":    "Logistic Regression with no penalty",
-        #})
-        #return list
 
     def __KNN(self):
         return {
@@ -125,7 +104,7 @@ class Classification:
         return {
             "params": {
                 "kernel" : ["rbf", "sigmoid"],
-                "gamma"  : ["scale", "auto"], # [0.1, 1, 10, 100], better but takes much much longer
+                "gamma"  : ["scale", "auto"],
                 "C"      : list(np.arange(1, 5))
             },
             "estimator": SVC(),

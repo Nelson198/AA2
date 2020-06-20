@@ -60,7 +60,10 @@ class UnicornHyperModel(HyperModel):
             )
         )
         
-        model.add(Dense(1, activation=self.__act_output))
+        if self.__act_output == "softmax":
+            model.add(Dense(self.__output_units, activation=self.__act_output))
+        else:
+            model.add(Dense(1, activation=self.__act_output))
 
         model.compile(
             optimizer='rmsprop', loss=self.__loss, metrics=self.__metrics
