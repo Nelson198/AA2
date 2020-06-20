@@ -98,17 +98,20 @@
 \chapter{Introdução} \label{ch:Introduction}
 \large {
 	No âmbito da unidade curricular (UC) \textsl{Aprendizagem Automática II} (AA2), foi requerida a realização de um trabalho prático para avaliação.
-	Tal como foi proposto a 23 de abril, o grupo escolheu a opção relativa ao "desenvolvimento de algoritmos/\textit{software} no âmbito da Aprendizagem Máquina".
+	Tal como foi proposto a 23 de abril, o grupo escolheu a opção relativa ao desenvolvimento de algoritmos/\textit{software} no âmbito de aprendizagem máquina.
 	Mais especificamente, optou-se pelo desenvolvimento de uma \textit{framework} de \textsl{AutoML}, com o objetivo de obter o melhor modelo para problemas de \textit{supervised learning} e \textit{unsupervised learning}, 
 	de forma automática e com a menor intervenção possível por parte do programador. À \textit{framework} idealizada foi atribuído o nome \textsl{UnicornML}.
+	
+	Atualmente existem já algumas \textit{frameworks} que abordam este tema de forma mais profunda e complexa.
+	Destas soluções destacam-se a \textit{Lex}, desenvolvida pela \textit{Amazon} e que disponibiliza funcionalidades de \textit{deep learning} relacionadas com texto e voz, o \textit{AutoKeras}, um sistema de \textsl{AutoML} baseado em \texttt{keras} e, ainda, a \textit{Google AutoML}, que vai ao encontro com o que o grupo deste trabalho pretende realizar.
+	Esta última \textit{framework} permite desenvolver modelos para utilizadores que não possuem qualquer conhecimento de \textit{machine learning}. Consequentemente, esta acaba por ser transparente para o cliente na obtenção do resultado obtido.
 
 	Por sugestão do docente da UC, foram postos de parte os problemas de \textit{unsupervised learning}, pela sua complexidade e menor atenção dada durante as aulas.
 	Assim, sobram apenas os problemas de \textit{supervised learning} que podem ser divididos em duas categorias: classificação e regressão. Mais à frente serão abordadas as duas categorias em pormenor.
 	Para proceder à avaliação dos modelos disponibilizados pela \textit{framework}, adotaram-se algumas métricas para cada um dos tipos de problemas mencionados acima.
-	
 	De salientar que o grupo teve o cuidado de avaliar situações relacionadas com o \textit{underfitting} e \textit{overfitting} dos modelos gerados. Para tal foram utilizadas, na generalidade, metodologias intrínsecas à otimização de hiperparâmetros.
 
-	Relativamente à estrutura deste documento, será, de seguida, exibido a planificação deste projeto, definindo alguns dos objetivos a serem alcançados.
+	Relativamente à estrutura deste documento, será, de seguida, exibida a planificação deste projeto, definindo alguns dos objetivos a serem alcançados.
 	Posteriormente, parte-se para a implementação da \textit{framework} proposta, evidenciando-se questões relacionadas com o pré-processamento de dados, os problemas e algoritmos suportados pela aplicação e também com as métricas utilizadas no momento da avaliação dos modelos.
 	Por fim, é demonstrada uma análise sobre os vários testes realizados sobre a \textit{framework}, sumariando os objetivos atingidos neste projeto.
 }
