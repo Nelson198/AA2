@@ -2,28 +2,28 @@ import sys
 import yaml
 import pandas as pd
 import numpy as np
-from .regression     import Regression
+from .regression import Regression
 from .classification import Classification
 from .model import Model
 from .preprocessing import Preprocessing, file_split_X_y
 
-class UnicornML:
-    __problem       : str
-    __algorithms    : list
-    __metrics       : list
-    model           : object
-    output_classes  : int
-    input_shape     : int
-    X_train         : np.ndarray
-    X_test          : np.ndarray
-    y_train         : np.ndarray
-    y_test          : np.ndarray
 
-    def __init__(self, input = {}, options = {}):
+class UnicornML:
+    __problem: str
+    __algorithms: list
+    __metrics: list
+    model: object
+    output_classes: int
+    input_shape: tuple
+    X_train: np.ndarray
+    X_test: np.ndarray
+    y_train: np.ndarray
+    y_test: np.ndarray
+
+    def __init__(self, input={}, options={}):
         if not bool(input):
             sys.exit("Undefined input data")
 
-        X, y = None, None
         if "file" in input:
             data = pd.read_csv(input["file"])
             label_index = input["label_col"] if "label_col" in input else -1
@@ -33,10 +33,9 @@ class UnicornML:
         else:
             sys.exit("Invalid options for input")
 
-        self.X_train, self.X_test, self.y_train, self.y_test, (self.__problem, self.output_classes) = Preprocessing(X,y)
+        self.X_train, self.X_test, self.y_train, self.y_test, (self.__problem, self.output_classes) = Preprocessing(X, y)
         self.input_shape = self.X_train.shape
 
-        config = None
         with open("options.yaml") as file:
             config = yaml.full_load(file)
 
@@ -63,7 +62,7 @@ class UnicornML:
             if not isinstance(options["metrics"], str):
                 sys.exit("The \"metrics\" paramater needs to be a string (choose only one metric, please)")
 
-            #for metric in options["metrics"]:
+            # for metric in options["metrics"]:
             #    if not isinstance(metric, str):
             #        sys.exit("The metric need to be a string")
             if options["metrics"] not in config["Problem"][self.__problem]["metrics"]:
@@ -77,7 +76,6 @@ class UnicornML:
             self.__metrics = options["metrics"]
         else:
             self.__metrics = config["Problem"][self.__problem]["metrics"]
-
 
         print("\nIt's a %s problem\nSelected algorithms: [%s]\nSelected metrics: [%s]\n" % (
             self.__problem,
@@ -96,7 +94,6 @@ class UnicornML:
             )
 
     def __get_model_algorithms(self):
-        algorithms = None
         if self.__problem == "Classification":
             classificator = Classification(
                 self.input_shape,

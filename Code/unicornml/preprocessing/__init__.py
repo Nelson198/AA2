@@ -6,6 +6,8 @@ from sklearn.decomposition import PCA
 
 
 def Preprocessing(X, y):
+    X = removeNAN(X)
+
     new_X = scaling_normalize_x(X)
     new_y, problem = scaling_normalize_y(y)  # np.array([[]])
 
@@ -18,6 +20,15 @@ def Preprocessing(X, y):
     pca.transform(X_test)
 
     return X_train, X_test, y_train, y_test, problem
+
+
+def removeNAN(X):
+    for i in range(X.shape[1]):
+        totalNAN = np.isnan(X[:, i]).sum()
+        if totalNAN / X.shape[0] > 0.4:
+            X[:, i] = np.delete(X, i, axis=1)
+
+    return X
 
 
 def scaling_normalize_y(y):
