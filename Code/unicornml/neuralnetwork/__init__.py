@@ -2,20 +2,22 @@ import sys
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
-from kerastuner              import HyperModel
+from kerastuner import HyperModel
+
 
 class UnicornHyperModel(HyperModel):
     def __init__(self, input_shape, output_units, problem):
+        super().__init__()
         self.__input_shape = input_shape
         self.__output_units = output_units
 
-        if problem not in [ "classification", "regression" ]:
+        if problem not in ["classification", "regression"]:
             sys.exit("Invalid problem to solve [%s]" % problem)
 
         if problem == "regression":
             self.__act_output = "linear"
-            self.__loss = 'mse'
-            self.__metrics = ['mse']
+            self.__loss = "mse"
+            self.__metrics = ["mse"]
         else:
             if self.__output_units > 2:
                 self.__act_output = "softmax"
@@ -30,29 +32,29 @@ class UnicornHyperModel(HyperModel):
         model = Sequential()
         model.add(
             Dense(
-                units=hp.Int('units', 32, 128, 8, default=32),
+                units=hp.Int("units", 32, 128, 8, default=32),
                 activation=hp.Choice(
-                    'dense_activation',
-                    values=['relu', 'tanh', 'sigmoid'],
-                    default='relu'),
+                    "dense_activation",
+                    values=["relu", "tanh", "sigmoid"],
+                    default="relu"),
                 input_shape=(self.__input_shape[1],)
             )
         )
 
         model.add(
             Dense(
-                units=hp.Int('units', 64, 512, 16, default=64),
+                units=hp.Int("units", 64, 512, 16, default=64),
                 activation=hp.Choice(
-                    'dense_activation',
-                    values=['relu', 'tanh', 'sigmoid'],
-                    default='relu')
+                    "dense_activation",
+                    values=["relu", "tanh", "sigmoid"],
+                    default="relu")
             )
         )
 
         model.add(
             Dropout(
                 hp.Float(
-                    'dropout',
+                    "dropout",
                     min_value=0.0,
                     max_value=0.1,
                     default=0.005,
@@ -66,7 +68,7 @@ class UnicornHyperModel(HyperModel):
             model.add(Dense(1, activation=self.__act_output))
 
         model.compile(
-            optimizer='rmsprop', loss=self.__loss, metrics=self.__metrics
+            optimizer="rmsprop", loss=self.__loss, metrics=self.__metrics
         )
 
         return model

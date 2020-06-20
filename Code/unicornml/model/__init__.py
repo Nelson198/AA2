@@ -5,15 +5,17 @@ import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
 from kerastuner.tuners import Hyperband
 
+
 class Model():
     def __init__(
-        self, X_train, X_test, y_train, y_test,
-        metric, metric_sign, optimization_method = "randomizedSearch",
-        save_results = True
+            self, X_train, X_test, y_train, y_test,
+            metric, metric_sign, optimization_method="randomizedSearch",
+            save_results=True
     ):
+        self.save_results = save_results
         if optimization_method not in ["randomizedSearch", "Bayes"]:
             sys.exit("Invalid optimization method")
-            
+
         self.method = optimization_method
         self.metric = metric
         self.metric_sign = metric_sign
@@ -23,7 +25,7 @@ class Model():
         self.y_train = y_train
         self.y_test = y_test
 
-    def param_tunning_method(self, estimator, desc, params = {}, sqrt = False):
+    def param_tunning_method(self, estimator, desc, params={}, sqrt=False):
         trained_model = None
         if not bool(params):
             if desc == "Neural Networks":
@@ -51,13 +53,13 @@ class Model():
         print("[%s] Score: %f\n" % (desc, metric))
         self.results.append(
             {
-                "name"  : desc,
-                "model" : trained_model,
-                "score" : metric
+                "name": desc,
+                "model": trained_model,
+                "score": metric
             }
         )
 
-    def __randomized_search(self, estimator, params, sqrt = False):
+    def __randomized_search(self, estimator, params, sqrt=False):
         n_space = np.prod([len(params[x]) for x in params.keys()])
         if sqrt:
             n_space = np.sqrt(n_space)
@@ -86,7 +88,7 @@ class Model():
         return estimator.fit(self.X_train, self.y_train)
 
     def __train_neural_networks(self, estimator):
-        if estimator.get_metrics()[0] == 'mse':
+        if estimator.get_metrics()[0] == "mse":
             tuner = Hyperband(
                         estimator,
                         max_epochs=20,

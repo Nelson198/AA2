@@ -1,19 +1,20 @@
 import numpy as np
 
-from sklearn.metrics      import accuracy_score, auc, precision_score, recall_score
+from sklearn.metrics import accuracy_score, auc, precision_score, recall_score
 
 from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors    import KNeighborsClassifier
-from sklearn.svm          import LinearSVC, SVC
-from sklearn.naive_bayes  import GaussianNB, MultinomialNB, BernoulliNB, ComplementNB
-from sklearn.tree         import DecisionTreeClassifier
-from sklearn.ensemble     import RandomForestClassifier
-from ..neuralnetwork      import UnicornHyperModel
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.svm import LinearSVC, SVC
+from sklearn.naive_bayes import GaussianNB, BernoulliNB
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from ..neuralnetwork import UnicornHyperModel
+
 
 class Classification:
-    __methods : dict
+    __methods: dict
 
-    def __init__(self, input_shape, algorithms = [], metrics = [], output_units=2):
+    def __init__(self, input_shape, algorithms=[], metrics=[], output_units=2):
         self.__get_methods(algorithms)
         self.__get_metrics(metrics)
         self.__output_units = output_units
@@ -30,15 +31,15 @@ class Classification:
 
     def __get_methods(self, algorithms):
         available = {
-            "logistic"      : self.__logisticRegression,
-            "knn"           : self.__KNN,
-            "svm"           : self.__SVM,
-            "kernelSVM"     : self.__kernelSVM,
-            "gaussianNB"    : self.__gaussianNB,
-            "bernoulliNB"   : self.__bernoulliNB,
-            "decisionTree"  : self.__decisonTreeClassification,
-            "randomForest"  : self.__randomForestClassification,
-            "neuralNetwork" : self.__neuralNetwork
+            "logistic": self.__logisticRegression,
+            "knn": self.__KNN,
+            "svm": self.__SVM,
+            "kernelSVM": self.__kernelSVM,
+            "gaussianNB": self.__gaussianNB,
+            "bernoulliNB": self.__bernoulliNB,
+            "decisionTree": self.__decisonTreeClassification,
+            "randomForest": self.__randomForestClassification,
+            "neuralNetwork": self.__neuralNetwork
         }
         self.__methods = available.copy()
         if bool(algorithms):
@@ -63,14 +64,12 @@ class Classification:
             "params": {}
         }
 
-
-
     def __logisticRegression(self):
         return {
             "params": {
-                "solver"      : ["newton-cg", "sag", "lbfgs"],
-                "C"           : list(np.arange(1, 5)),
-                "multi_class" : ["auto"]
+                "solver": ["newton-cg", "sag", "lbfgs"],
+                "C": list(np.arange(1, 5)),
+                "multi_class": ["auto"]
             },
             "estimator": LogisticRegression(),
             "desc":"Logistic Regression"
@@ -86,15 +85,15 @@ class Classification:
                 "algorithm": ["auto"]
             },
             "estimator": KNeighborsClassifier(),
-            "desc":"K-Nearest Neighbors (KNN)"
+            "desc": "K-Nearest Neighbors (KNN)"
         }
 
     def __SVM(self):
         return {
             "params": {
-                "dual"    : [False],
-                "penalty" : ["l1", "l2"],
-                "C"       : list(np.arange(1, 5))
+                "dual": [False],
+                "penalty": ["l1", "l2"],
+                "C": list(np.arange(1, 5))
             },
             "estimator": LinearSVC(),
             "desc": "Support Vector Machine (SVM)"
@@ -111,32 +110,30 @@ class Classification:
             "desc": "kernel Support Vector Machine (kernels rbf and sigmoid)"
         }
 
-
     def __gaussianNB(self):
         return {
             "params": {
-                "var_smoothing" : [1.e-09, 1.e-08, 1.e-07, 1.e-06]
+                "var_smoothing": [1.e-09, 1.e-08, 1.e-07, 1.e-06]
             },
             "estimator": GaussianNB(),
             "desc": "Gaussian Naive Bayes"
         }
-        
+
     def __bernoulliNB(self):
         return {
             "params": {
-                "alpha"     : [1.0, 0.5, 1.0e-10],
-                "fit_prior" : [True, False]
+                "alpha": [1.0, 0.5, 1.0e-10],
+                "fit_prior": [True, False]
             },
             "estimator": BernoulliNB(),
             "desc": "Bernoulli Naive Bayes"
         }
 
-    
     def __decisonTreeClassification(self):
         return {
             "params": {
-                "criterion"    : ["gini", "entropy"],
-                "max_features" : [None, "sqrt", "log2"]
+                "criterion": ["gini", "entropy"],
+                "max_features": [None, "sqrt", "log2"]
             },
             "estimator": DecisionTreeClassifier(),
             "desc": "Decison Tree Classification"
@@ -145,9 +142,9 @@ class Classification:
     def __randomForestClassification(self):
         return {
             "params": {
-                "criterion"    : ["gini", "entropy"],
-                "max_features" : ["sqrt", None, "log2"],
-                "n_estimators" : list(np.arange(50, 751, 10))
+                "criterion": ["gini", "entropy"],
+                "max_features": ["sqrt", None, "log2"],
+                "n_estimators": list(np.arange(50, 751, 10))
             },
             "estimator": RandomForestClassifier(),
             "desc": "Random Forest Classification",
