@@ -13,7 +13,6 @@ class Model():
             sys.exit("Invalid optimization method")
             
         self.method = optimization_method
-        self.save_results = save_results
         self.metric = metric
         self.metric_sign = metric_sign
         self.results = []
@@ -35,26 +34,22 @@ class Model():
             trained_model = self.__bayes(estimator, params, sqrt)
 
         y_pred = trained_model.predict(self.X_test)
+        if desc == "Neural Networks" and estimator.get_output_units() == 2:
+            y_pred[y_pred>.5] = 1
+            y_pred[y_pred<=.5] = 0
         metric = self.metric(self.y_test, y_pred)  # this metric should have a sign
 
         if hasattr(trained_model, "best_params_"):
             print("The best params found: " + str(trained_model.best_params_))
 
         print("[%s] Score: %f\n" % (desc, metric))
-        if bool(self.save_results) or not bool(self.results):
-            self.results.append(
-                {
-                    "name"  : desc,
-                    "model" : trained_model,
-                    "score" : metric
-                }
-            )
-        elif bool(self.results) and (metric * self.metric_sign) > self.results[0]["score"]:
-            self.results[0] = {
+        self.results.append(
+            {
                 "name"  : desc,
                 "model" : trained_model,
                 "score" : metric
             }
+        )
 
     def __randomized_search(self, estimator, params, sqrt = False):
         n_space = np.prod([len(params[x]) for x in params.keys()])
@@ -89,15 +84,17 @@ class Model():
             tuner = Hyperband(
                         estimator,
                         max_epochs=20,
-                        objective='mse',
-                        executions_per_trial=1
+                        objective='val_mse',
+                        executions_per_trial=1,
+                        directory='regression_nn'
                     )
         else:    
             tuner = Hyperband(
                         estimator,
                         max_epochs=20,
-                        objective='accuracy',
-                        executions_per_trial=1
+                        objective='val_accuracy',
+                        executions_per_trial=1,
+                        directory='classification_nn'
                     )
         tuner.search(self.X_train, self.y_train, epochs=1, validation_split=.1)
 

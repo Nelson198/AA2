@@ -37,7 +37,7 @@ class Classification:
             "gaussianNB"    : self.__gaussianNB,
             "bernoulliNB"   : self.__bernoulliNB,
             "decisionTree"  : self.__decisonTreeClassification,
-            #"randomForest"  : self.__randomForestClassification,
+            "randomForest"  : self.__randomForestClassification,
             "neuralNetwork" : self.__neuralNetwork
         }
         self.__methods = available.copy()

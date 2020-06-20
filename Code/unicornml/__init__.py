@@ -125,7 +125,10 @@ class UnicornML:
 
     # TODO: Parametrizar o cálculo do melhor modelo segundo as métricas de cada problema
     def get_best_model(self):
-        model = sorted(self.model.results, key=lambda x: x["score"], reverse=True)[0]
+        if self.model.metric_sign == -1:
+            model = sorted(self.model.results, key=lambda x: x["score"], reverse=False)[0]
+        else:
+            model = sorted(self.model.results, key=lambda x: x["score"], reverse=True)[0]
         print( "Best model: {0}\t Score: {1}".format(model["name"], model["score"]))
         return model["model"]
 

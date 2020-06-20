@@ -35,10 +35,9 @@ class Regression:
     def __get_methods(self, algorithms):
         available = {
             "linear"        : self.__linearRegression,
-            #"poly"          : self.__polynomialRegression,
             "svr"           : self.__SVR,
             "decisionTree"  : self.__decisionTreeRegression,
-            #"randomForest"  : self.__randomForestRegression
+            "randomForest"  : self.__randomForestRegression,
             "neuralNetwork" : self.__neuralNetwork
         }
         self.__methods = available.copy()
@@ -64,20 +63,6 @@ class Regression:
             "desc": "Linear Regression",
             "params": {}
         }
-
-    #def __polynomialRegression(self):
-    #    (X_train, X_test, y_train, _) = self.data
-    #    for degree in range(2, X_train.shape[1]):
-    #        # Preprocessing
-    #        poly_reg = PolynomialFeatures(degree = degree)
-    #        X_poly = poly_reg.fit_transform(X_train)
-    #        poly_reg.fit(X_poly, y_train)
-
-    #        self.big_model(X_poly, poly_reg.fit_transform(X_test)) \
-    #            .param_tunning_method(
-    #                LinearRegression(),
-    #                "Polynomial Regression (degree: {0})".format(degree)
-    #            )
     
     def __SVR(self):
         return {

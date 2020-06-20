@@ -30,18 +30,18 @@ class UnicornHyperModel(HyperModel):
         model = Sequential()
         model.add(
             Dense(
-                units=hp.Int('units', 8, 64, 4, default=8),
+                units=hp.Int('units', 32, 128, 8, default=32),
                 activation=hp.Choice(
                     'dense_activation',
                     values=['relu', 'tanh', 'sigmoid'],
                     default='relu'),
-                input_shape=self.__input_shape
+                input_shape=(self.__input_shape[1],)
             )
         )
 
         model.add(
             Dense(
-                units=hp.Int('units', 16, 128, 8, default=16),
+                units=hp.Int('units', 64, 512, 16, default=64),
                 activation=hp.Choice(
                     'dense_activation',
                     values=['relu', 'tanh', 'sigmoid'],
@@ -59,8 +59,8 @@ class UnicornHyperModel(HyperModel):
                     step=0.01)
             )
         )
-
-        model.add(Dense(self.__output_units, activation=self.__act_output))
+        
+        model.add(Dense(1, activation=self.__act_output))
 
         model.compile(
             optimizer='rmsprop', loss=self.__loss, metrics=self.__metrics
@@ -70,3 +70,6 @@ class UnicornHyperModel(HyperModel):
 
     def get_metrics(self):
         return self.__metrics
+
+    def get_output_units(self):
+        return self.__output_units
