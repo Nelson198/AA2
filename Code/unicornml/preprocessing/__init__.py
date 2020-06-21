@@ -32,7 +32,6 @@ def removeNAN(X):
 
 
 def scaling_normalize_y(y):
-    new_y = []  # we are considering y with just one dimension (m,1)
     if any([not is_digit(v) for v in y]):
         new_y = LabelEncoder().fit_transform(y.reshape(-1, 1))
         problem = ("Classification", len(np.unique(new_y)))

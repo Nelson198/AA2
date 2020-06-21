@@ -14,7 +14,12 @@ from ..neuralnetwork import UnicornHyperModel
 class Classification:
     __methods: dict
 
-    def __init__(self, input_shape, algorithms=[], metrics=[], output_units=2):
+    def __init__(self, input_shape, algorithms=None, metrics=None, output_units=2):
+        if metrics is None:
+            metrics = []
+        if algorithms is None:
+            algorithms = []
+
         self.__get_methods(algorithms)
         self.__get_metrics(metrics)
         self.__output_units = output_units
@@ -49,13 +54,13 @@ class Classification:
 
     def __get_metrics(self, metrics):
         if metrics[0] == "recall":
-            self.__metrics = lambda x,y : recall_score(x, y)
+            self.__metrics = lambda x, y: recall_score(x, y)
         elif metrics[0] == "auc":
-            self.__metrics = lambda x,y : auc(x, y),
+            self.__metrics = lambda x, y: auc(x, y),
         elif metrics[0] == "precision":
-            self.__metrics = lambda x,y : precision_score(x, y),
-        else: # metrics == "accuracy" (default metric)
-            self.__metrics = lambda x,y : accuracy_score(x,y)
+            self.__metrics = lambda x, y: precision_score(x, y),
+        else:  # metrics == "accuracy" (default metric)
+            self.__metrics = lambda x, y: accuracy_score(x, y)
 
     def __neuralNetwork(self):
         return {
@@ -64,7 +69,8 @@ class Classification:
             "params": {}
         }
 
-    def __logisticRegression(self):
+    @staticmethod
+    def __logisticRegression():
         return {
             "params": {
                 "solver": ["newton-cg", "sag", "lbfgs"],
@@ -72,10 +78,11 @@ class Classification:
                 "multi_class": ["auto"]
             },
             "estimator": LogisticRegression(),
-            "desc":"Logistic Regression"
+            "desc": "Logistic Regression"
         }
 
-    def __KNN(self):
+    @staticmethod
+    def __KNN():
         return {
             "params": {
                 "n_neighbors": list(np.arange(1, 21)),  # default = 5
@@ -88,7 +95,8 @@ class Classification:
             "desc": "K-Nearest Neighbors (KNN)"
         }
 
-    def __SVM(self):
+    @staticmethod
+    def __SVM():
         return {
             "params": {
                 "dual": [False],
@@ -99,18 +107,20 @@ class Classification:
             "desc": "Support Vector Machine (SVM)"
         }
 
-    def __kernelSVM(self):
+    @staticmethod
+    def __kernelSVM():
         return {
             "params": {
-                "kernel" : ["rbf", "sigmoid"],
-                "gamma"  : ["scale", "auto"],
-                "C"      : list(np.arange(1, 5))
+                "kernel": ["rbf", "sigmoid"],
+                "gamma": ["scale", "auto"],
+                "C": list(np.arange(1, 5))
             },
             "estimator": SVC(),
             "desc": "kernel Support Vector Machine (kernels rbf and sigmoid)"
         }
 
-    def __gaussianNB(self):
+    @staticmethod
+    def __gaussianNB():
         return {
             "params": {
                 "var_smoothing": [1.e-09, 1.e-08, 1.e-07, 1.e-06]
@@ -119,7 +129,8 @@ class Classification:
             "desc": "Gaussian Naive Bayes"
         }
 
-    def __bernoulliNB(self):
+    @staticmethod
+    def __bernoulliNB():
         return {
             "params": {
                 "alpha": [1.0, 0.5, 1.0e-10],
@@ -129,7 +140,8 @@ class Classification:
             "desc": "Bernoulli Naive Bayes"
         }
 
-    def __decisonTreeClassification(self):
+    @staticmethod
+    def __decisonTreeClassification():
         return {
             "params": {
                 "criterion": ["gini", "entropy"],
@@ -139,7 +151,8 @@ class Classification:
             "desc": "Decison Tree Classification"
         }
 
-    def __randomForestClassification(self):
+    @staticmethod
+    def __randomForestClassification():
         return {
             "params": {
                 "criterion": ["gini", "entropy"],
