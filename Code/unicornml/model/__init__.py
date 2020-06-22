@@ -87,9 +87,11 @@ class Model():
             )
             return randomized.fit(self.X_train, self.y_train)
 
+    @ignore_warnings(category=ConvergenceWarning)
     def __train_without_optimizer(self, estimator):
         return estimator.fit(self.X_train, self.y_train)
 
+    @ignore_warnings(category=ConvergenceWarning)
     def __train_neural_networks(self, estimator):
         if estimator.get_metrics()[0] == "mse":
             tuner = Hyperband(
@@ -112,5 +114,6 @@ class Model():
         return tuner.get_best_models(num_models=1)[0]
 
     # TODO : Acabar implementação
+    @ignore_warnings(category=ConvergenceWarning)
     def __bayes(self, estimator, params, sqrt):
         pass
