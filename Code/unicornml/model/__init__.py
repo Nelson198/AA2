@@ -8,7 +8,7 @@ from sklearn.exceptions import ConvergenceWarning
 from kerastuner.tuners import Hyperband
 
 
-class Model():
+class Model:
     def __init__(
             self, X_train, X_test, y_train, y_test,
             metric, metric_sign, optimization_method="randomizedSearch",
@@ -27,8 +27,10 @@ class Model():
         self.y_train = y_train
         self.y_test = y_test
 
-    def param_tunning_method(self, estimator, desc, params={}, sqrt=False):
-        trained_model = None
+    def param_tunning_method(self, estimator, desc, params=None, sqrt=False):
+        if params is None:
+            params = {}
+
         if not bool(params):
             if desc == "Neural Networks":
                 trained_model = self.__train_neural_networks(estimator)
@@ -42,8 +44,8 @@ class Model():
         y_pred = trained_model.predict(self.X_test)
         if desc == "Neural Networks":
             if estimator.get_output_units() == 2:
-                y_pred[y_pred>.5] = 1
-                y_pred[y_pred<=.5] = 0
+                y_pred[y_pred > .5] = 1
+                y_pred[y_pred <= .5] = 0
             else:
                 y_pred = np.argmax(y_pred, axis=1)
 
@@ -69,21 +71,21 @@ class Model():
 
         try:
             randomized = RandomizedSearchCV(
-                estimator = estimator,
-                param_distributions = params,
-                random_state = 0,
-                cv = 5,
-                n_jobs = -1, #uses all available processors
-                n_iter = n_space
+                estimator=estimator,
+                param_distributions=params,
+                random_state=0,
+                cv=5,
+                n_jobs=-1,  # uses all available processors
+                n_iter=n_space
             )
             return randomized.fit(self.X_train, self.y_train)
         except:
             randomized = RandomizedSearchCV(
-                estimator = estimator,
-                param_distributions = params,
-                random_state = 0,
-                cv = 5,
-                n_iter = n_space
+                estimator=estimator,
+                param_distributions=params,
+                random_state=0,
+                cv=5,
+                n_iter=n_space
             )
             return randomized.fit(self.X_train, self.y_train)
 
@@ -95,20 +97,20 @@ class Model():
     def __train_neural_networks(self, estimator):
         if estimator.get_metrics()[0] == "mse":
             tuner = Hyperband(
-                        estimator,
-                        max_epochs=20,
-                        objective='val_mse',
-                        executions_per_trial=1,
-                        directory='regression_nn' + str(random.randint(0,1000))
-                    )
-        else:    
+                estimator,
+                max_epochs=20,
+                objective="val_mse",
+                executions_per_trial=1,
+                directory="regression_nn" + str(random.randint(0, 1000))
+            )
+        else:
             tuner = Hyperband(
-                        estimator,
-                        max_epochs=20,
-                        objective='val_accuracy',
-                        executions_per_trial=1,
-                        directory='classification_nn' + str(random.randint(0,1000))
-                    )
+                estimator,
+                max_epochs=20,
+                objective="val_accuracy",
+                executions_per_trial=1,
+                directory="classification_nn" + str(random.randint(0, 1000))
+            )
         tuner.search(self.X_train, self.y_train, epochs=1, validation_split=.1)
 
         return tuner.get_best_models(num_models=1)[0]

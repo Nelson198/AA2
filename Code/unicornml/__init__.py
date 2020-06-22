@@ -20,7 +20,12 @@ class UnicornML:
     y_train: np.ndarray
     y_test: np.ndarray
 
-    def __init__(self, input={}, options={}):
+    def __init__(self, input=None, options=None):
+        if input is None:
+            input = {}
+        if options is None:
+            options = {}
+
         if not bool(input):
             sys.exit("Undefined input data")
 
@@ -96,7 +101,6 @@ class UnicornML:
                 print("Stopping training early, because a good enough result was achieved")
                 break
 
-
     def __get_model_algorithms(self):
         if self.__problem == "Classification":
             classificator = Classification(
@@ -126,14 +130,14 @@ class UnicornML:
 
     def get_best_model(self, verbose=True):
         if self.model.metric_sign == -1:
-            model = sorted(self.model.results, key=lambda x: x["score"], reverse=False)[0]
+            bestModel = sorted(self.model.results, key=lambda x: x["score"], reverse=False)[0]
         else:
-            model = sorted(self.model.results, key=lambda x: x["score"], reverse=True)[0]
+            bestModel = sorted(self.model.results, key=lambda x: x["score"], reverse=True)[0]
         if verbose:
-            print( "Best model: {0}\t Score: {1}".format(model["name"], model["score"]))
-            return model["model"]
+            print("Best model: {0}\t Score: {1}".format(bestModel["name"], bestModel["score"]))
+            return bestModel["model"]
         else:
-            return model["score"]
+            return bestModel["score"]
 
     def predict(self, X):
         return self.get_best_model().predict(X)

@@ -1,4 +1,6 @@
 import numpy as np
+import pandas as pd
+from scipy.stats import mode
 
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
@@ -8,10 +10,10 @@ from sklearn.decomposition import PCA
 def Preprocessing(X, y):
     X = removeNAN(X)
 
-    new_X = scaling_normalize_x(X)
-    new_y, problem = scaling_normalize_y(y)  # np.array([[]])
+    X = scaling_normalize_x(X)
+    y, problem = scaling_normalize_y(y)
 
-    X_train, X_test, y_train, y_test = train_test_split(new_X, new_y, test_size=.2, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
     # Principal component analysis
     pca = PCA(0.95)
@@ -23,16 +25,30 @@ def Preprocessing(X, y):
 
 
 def removeNAN(X):
+    colIdx = []
     for i in range(X.shape[1]):
-        totalNAN = np.isnan(X[:, i]).sum()
+        totalNAN = pd.isnull(X[:, i]).sum()
         if totalNAN / X.shape[0] > 0.4:
-            X[:, i] = np.delete(X, i, axis=1)
+            colIdx.append(i)
+        elif totalNAN > 0:
+            # Categorical variable
+            if isinstance(X[0, i], np.float):
+                colMode = mode(X[:, i], axis=0)[0]
+                idxs = np.where(np.isnan(X[:, i]))[0]
+                X[idxs, i] = colMode
+            # Continuous variable
+            else:
+                colMean = np.nanmean(X[:, i], axis=0)
+                idxs = np.where(np.isnan(X[:, i]))[0]
+                X[idxs, i] = colMean
+
+    # Remove columns
+    X = np.delete(X, colIdx, axis=1)
 
     return X
 
 
 def scaling_normalize_y(y):
-    new_y = []  # we are considering y with just one dimension (m,1)
     if any([not is_digit(v) for v in y]):
         new_y = LabelEncoder().fit_transform(y.reshape(-1, 1))
         problem = ("Classification", len(np.unique(new_y)))

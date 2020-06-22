@@ -6,7 +6,7 @@ from unicornml import UnicornML
 class TestClassification(unittest.TestCase):
     def test_classification(self):
         unicorn = UnicornML(
-            {"file": "./data/Social_Network_Ads.csv"}
+            {"file": "./data/social_network_ads.csv"}
         )
         X = np.concatenate((unicorn.X_train, unicorn.X_test), axis=0)
         y = np.concatenate((unicorn.y_train, unicorn.y_test), axis=0)

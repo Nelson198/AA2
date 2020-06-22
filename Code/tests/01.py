@@ -6,7 +6,7 @@ from unicornml import UnicornML
 class TestStringMethods(unittest.TestCase):
     def test_linearRegression(self):
         unicorn = UnicornML(
-            {"file": "./data/50_Startups.csv"}
+            {"file": "./data/50_startups.csv"}
         )
         X = np.concatenate((unicorn.X_train, unicorn.X_test), axis=0)
         y = np.concatenate((unicorn.y_train, unicorn.y_test), axis=0)
