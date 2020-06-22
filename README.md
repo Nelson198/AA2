@@ -52,11 +52,31 @@ A procura dos melhores hiperparâmetros para o problema das redes neuronais vai 
 
     ├─ Code
     │  ├─ data
-    │  │  ├─ 50_Startups.csv
-    │  │  └─ Social_Network_Ads.csv
+    │  │  ├─ 50_startups.csv
+    │  │  ├─ abalone.csv
+    │  │  ├─ bank_notes.csv
+    │  │  ├─ housing.csv
+    │  │  ├─ ionosphere.csv
+    │  │  ├─ iris.csv
+    │  │  ├─ pregnant.csv
+    │  │  ├─ social_network_ads.csv
+    │  │  ├─ sonar.csv
+    │  │  ├─ swedish.csv
+    │  │  ├─ wheat.csv
+    │  │  └─ winequality-white.csv
     │  ├─ tests
     │  │  ├─ 01.py
     │  │  ├─ 02.py
+    │  │  ├─ 03.py
+    │  │  ├─ 04.py
+    │  │  ├─ 05.py
+    │  │  ├─ 06.py
+    │  │  ├─ 07.py
+    │  │  ├─ 08.py
+    │  │  ├─ 09.py
+    │  │  ├─ 10.py
+    │  │  ├─ 11.py
+    │  │  ├─ 12.py
     │  │  └─ __init__.py
     │  ├─ unicornml
     │  │  ├─ classification
@@ -74,7 +94,6 @@ A procura dos melhores hiperparâmetros para o problema das redes neuronais vai 
     │  └─ setup.py
     ├─ Presentation
     │  ├─ Diagram.png
-    │  ├─ Presentation.md
     │  └─ Presentation.pptx
     ├─ Proposal
     │  ├─ Proposal.pdf
