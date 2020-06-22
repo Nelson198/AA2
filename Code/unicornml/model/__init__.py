@@ -3,6 +3,8 @@ import random
 
 import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
+from sklearn.utils.testing import ignore_warnings
+from sklearn.exceptions import ConvergenceWarning
 from kerastuner.tuners import Hyperband
 
 
@@ -59,6 +61,7 @@ class Model():
             }
         )
 
+    @ignore_warnings(category=ConvergenceWarning)
     def __randomized_search(self, estimator, params, sqrt=False):
         n_space = np.prod([len(params[x]) for x in params.keys()])
         if sqrt:
