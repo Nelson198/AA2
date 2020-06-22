@@ -3,6 +3,8 @@ import random
 
 import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
+from sklearn.utils.testing import ignore_warnings
+from sklearn.exceptions import ConvergenceWarning
 from kerastuner.tuners import Hyperband
 
 
@@ -61,6 +63,7 @@ class Model:
             }
         )
 
+    @ignore_warnings(category=ConvergenceWarning)
     def __randomized_search(self, estimator, params, sqrt=False):
         n_space = np.prod([len(params[x]) for x in params.keys()])
         if sqrt:
@@ -86,9 +89,11 @@ class Model:
             )
             return randomized.fit(self.X_train, self.y_train)
 
+    @ignore_warnings(category=ConvergenceWarning)
     def __train_without_optimizer(self, estimator):
         return estimator.fit(self.X_train, self.y_train)
 
+    @ignore_warnings(category=ConvergenceWarning)
     def __train_neural_networks(self, estimator):
         if estimator.get_metrics()[0] == "mse":
             tuner = Hyperband(
@@ -111,5 +116,6 @@ class Model:
         return tuner.get_best_models(num_models=1)[0]
 
     # TODO : Acabar implementação
+    @ignore_warnings(category=ConvergenceWarning)
     def __bayes(self, estimator, params, sqrt):
         pass
