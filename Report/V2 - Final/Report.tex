@@ -5,9 +5,10 @@
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{3}
 
+\usepackage{indentfirst}
+
 \usepackage[hyphens]{url}
 \usepackage{hyperref}
-\usepackage{indentfirst}
 
 \usepackage{titlepic}
 
@@ -112,7 +113,7 @@
 	De salientar que o grupo teve o cuidado de avaliar situações relacionadas com o \textit{underfitting} e \textit{overfitting} dos modelos gerados. Para tal foram utilizadas, na generalidade, metodologias intrínsecas à otimização de hiperparâmetros.
 
 	Relativamente à estrutura deste documento, será, de seguida, exibida a planificação deste projeto, definindo alguns dos objetivos a serem alcançados.
-	Posteriormente, parte-se para a implementação da \textit{framework} proposta, evidenciando-se questões relacionadas com o pré-processamento de dados, os problemas e algoritmos suportados pela aplicação e também com as métricas utilizadas no momento da avaliação dos modelos.
+	Posteriormente, parte-se para a implementação da \textit{framework} proposta, evidenciando-se questões relacionadas com o pré-processamento de dados, os problemas e algoritmos suportados pela aplicação e também as métricas utilizadas no momento da avaliação dos modelos.
 	Por fim, é demonstrada uma análise sobre os vários testes realizados sobre a \textit{framework}, sumariando os objetivos atingidos neste projeto.
 }
 
@@ -273,7 +274,7 @@ Problem:
 			\item Transformação dos dados:
 			\begin{itemize}
 				\item Separação entre os dados relativos às variáveis independentes dos dados associados à variável de interesse ou de saída;
-				\item Resolução de valores omissos: colunas com mais de 40\% de valores nulos são eliminadas. Os valores numéricos são substituídos pela média dos valores da coluna enquanto que os categóricos são alterados para a moda;
+				\item Tratamento de valores omissos: colunas com mais de 40\% de valores nulos são eliminadas. Os valores numéricos são substituídos pela média dos valores da coluna enquanto que os categóricos são alterados para a moda;
 				\item Redimensionamento e normalização: utilização de mecanismos de \textit{scaling} e \textit{label encoding} da biblioteca \texttt{scikit-learn}.
 			\end{itemize}
 			\item Seleção de \textit{features}:
@@ -360,19 +361,31 @@ Problem:
 			Tal como foi referido anteriormente, é nesta classe onde é realizada a procura do melhor modelo, segundo as opções escolhidas pelo utilizador.
 			Para desempenhar a otimização de hiperparâmetros dos modelos considerados, o utilizador desta \textit{framework} de \textit{AutoML} pode indicar qual a otimização que pretende realizar.
 			Nesta tomada de decisão este pode explicitamente indicar que não quer realizar tal tarefa. Por omissão, é realizada uma procura aleatória dos melhores parâmetros (\textit{RandomizedSearch}).
+			No caso das redes neuronais, é utilizado o método de otimização bayesiana com recurso à biblioteca \texttt{keras}.
 }
 
 \chapter{Testes e análise de resultados} \label{ch:Test&Analysis}
 \large{
 	Para validar todos os aspetos considerados durante a implementação deste trabalho, foram incorporados nesta \textit{framework} vários conjuntos de dados que servem de teste à mesma.
 	Como tal, foram adicionados no total 12 conjuntos de dados distintos entre si, havendo tanto problemas de regressão como de classificação a serem modelados.
+	Para estes conjuntos de dados é possível indicar a precisão de todos os modelos tomados em consideração, sendo que no fim de cada teste é apontado o melhor.
 
+	De forma a exibir apenas alguns dos resultados obtidos, expõem-se agora os conjuntos de dados considerados para o efeito:
+	\begin{itemize}
+		\item \textsl{50\_Startups.csv};
+		\item \textsl{Social\_Network\_Ads.csv};
+		\item ...
+	\end{itemize}
 }
 
 \chapter{Conclusão} \label{ch:Conclusion}
 \large{
-	Será um pouco prematuro tentar tirar ilações de um trabalho incompleto, pelo que esta conclusão permite apenas refletir sobre as perspetivas existentes, tendo em conta o trabalho desenvolvido até agora.
-	No entanto, é possível perceber que a \textsl{UnicornML} está no bom caminho, tendo em conta os resultados obtidos para os métodos já implementados e a ideia do que será possível ainda desenvolver.
+	\begin{itemize}
+		\item Falar dos objetivos inicialmente traçados;
+		\item Falar da realização das tarefas do trabalho futuro;
+		\item Falar levemente das ilações retiradas da análise dos resultados;
+		\item Sumariar o trabalho prático como um todo.
+	\end{itemize}
 }
 
 \appendix
@@ -387,6 +400,7 @@ Problem:
 	\item Documentação \textit{scikit-learn} - API:
     \par \textit{\url{https://scikit-learn.org/stable/modules/classes.html}}
 	\item Documentação \textit{scikit-learn} - \textit{supervised learning}:
+	\sloppy
 	\par \textit{\url{https://scikit-learn.org/stable/supervised_learning.html\#supervised-learning}}
 \end{itemize}
 

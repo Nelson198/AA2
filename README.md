@@ -48,8 +48,6 @@ Para problemas de classificação, os algoritmos disponiveis são:
 
 A procura dos melhores hiperparâmetros para o problema das redes neuronais vai ser realizada com o uso da biblioteca `kerastuner`. Para os restantes algoritmos, procede-se à utilização da função *RandomizedSearchCV*, disponibilizada pela biblioteca `sklearn`.
 
-Na eventualidade da plataforma estar terminada e ainda existir tempo para tal, será estudada a possibilidade de se incluir o pré-processamento de dados, aumentando não só a complexidade como também a flexibilidade da *framework* desenvolvida. Consequentemente, este última abordagem potencia o teste de vários modelos de tipos distintos.
-
 ### Estrutura do projeto
 
     ├─ Code
