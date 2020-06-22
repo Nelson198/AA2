@@ -7,7 +7,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 
 
-def Preprocessing(X, y):
+def Preprocessing(X, y, cv):
+    X, y = removeSmallCats(X, y, cv)
+    
     X = removeNAN(X)
 
     X = scaling_normalize_x(X)
@@ -22,6 +24,20 @@ def Preprocessing(X, y):
     pca.transform(X_test)
 
     return X_train, X_test, y_train, y_test, problem
+
+def removeSmallCats(X, y, cv):
+    unique, count = np.unique(y, return_counts=True)
+    cats_count = dict(zip(unique, count))
+
+    idx = []
+    for i in range(len(y)):
+        if cats_count[y[i]] < cv:
+            idx.append(i)
+
+    X = np.delete(X, idx, axis=0)
+    y = np.delete(y, idx, axis=0)
+
+    return X, y
 
 
 def removeNAN(X):
@@ -49,12 +65,10 @@ def removeNAN(X):
 
 
 def scaling_normalize_y(y):
-    if any([not is_digit(v) for v in y]):
+    if any([not is_digit(v) for v in y]) or all([isinstance(v, np.int64) or isinstance(v, np.int32) for v in y]):
         new_y = LabelEncoder().fit_transform(y.reshape(-1, 1))
-        problem = ("Classification", len(np.unique(new_y)))
-    elif all([isinstance(v, np.int64) or isinstance(v, np.int32) for v in y]):
-        new_y = y
-        problem = ("Classification", len(np.unique(new_y)))
+        classes = len(np.unique(new_y))
+        problem = ("Classification", classes)
     else:
         new_y = MinMaxScaler().fit_transform(y.reshape(-1, 1))
         problem = ("Regression", -1)

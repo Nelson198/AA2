@@ -15,6 +15,7 @@ class UnicornML:
     model: object
     output_classes: int
     input_shape: tuple
+    cv: int
     X_train: np.ndarray
     X_test: np.ndarray
     y_train: np.ndarray
@@ -38,7 +39,9 @@ class UnicornML:
         else:
             sys.exit("Invalid options for input")
 
-        self.X_train, self.X_test, self.y_train, self.y_test, (self.__problem, self.output_classes) = Preprocessing(X, y)
+        self.cv = 5
+
+        self.X_train, self.X_test, self.y_train, self.y_test, (self.__problem, self.output_classes) = Preprocessing(X, y, self.cv)
         self.input_shape = self.X_train.shape
 
         with open("options.yaml") as file:
@@ -111,7 +114,7 @@ class UnicornML:
             )
             self.model = Model(
                 self.X_train, self.X_test, self.y_train, self.y_test,
-                classificator.get_metrics(), 1
+                classificator.get_metrics(), 1, self.cv
             )
             algorithms = classificator.get_algorithms()
         else:
@@ -122,7 +125,7 @@ class UnicornML:
             )
             self.model = Model(
                 self.X_train, self.X_test, self.y_train, self.y_test,
-                regressor.get_metrics(), regressor.get_metrics_sign()
+                regressor.get_metrics(), regressor.get_metrics_sign(), self.cv
             )
             algorithms = regressor.get_algorithms()
 

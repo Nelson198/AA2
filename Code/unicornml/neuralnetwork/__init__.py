@@ -21,7 +21,7 @@ class UnicornHyperModel(HyperModel):
         else:
             if self.__output_units > 2:
                 self.__act_output = "softmax"
-                self.__loss = "categorical_crossentropy"
+                self.__loss = "sparse_categorical_crossentropy"
                 self.__metrics = ["accuracy"]
             else:
                 self.__act_output = "sigmoid"
@@ -56,9 +56,9 @@ class UnicornHyperModel(HyperModel):
                 hp.Float(
                     "dropout",
                     min_value=0.0,
-                    max_value=0.1,
-                    default=0.005,
-                    step=0.01)
+                    max_value=0.2,
+                    default=0.1,
+                    step=0.05)
             )
         )
         

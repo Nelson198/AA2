@@ -5,12 +5,11 @@ import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
 from kerastuner.tuners import Hyperband
 
-
 class Model:
     def __init__(
             self, X_train, X_test, y_train, y_test,
-            metric, metric_sign, optimization_method="randomizedSearch",
-            save_results=True
+            metric, metric_sign, cv, optimization_method="randomizedSearch",
+            save_results=True,
     ):
         self.save_results = save_results
         if optimization_method not in ["randomizedSearch", "Bayes"]:
@@ -24,6 +23,7 @@ class Model:
         self.X_test = X_test
         self.y_train = y_train
         self.y_test = y_test
+        self.cv = cv
 
     def param_tunning_method(self, estimator, desc, params=None, sqrt=False):
         if params is None:
@@ -71,7 +71,7 @@ class Model:
                 estimator=estimator,
                 param_distributions=params,
                 random_state=0,
-                cv=5,
+                cv=self.cv,
                 n_jobs=-1,  # uses all available processors
                 n_iter=n_space
             )
@@ -81,7 +81,7 @@ class Model:
                 estimator=estimator,
                 param_distributions=params,
                 random_state=0,
-                cv=5,
+                cv=self.cv,
                 n_iter=n_space
             )
             return randomized.fit(self.X_train, self.y_train)
