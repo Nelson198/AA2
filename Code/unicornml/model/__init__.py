@@ -106,7 +106,7 @@ class Model:
                 executions_per_trial=1,
                 directory="classification_nn" + str(random.randint(0, 1000))
             )
-        tuner.search(self.X_train, self.y_train, epochs=1, validation_split=.1)
+        tuner.search(self.X_train, self.y_train, epochs=1, validation_split=0.1, verbose=0)
 
         return tuner.get_best_models(num_models=1)[0]
 
