@@ -12,7 +12,7 @@ def Preprocessing(X, y):
     new_X = scaling_normalize_x(X)
     new_y, problem = scaling_normalize_y(y)  # np.array([[]])
 
-    X_train, X_test, y_train, y_test = train_test_split(new_X, new_y, test_size=.2, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(new_X, new_y, test_size=0.2, random_state=0)
 
     # Principal component analysis
     pca = PCA(0.95)
@@ -27,7 +27,6 @@ def removeNAN(X):
     colIdx = []
     for i in range(X.shape[1]):
         totalNAN = pd.isnull(X[:, i]).sum()
-        print(i, totalNAN)
         if totalNAN / X.shape[0] > 0.4:
             colIdx.append(i)
         """
