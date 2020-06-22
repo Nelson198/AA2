@@ -8,12 +8,10 @@ from sklearn.decomposition import PCA
 
 
 def Preprocessing(X, y, cv):
-    X, y = removeSmallCats(X, y, cv)
-    
     X = removeNAN(X)
 
     X = scaling_normalize_x(X)
-    y, problem = scaling_normalize_y(y)
+    X, y, problem = scaling_normalize_y(X, y, cv)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
@@ -64,15 +62,16 @@ def removeNAN(X):
     return X
 
 
-def scaling_normalize_y(y):
+def scaling_normalize_y(X, y, cv):
     if any([not is_digit(v) for v in y]) or all([isinstance(v, np.int64) or isinstance(v, np.int32) for v in y]):
+        X, y = removeSmallCats(X, y, cv)
         new_y = LabelEncoder().fit_transform(y.reshape(-1, 1))
         classes = len(np.unique(new_y))
         problem = ("Classification", classes)
     else:
         new_y = MinMaxScaler().fit_transform(y.reshape(-1, 1))
         problem = ("Regression", -1)
-    return np.array(new_y).reshape(-1, ), problem
+    return X, np.array(new_y).reshape(-1, ), problem
 
 
 def scaling_normalize_x(X):
