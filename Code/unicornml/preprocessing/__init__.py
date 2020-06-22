@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 from sklearn.preprocessing import OneHotEncoder, LabelEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
@@ -23,10 +24,21 @@ def Preprocessing(X, y):
 
 
 def removeNAN(X):
+    colIdx = []
     for i in range(X.shape[1]):
-        totalNAN = np.isnan(X[:, i]).sum()
+        totalNAN = pd.isnull(X[:, i]).sum()
+        print(i, totalNAN)
         if totalNAN / X.shape[0] > 0.4:
-            X[:, i] = np.delete(X, i, axis=1)
+            colIdx.append(i)
+        """
+        elif totalNAN > 0:
+            # TODO : Categorical variable
+            
+            # TODO : Continuous variable
+        """
+
+    # Remove columns
+    X = np.delete(X, colIdx, axis=1)
 
     return X
 
