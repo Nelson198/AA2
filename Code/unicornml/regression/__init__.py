@@ -11,15 +11,15 @@ from ..neuralnetwork import UnicornHyperModel
 class Regression:
     __methods: dict
 
-    def __init__(self, input_shape, algorithms=None, metrics=None):
-        if metrics is None:
-            metrics = []
+    def __init__(self, input_shape, algorithms=None, metric=None):
+        if metric is None:
+            metric = "mse"
         if algorithms is None:
             algorithms = []
 
         self.__input_shape = input_shape
         self.__get_methods(algorithms)
-        self.__get_metrics(metrics)
+        self.__get_metric(metric)
 
     def get_algorithms(self):
         list = []
@@ -27,11 +27,11 @@ class Regression:
             list.append(self.__methods[alg]())
         return list
 
-    def get_metrics(self):
-        return self.__metrics
+    def get_metric(self):
+        return self.__metric
 
-    def get_metrics_sign(self):
-        return self.__metrics_sign
+    def get_metric_sign(self):
+        return self.__metric_sign
 
     def Rainbow(self):
         for method in self.__methods:
@@ -51,16 +51,16 @@ class Regression:
                 if alg not in algorithms:
                     del self.__methods[alg]
 
-    def __get_metrics(self, metrics):
-        if metrics[0] == "r2":
-            self.__metrics = lambda x, y: 1 - (1 - r2_score(x, y)) * (len(y) - 1) / (len(y) - x.shape[1] - 1)
-            self.__metrics_sign = 1
-        elif metrics[0] == "mae":
-            self.__metrics = lambda x, y: mean_absolute_error(x, y)
-            self.__metrics_sign = -1
-        else:  # metrics == "mse" (default metric)
-            self.__metrics = lambda x, y: mean_squared_error(x, y)
-            self.__metrics_sign = -1
+    def __get_metric(self, metric):
+        if metric == "r2":
+            self.__metric = lambda x, y: 1 - (1 - r2_score(x, y)) * (len(y) - 1) / (len(y) - x.shape[1] - 1)
+            self.__metric_sign = 1
+        elif metric == "mae":
+            self.__metric = lambda x, y: mean_absolute_error(x, y)
+            self.__metric_sign = -1
+        else:  # metric == "mse" (default metric)
+            self.__metric = lambda x, y: mean_squared_error(x, y)
+            self.__metric_sign = -1
 
     @staticmethod
     def __linearRegression():

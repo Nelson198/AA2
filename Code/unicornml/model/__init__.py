@@ -83,7 +83,7 @@ class Model:
         return estimator.fit(self.X_train, self.y_train)
 
     def __train_neural_networks(self, estimator):
-        if estimator.get_metrics()[0] == "mse":
+        if estimator.get_metric() == "mse":
             tuner = Hyperband(
                 estimator,
                 max_epochs=20,

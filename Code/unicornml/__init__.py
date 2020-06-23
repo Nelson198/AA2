@@ -11,7 +11,7 @@ from .preprocessing import Preprocessing, file_split_X_y
 class UnicornML:
     __problem: str
     __algorithms: list
-    __metrics: list
+    __metric: str
     model: object
     output_classes: int
     input_shape: tuple
@@ -66,26 +66,26 @@ class UnicornML:
         else:
             self.__algorithms = config["Problem"][self.__problem]["algorithms"]
 
-        if "metrics" in options:
-            if not isinstance(options["metrics"], str):
-                sys.exit("The \"metrics\" paramater needs to be a string (choose only one metric, please)")
+        if "metric" in options:
+            if not isinstance(options["metric"], str):
+                sys.exit("The \"metric\" paramater needs to be a string (choose only one metric, please)")
 
-            if options["metrics"] not in config["Problem"][self.__problem]["metrics"]:
+            if options["metric"] not in config["Problem"][self.__problem]["metrics"]:
                 sys.exit(
                     "Invalid metric %s for a %s problem. Metrics available:[%s]" % (
-                        options["metrics"],
+                        options["metric"],
                         self.__problem,
                         ", ".join(config["Problem"][self.__problem]["metrics"])
                     )
                 )
-            self.__metrics = options["metrics"]
+            self.__metric = options["metric"]
         else:
-            self.__metrics = config["Problem"][self.__problem]["metrics"]
+            self.__metric = config["Problem"][self.__problem]["metrics"][0]
 
         print("\nIt's a %s problem\nSelected algorithms: [%s]\nSelected metrics: [%s]\n" % (
             self.__problem,
             ", ".join(self.__algorithms),
-            ", ".join(self.__metrics)
+            self.__metric
         ))
 
     def Rainbow(self):
@@ -97,10 +97,10 @@ class UnicornML:
                 algorithm["params"],
                 sqrt
             )
-            if 'mse' in self.__metrics and self.get_best_model(False) < 0.01:
+            if self.__metric == 'mse' and self.get_best_model(False) < 0.01:
                 print("Stopping training early, because a good enough result was achieved")
                 break
-            elif 'accuracy' in self.__metrics and self.get_best_model(False) > 0.95:
+            elif self.__metric == 'accuracy' and self.get_best_model(False) > 0.95:
                 print("Stopping training early, because a good enough result was achieved")
                 break
 
@@ -109,23 +109,23 @@ class UnicornML:
             classificator = Classification(
                 self.input_shape,
                 self.__algorithms,
-                self.__metrics,
+                self.__metric,
                 self.output_classes
             )
             self.model = Model(
                 self.X_train, self.X_test, self.y_train, self.y_test,
-                classificator.get_metrics(), 1, self.cv
+                classificator.get_metric(), 1, self.cv
             )
             algorithms = classificator.get_algorithms()
         else:
             regressor = Regression(
                 self.input_shape,
                 self.__algorithms,
-                self.__metrics
+                self.__metric
             )
             self.model = Model(
                 self.X_train, self.X_test, self.y_train, self.y_test,
-                regressor.get_metrics(), regressor.get_metrics_sign(), self.cv
+                regressor.get_metric(), regressor.get_metric_sign(), self.cv
             )
             algorithms = regressor.get_algorithms()
 
