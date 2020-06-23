@@ -2,11 +2,11 @@ import sys
 import yaml
 import pandas as pd
 import numpy as np
+
 from .regression import Regression
 from .classification import Classification
 from .model import Model
 from .preprocessing import Preprocessing, file_split_X_y
-
 from .images import Images
 
 
@@ -33,6 +33,7 @@ class UnicornML:
         if not bool(input):
             sys.exit("Undefined input data")
 
+        X, y = None, None
         if "file" in input:
             self.images = False
             data = pd.read_csv(input["file"])
@@ -114,10 +115,10 @@ class UnicornML:
                     algorithm["params"],
                     sqrt
                 )
-                if self.__metric == 'mse' and self.get_best_model(False) < 0.01:
+                if self.__metric == "mse" and self.get_best_model(False) < 0.01:
                     print("Stopping training early, because a good enough result was achieved")
                     break
-                elif  self.__metric == 'accuracy' and self.get_best_model(False) > 0.95:
+                elif self.__metric == "accuracy" and self.get_best_model(False) > 0.95:
                     print("Stopping training early, because a good enough result was achieved")
                     break
 

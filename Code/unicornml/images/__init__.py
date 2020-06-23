@@ -20,14 +20,10 @@ class Images:
         else:
             self.data_augmentation = False
 
-        self.extract_features()
-
-        self.model = self.build()
-
-    def extract_features(self):
+        # Extract features
         if self.data_augmentation:
             self.train_datagen = ImageDataGenerator(
-                rescale=1./255,
+                rescale=1. / 255,
                 rotation_range=40,
                 width_shift_range=0.2,
                 height_shift_range=0.2,
@@ -37,10 +33,10 @@ class Images:
                 fill_mode="nearest"
             )
         else:
-            self.train_datagen = ImageDataGenerator(rescale=1./255)
+            self.train_datagen = ImageDataGenerator(rescale=1. / 255)
 
         # Validation data should not be augmented!
-        self.test_datagen = ImageDataGenerator(rescale=1./255)
+        self.test_datagen = ImageDataGenerator(rescale=1. / 255)
 
         self.train_generator = self.train_datagen.flow_from_directory(
             self.train_dir,
@@ -55,6 +51,8 @@ class Images:
             batch_size=20,
             class_mode="binary"
         )
+
+        self.model = self.build()
 
     def build(self):
         conv_base = VGG16(weights="imagenet", include_top=False, input_shape=self.input_shape)

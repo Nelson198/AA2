@@ -1,6 +1,6 @@
 import random
-
 import numpy as np
+
 from kerastuner.tuners import Hyperband
 from sklearn.model_selection import RandomizedSearchCV
 
@@ -67,7 +67,6 @@ class Model:
                 n_jobs=-1,  # uses all available processors
                 n_iter=n_space
             )
-            return randomized.fit(self.X_train, self.y_train)
         except:
             randomized = RandomizedSearchCV(
                 estimator=estimator,
@@ -76,7 +75,7 @@ class Model:
                 cv=self.cv,
                 n_iter=n_space
             )
-            return randomized.fit(self.X_train, self.y_train)
+        return randomized.fit(self.X_train, self.y_train)
 
     def __train_without_optimizer(self, estimator):
         return estimator.fit(self.X_train, self.y_train)

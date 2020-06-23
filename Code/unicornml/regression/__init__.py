@@ -5,6 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVR
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.ensemble import RandomForestRegressor
+
 from ..neuralnetwork import UnicornHyperModel
 
 
