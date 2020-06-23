@@ -101,4 +101,5 @@ class Images:
             class_mode="binary")
 
         test_loss, test_acc = self.model.evaluate_generator(test_generator, steps=20)
-        print("test_loss:", test_loss, "test acc:", test_acc)
+
+        return test_acc

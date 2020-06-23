@@ -158,7 +158,13 @@ class UnicornML:
             return bestModel["score"]
 
     def predict(self, X):
-        return self.get_best_model().predict(X)
+        if self.images:
+            return 1
+        else:
+            return self.get_best_model().predict(X)
 
     def evaluate(self, y, yatt):
-        return self.model.metric(y, yatt)
+        if self.images:
+            return self.model.evaluate()
+        else:
+            return self.model.metric(y, yatt)
