@@ -81,6 +81,8 @@ A procura dos melhores hiperparâmetros para o problema das redes neuronais vai 
     │  ├─ unicornml
     │  │  ├─ classification
     │  │  │  └─ __init__.py
+    │  │  ├─ images
+    │  │  │  └─ __init__.py
     │  │  ├─ model
     │  │  │  └─ __init__.py
     │  │  ├─ neuralnetwork
@@ -148,4 +150,4 @@ python3 tests/file.py
 * ***tensorflow***:
   * *keras* : https://www.tensorflow.org/api_docs/python/tf/keras 
 * ***kerastuner***:
-  * Página oficial: https://keras-team.github.io/keras-tuner/
+  * Página oficial : https://keras-team.github.io/keras-tuner/
