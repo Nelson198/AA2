@@ -253,7 +253,10 @@ Problem:
 	\end{figure}
 
 		Numa fase final, é corretamente exibido, para o utilizador, não só o tipo do problema em questão como também os algoritmos a testar e a métrica selecionada.
-		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervided learning} escolhido, procedendo-se, também à procura do melhor modelo, ou seja, o que se ajusta de forma mais adequada ao conjunto de dados em causa.
+		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervised learning} escolhido, em que se obtem os modelos e os parâmetros que se quer testar.
+
+		Após obter todos os algoritmos a serem testados, é invocada, para cada algoritmo, a otimização de parâmetros através da classe \texttt{Model},
+		sendo que após ser realizada esta otimização, é possivel obter o melhor modelo com base na métrica definida.
 
 		\begin{figure}[H]
 			\centering
@@ -352,19 +355,32 @@ Problem:
 
 		\subsection{Modelo}
 		A classe \texttt{Model}, em \texttt{unicornML/model/\_\_init\_\_.py}, é o coração de toda a \textit{framework}.
-		Esta classe é utilizada tanto pela classe \texttt{Regression} como pela classe \texttt{Classification}.
 		A mesma foi pensada de forma a simplificar o restante código e reduzir duplicações do mesmo.
 		Nesta são incorporados vários tipos de informação, nomeadamente o conjunto de dados (treino e teste), a métrica selecionada para realizar a estimação do erro associada ao modelo escolhido e, ainda, os resultados obtidos após efetuar a otimização dos hiperparâmetros.
 
-			\subsubsection{Otimização de hiperparâmetros} \label{sssec:Optimization}
-			Tal como foi referido anteriormente, é nesta classe onde é realizada a procura do melhor modelo, segundo as opções escolhidas pelo utilizador.
-			Para desempenhar a otimização de hiperparâmetros dos modelos considerados, o utilizador desta \textit{framework} de \textit{AutoML} pode indicar qual a otimização que pretende realizar.
-			Nesta tomada de decisão este pode explicitamente indicar que não quer realizar tal tarefa. Por omissão, é realizada uma procura aleatória dos melhores parâmetros (\textit{RandomizedSearch}).
-			No caso das redes neuronais, é utilizado o método de otimização bayesiana com recurso à biblioteca \texttt{keras}.
+			\subsubsection{Otimização de parâmetros} \label{sssec::optimization}
+			A otimização de parâmetros procura o melhor modelo para cada um dos algoritmos.
+			Sendo que após encontrar os melhores parâmetros para o estimador, é calculada a métrica desse estimador para os dados de teste.
+			Esta métrica é adicionada a uma lista que contém todos os estimadores e os respetivos valores da métrica selecionada.
+
+			Para as redes neuronais a otimização é realizada com a biblioteca \texttt{kerastuner}. Para os restantes algoritmos, a otimização é realizada pelo \texttt{RandomizedSearch}.
 
 
 		\subsection{Imagens}
 		A classe \texttt{Images}, em \texttt{unicornML/images/\_\_init\_\_.py}, é responsável pelo desenvolvimento de modelos para imagens.
+		Esta classe é instanciada e usada exclusivamente pela classe principal e recebe a diretoria onde as mesmas estão presentes, o formato das imagens e, opcionalmente, se se quer realizar, ou não, \textit{fine tuning}.
+
+		Importa realçar que a diretoria das imagens deve estar dividida em três pastas: \textit{test}, \textit{train} e \textit{validation}.
+
+		Esta classe é capaz de, para o caso de existirem poucas imagens para treino, realizar o processo de \textit{Data Augmentation}, de forma a combater o sobre-ajustamento e melhorar a qualidade do modelo.
+
+		Pela complexidade e poder computacional que a classificação de imagens exige, foi decidido o uso de uma rede pré-treinada, tendo-se escolhido a rede \texttt{VGG16}, não incluindo o topo da mesma.
+		Por este motivo, aparece a última opção, que indica se se quer re-treinar as últimas camadas da rede pré-treinada.
+
+		No topo da rede \texttt{VGG16}, são adicionadas um camada \texttt{Flatten} e duas camadas \texttt{Dense}: a primeira com 256 neurónios e função de ativação \texttt{relu} e a segunda com apenas 1 neurónio e função de ativação \texttt{sigmoid}.
+		A última camada representa a camada de saída.
+
+		Por fim é possível treinar e avaliar a performance do modelo.
 }
 
 \chapter{Testes e análise de resultados} \label{ch:Test&Analysis}
