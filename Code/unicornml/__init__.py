@@ -149,12 +149,14 @@ class UnicornML:
 
         return algorithms
 
-    def get_best_model(self, verbose=True):
+    def get_best_model(self, verbose=True, name=False):
         if self.model.metric_sign == -1:
             bestModel = sorted(self.model.results, key=lambda x: x["score"], reverse=False)[0]
         else:
             bestModel = sorted(self.model.results, key=lambda x: x["score"], reverse=True)[0]
-        if verbose:
+        if name:
+            return bestModel["name"]
+        elif verbose:
             print("Best model: {0}\t Score: {1}".format(bestModel["name"], bestModel["score"]))
             return bestModel["model"]
         else:
@@ -170,4 +172,6 @@ class UnicornML:
         if self.images:
             return self.model.evaluate()
         else:
+            if self.get_best_model(False, True) == "Neural Networks":
+                yatt = np.argmax(yatt, axis=1)
             return self.model.metric(y, yatt)
