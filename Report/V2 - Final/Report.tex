@@ -146,21 +146,19 @@
         ]
             \node [root] {Code}
                 child { node [selected] {data}
-                    child { node {50\_Startups.csv} }
-                    child { node {Social\_Network\_Ads.csv} }
+                    child { node {...} }
 				}
-				child [missing] {}
 				child [missing] {}
 				child { node [selected] {tests}
-                    child { node {01.py} }
-					child { node {02.py} }
-					child { node {\_\_init\_\_.py} }
+					child { node {...} }
 				}
-				child [missing] {}
-				child [missing] {}
 				child [missing] {}
 				child { node [selected] {unicornml}
 					child { node [selected] {classification}
+						child { node {\_\_init\_\_.py} }
+					}
+					child [missing] {}
+					child { node [selected] {images}
 						child { node {\_\_init\_\_.py} }
 					}
 					child [missing] {}
@@ -181,7 +179,9 @@
 					}
 					child [missing] {}
 					child { node {\_\_init\_\_.py} }
-					}
+				}
+				child [missing] {}
+				child [missing] {}
 				child [missing] {}
 				child [missing] {}
 				child [missing] {}
@@ -224,34 +224,35 @@ Problem:
             - knn
             - svm
             - kernelSVM
-            - naiveBayes
+            - gaussianNB
+            - bernoulliNB
             - decisionTree
             - randomForest
             - neuralNetwork
         metrics:
             - accuracy
-            - f1
+            - auc
             - precision
             - recall
 
     Regression:
         algorithms:
             - linear
-            - poly
             - svr
             - decisionTree
             - randomForest
             - neuralNetwork
         metrics:
-            - r2
             - mse
+            - mae
+            - r2
         \end{minted}
         \vspace{-5mm}
         \caption{Configuração - \textsl{options.yaml}}
         \label{fig:2}
 	\end{figure}
 
-		Numa fase final, é corretamente exibido, para o utilizador, não só o tipo do problema em questão como também os algoritmos a testar e as métrica selecionada.
+		Numa fase final, é corretamente exibido, para o utilizador, não só o tipo do problema em questão como também os algoritmos a testar e a métrica selecionada.
 		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervided learning} escolhido, procedendo-se, também à procura do melhor modelo, ou seja, o que se ajusta de forma mais adequada ao conjunto de dados em causa.
 
 		\begin{figure}[H]
@@ -306,26 +307,25 @@ Problem:
 				\item \textit{K-Nearest Neighbors} (KNN);
 				\item \textit{Support Vector Classifier} (SVC) - uma \textit{Support Vector Machine} (SVM) para classificação;
 				\item \textit{kernel} SVM - uma SVM com uma função \textit{kernel}, que permite a classificação em espaços de dimensão superiores;
-				\item Classificadores Bayesianos - família de classificadores baseados na teoria de Bayes. Foram implementados quatro algoritmos diferentes: \textit{Gaussian}, \textit{Multinomial}, \textit{Bernoulli} e \textit{Complement};
+				\item Classificadores Bayesianos - família de classificadores baseados na teoria de Bayes. Foram implementados dois algoritmos distintos: \textit{Gaussian} e \textit{Bernoulli};
 				\item Árvores de decisão;
 				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão.
 				\item Redes neuronais artificiais.
 			\end{itemize}
 
-			Estes algoritmos encontram-se na classe \texttt{Regression}, tal como se pode observar na figura \hyperref[fig:1]{1}.
+			Estes algoritmos encontram-se na classe \texttt{Classification}, tal como se pode observar na figura \hyperref[fig:1]{1}.
 
 			\subsubsection{Regressão} \label{sssec:Regression1}
 			Os algoritmos disponíveis para problemas de regressão são os seguintes:
 			\begin{itemize}
 				\item Regressão linear;
-				\item Regressão polinomial - os polinómios testados variam entre grau 2 e grau igual ao número de colunas da base de dados;
 				\item \textit{Support Vector Regressor} (SVR) - uma SVM para regressão;
 				\item Árvores de decisão;
 				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão;
 				\item Redes neuronais artificiais.
 			\end{itemize}
 
-			Estes algoritmos encontram-se na classe \texttt{Classification}, presente na estrutura da \textit{framework} desta aplicação (consultar a figura \hyperref[fig:1]{1}).
+			Estes algoritmos encontram-se na classe \texttt{Regression}, presente na estrutura da \textit{framework} desta aplicação (consultar a figura \hyperref[fig:1]{1}).
 
 		\subsection{Métricas} \label{subsec:Metrics}
 		As métricas permitem avaliar o desempenho de um certo modelo. 
@@ -392,19 +392,25 @@ Problem:
 }
 
 \appendix
-\chapter{Observações} \label{ch:Observations}
+\chapter{Documentação} \label{ch:Documentation}
 \begin{itemize}
-    \item Documentação \textit{Python} 3:
+    \item \textit{Python} 3:
 	\par \textit{\url{https://docs.python.org/3/}}
-	\item Documentação \textit{Pandas}:
+	\item \textit{Pandas}:
 	\par \textit{\url{https://pandas.pydata.org/docs/}}
-	\item Documentação \textit{Numpy}:
+	\item \textit{Numpy}:
 	\par \textit{\url{https://numpy.org/doc/}}
-	\item Documentação \textit{scikit-learn} - API:
-    \par \textit{\url{https://scikit-learn.org/stable/modules/classes.html}}
-	\item Documentação \textit{scikit-learn} - \textit{supervised learning}:
+	\item \textit{Scipy}:
+	\par \textit{\url{https://docs.scipy.org/doc/scipy/reference/}}
+	\item \textit{Scikit-learn} - \textit{supervised learning}:
 	\sloppy
 	\par \textit{\url{https://scikit-learn.org/stable/supervised_learning.html\#supervised-learning}}
+	\item \textit{Scikit-learn} (\textsl{API}):
+    \par \textit{\url{https://scikit-learn.org/stable/modules/classes.html}}
+	\item \textit{Tensorflow} - \texttt{keras}:
+	\par \textit{\url{https://www.tensorflow.org/api_docs/python/tf/keras}}
+	\item \textit{Kerastuner}:
+	\par \textit{\url{https://keras-team.github.io/keras-tuner/}}
 \end{itemize}
 
 \end{document}
