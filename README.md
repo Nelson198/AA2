@@ -65,6 +65,7 @@ A procura dos melhores hiperparâmetros para o problema das redes neuronais vai 
     │  │  ├─ wheat.csv
     │  │  └─ winequality-white.csv
     │  ├─ tests
+    │  │  ├─ 00.py
     │  │  ├─ 01.py
     │  │  ├─ 02.py
     │  │  ├─ 03.py

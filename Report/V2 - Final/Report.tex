@@ -146,18 +146,12 @@
         ]
             \node [root] {Code}
                 child { node [selected] {data}
-                    child { node {50\_Startups.csv} }
-                    child { node {Social\_Network\_Ads.csv} }
+                    child { node {...} }
 				}
-				child [missing] {}
 				child [missing] {}
 				child { node [selected] {tests}
-                    child { node {01.py} }
-					child { node {02.py} }
-					child { node {\_\_init\_\_.py} }
+					child { node {...} }
 				}
-				child [missing] {}
-				child [missing] {}
 				child [missing] {}
 				child { node [selected] {unicornml}
 					child { node [selected] {classification}
@@ -181,7 +175,7 @@
 					}
 					child [missing] {}
 					child { node {\_\_init\_\_.py} }
-					}
+				}
 				child [missing] {}
 				child [missing] {}
 				child [missing] {}
@@ -209,7 +203,7 @@
 	\begin{itemize}
 		\item \textbf{Problema} - tratamento de um problema de regressão ou classificação; caso não seja fornecida essa informação, é identificado o tipo do problema em questão durante a etapa de pré-processamento;
 		\item \textbf{Algoritmos} - quais os algoritmos, dentro dos disponibilizados, que o utilizador pretende que sejam testados (passado em forma de lista);
-		\item \textbf{Métricas} - métricas a avaliar (passado em forma de lista).
+		\item \textbf{Métricas} - quais as métricas utilizadas para proceder à avaliação de modelos (passado em forma de lista).
 	\end{itemize}
 
 	Todas estas informações são passadas pelo terminal e são opcionais. Caso não sejam fornecidas, serão testadas todas as hipóteses oferecidas pela \textit{framework}.
@@ -229,27 +223,28 @@ Problem:
             - knn
             - svm
             - kernelSVM
-            - naiveBayes
+            - gaussianNB
+            - bernoulliNB
             - decisionTree
             - randomForest
             - neuralNetwork
         metrics:
             - accuracy
-            - f1
+            - auc
             - precision
             - recall
 
     Regression:
         algorithms:
             - linear
-            - poly
             - svr
             - decisionTree
             - randomForest
             - neuralNetwork
         metrics:
-            - r2
             - mse
+            - mae
+            - r2
         \end{minted}
         \vspace{-5mm}
         \caption{Configuração - \textsl{options.yaml}}
@@ -257,7 +252,7 @@ Problem:
 	\end{figure}
 
 		Numa fase final, é corretamente exibido, para o utilizador, não só o tipo do problema em questão como também os algoritmos e as métricas selecionadas.
-		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervided learning} escolhido, procedendo-se, em última instância, à computação do melhor modelo, ou seja, o que se ajusta de forma adequada ao conjunto de dados em causa.
+		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervided learning} escolhido, procedendo-se, em última instância, à computação do melhor modelo, ou seja, o que se ajusta de forma mais adequada ao conjunto de dados em causa.
 
 		\begin{figure}[H]
 			\centering
@@ -307,26 +302,25 @@ Problem:
 				\item \textit{K-Nearest Neighbors} (KNN);
 				\item \textit{Support Vector Classifier} (SVC) - uma \textit{Support Vector Machine} (SVM) para classificação;
 				\item \textit{kernel} SVM - uma SVM com uma função \textit{kernel}, que permite a classificação em espaços de dimensão superiores;
-				\item Classificadores Bayesianos - família de classificadores baseados na teoria de Bayes. Foram implementados quatro algoritmos diferentes: \textit{Gaussian}, \textit{Multinomial}, \textit{Bernoulli} e \textit{Complement};
+				\item Classificadores Bayesianos - família de classificadores baseados na teoria de Bayes. Foram implementados dois algoritmos distintos: \textit{Gaussian} e \textit{Bernoulli};
 				\item Árvores de decisão;
 				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão.
 				\item Redes neuronais artificiais.
 			\end{itemize}
 
-			Estes algoritmos encontram-se na classe \texttt{Regression}, tal como se pode observar na figura \hyperref[fig:1]{1}.
+			Estes algoritmos encontram-se na classe \texttt{Classification}, tal como se pode observar na figura \hyperref[fig:1]{1}.
 
 			\subsubsection{Regressão} \label{sssec:Regression1}
 			Os algoritmos disponíveis para problemas de regressão são os seguintes:
 			\begin{itemize}
 				\item Regressão linear;
-				\item Regressão polinomial - os polinómios testados variam entre grau 2 e grau igual ao número de colunas da base de dados;
 				\item \textit{Support Vector Regressor} (SVR) - uma SVM para regressão;
 				\item Árvores de decisão;
 				\item \textit{Random Forest} - operam construindo uma multitude de árvores de decisão;
 				\item Redes neuronais artificiais.
 			\end{itemize}
 
-			Estes algoritmos encontram-se na classe \texttt{Classification}, presente na estrutura da \textit{framework} desta aplicação (consultar a figura \hyperref[fig:1]{1}).
+			Estes algoritmos encontram-se na classe \texttt{Regression}, presente na estrutura da \textit{framework} desta aplicação (consultar a figura \hyperref[fig:1]{1}).
 
 		\subsection{Métricas} \label{subsec:Metrics}
 		As métricas permitem avaliar o desempenho de um certo modelo. 
