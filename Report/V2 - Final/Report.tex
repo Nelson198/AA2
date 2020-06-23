@@ -205,9 +205,9 @@
 	Na segunda devem ser colocados os testes a realizar, ou seja, uma classe que faça uso da \textit{framework} e lhe passe os argumentos necessários, nomeadamente, os dados de \textit{input} e outras opções.
 	
 	Para além destas, existe uma classe principal, em \texttt{unicornML/\_\_init\_\_.py}, que deve ser usada para definir a computação a realizar.
-	Assim, esta classe deve ser instanciada pela classe referida anteriormente e recebe os dados - que podem ser passados já separados ou como um ficheiro csv - e todas as opções.
+	Assim, esta classe deve ser instanciada pela classe referida anteriormente e recebe os dados - que podem ser passados já separados ou como um ficheiro \textit{csv} - e todas as opções.
 	Entre as opções, o utilizador pode referir qual o tipo de problema (classificação ou regressão), quais os algoritmos que quer que sejam testados e qual a métrica a ser usada.
-	Estas opções são opcionais, sendo que, se não forem fornecidas, a \textit{framework} tratará de identificar o problema e usará todos os algoritmos que tem disponíveis para esse problema bem como uma métrica definida por defeito.
+	Estas opções são facultativas, sendo que, se não forem fornecidas, a \textit{framework} tratará de identificar o problema em causa e usará todos os algoritmos que tem disponíveis para o mesmo bem como uma métrica definida por defeito.
 
 	Nesta classe principal, é ainda realizado o pré-processamento dos dados, explicado mais à frente.
     
@@ -253,7 +253,7 @@ Problem:
 	\end{figure}
 
 		Numa fase final, é corretamente exibido, para o utilizador, não só o tipo do problema em questão como também os algoritmos a testar e a métrica selecionada.
-		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervided learning} escolhido, procedendo-se, também à procura do melhor modelo, ou seja, o que se ajusta de forma mais adequada ao conjunto de dados em causa.
+		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervised learning} escolhido, procedendo-se, também à procura do melhor modelo, ou seja, o que se ajusta de forma mais adequada ao conjunto de dados em causa.
 
 		\begin{figure}[H]
 			\centering
