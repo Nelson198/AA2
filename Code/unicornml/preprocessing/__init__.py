@@ -66,7 +66,7 @@ def removeNAN(X):
 def scaling_normalize_y(X, y, cv):
     if any([not is_digit(v) for v in y]) or all([isinstance(v, np.int64) or isinstance(v, np.int32) for v in y]):
         X, y = removeSmallCats(X, y, cv)
-        new_y = LabelEncoder().fit_transform(y.reshape(-1, 1))
+        new_y = LabelEncoder().fit_transform(y.reshape(-1, 1).ravel())
         classes = len(np.unique(new_y))
         problem = ("Classification", classes)
     else:

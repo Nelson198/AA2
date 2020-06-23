@@ -130,10 +130,15 @@ python3 setup.py install --user
 ```
 
 ### Testes
-
+* Execução dos testes associados a todos os conjuntos de dados disponíveis:
 ```bash
 cd Code/
 python3 setup.py test
+```
+* Execução de um teste associado a um conjunto de dados específico:
+```bash
+cd Code/
+python3 tests/file.py
 ```
 
 ### Documentação
