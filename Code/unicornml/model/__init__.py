@@ -1,15 +1,14 @@
-import sys
 import random
 
 import numpy as np
-from sklearn.model_selection import RandomizedSearchCV
 from kerastuner.tuners import Hyperband
+from sklearn.model_selection import RandomizedSearchCV
 
 
 class Model:
     def __init__(
-            self, X_train, X_test, y_train, y_test,
-            metric, metric_sign, cv
+        self, X_train, X_test, y_train, y_test,
+        metric, metric_sign, cv
     ):
         self.metric = metric
         self.metric_sign = metric_sign

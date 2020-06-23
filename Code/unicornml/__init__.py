@@ -49,7 +49,7 @@ class UnicornML:
 
         if "algorithms" in options:
             if not isinstance(options["algorithms"], list):
-                sys.exit("The \"algorithms\" paramater needs to be a list")
+                sys.exit("The \"algorithms\" parameter needs to be a list")
 
             for alg in options["algorithms"]:
                 if not isinstance(alg, str):
@@ -68,7 +68,7 @@ class UnicornML:
 
         if "metrics" in options:
             if not isinstance(options["metrics"], str):
-                sys.exit("The \"metrics\" paramater needs to be a string (choose only one metric, please)")
+                sys.exit("The \"metrics\" parameter needs to be a string (choose only one metric, please)")
 
             if options["metrics"] not in config["Problem"][self.__problem]["metrics"]:
                 sys.exit(
@@ -97,10 +97,10 @@ class UnicornML:
                 algorithm["params"],
                 sqrt
             )
-            if 'mse' in self.__metrics and self.get_best_model(False) < 0.01:
+            if "mse" in self.__metrics and self.get_best_model(False) < 0.01:
                 print("Stopping training early, because a good enough result was achieved")
                 break
-            elif 'accuracy' in self.__metrics and self.get_best_model(False) > 0.95:
+            elif "accuracy" in self.__metrics and self.get_best_model(False) > 0.95:
                 print("Stopping training early, because a good enough result was achieved")
                 break
 
