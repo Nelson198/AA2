@@ -9,10 +9,8 @@ from kerastuner.tuners import Hyperband
 class Model:
     def __init__(
             self, X_train, X_test, y_train, y_test,
-            metric, metric_sign, cv, optimization_method="randomizedSearch",
-            save_results=True,
+            metric, metric_sign, cv, optimization_method="randomizedSearch"
     ):
-        self.save_results = save_results
         if optimization_method not in ["randomizedSearch", "Bayes"]:
             sys.exit("Invalid optimization method")
 
