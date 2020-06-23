@@ -7,6 +7,8 @@ from .classification import Classification
 from .model import Model
 from .preprocessing import Preprocessing, file_split_X_y
 
+from .images import Images
+
 
 class UnicornML:
     __problem: str
@@ -16,6 +18,7 @@ class UnicornML:
     output_classes: int
     input_shape: tuple
     cv: int
+    images: bool
     X_train: np.ndarray
     X_test: np.ndarray
     y_train: np.ndarray
@@ -36,73 +39,86 @@ class UnicornML:
             X, y = file_split_X_y(data, label_index)
         elif "X" in input and "y" in input:
             X, y = input["X"], input["Y"]
+        elif "images" in input:
+            self.images = True
+            directory = input["images"]
+            input_shape = (options["height"], options["width"], options["depth"])
+            if "fine_tuning" in options:
+                fine_tuning = options["fine_tuning"]
+            else:
+                fine_tuning = False
+            self.model = Images(input_shape, directory, fine_tuning=fine_tuning)
         else:
             sys.exit("Invalid options for input")
 
-        self.cv = 5
+        if not self.images:
+            self.cv = 5
 
-        self.X_train, self.X_test, self.y_train, self.y_test, (self.__problem, self.output_classes) = Preprocessing(X, y, self.cv)
-        self.input_shape = self.X_train.shape
+            self.X_train, self.X_test, self.y_train, self.y_test, (self.__problem, self.output_classes) = Preprocessing(X, y, self.cv)
+            self.input_shape = self.X_train.shape
 
-        with open("options.yaml") as file:
-            config = yaml.full_load(file)
+            with open("options.yaml") as file:
+                config = yaml.full_load(file)
 
-        if "algorithms" in options:
-            if not isinstance(options["algorithms"], list):
-                sys.exit("The \"algorithms\" paramater needs to be a list")
+            if "algorithms" in options:
+                if not isinstance(options["algorithms"], list):
+                    sys.exit("The \"algorithms\" paramater needs to be a list")
 
-            for alg in options["algorithms"]:
-                if not isinstance(alg, str):
-                    sys.exit("The algorithm need to be a string")
-                if alg not in config["Problem"][self.__problem]["algorithms"]:
+                for alg in options["algorithms"]:
+                    if not isinstance(alg, str):
+                        sys.exit("The algorithm need to be a string")
+                    if alg not in config["Problem"][self.__problem]["algorithms"]:
+                        sys.exit(
+                            "Invalid algorithm %s for a %s problem. Algorithms available:[%s]" % (
+                                alg,
+                                self.__problem,
+                                ", ".join(config["Problem"][self.__problem]["algorithms"])
+                            )
+                        )
+                self.__algorithms = options["algorithms"]
+            else:
+                self.__algorithms = config["Problem"][self.__problem]["algorithms"]
+
+            if "metrics" in options:
+                if not isinstance(options["metrics"], str):
+                    sys.exit("The \"metrics\" paramater needs to be a string (choose only one metric, please)")
+
+                if options["metrics"] not in config["Problem"][self.__problem]["metrics"]:
                     sys.exit(
-                        "Invalid algorithm %s for a %s problem. Algorithms available:[%s]" % (
-                            alg,
+                        "Invalid metric %s for a %s problem. Metrics available:[%s]" % (
+                            options["metrics"],
                             self.__problem,
-                            ", ".join(config["Problem"][self.__problem]["algorithms"])
+                            ", ".join(config["Problem"][self.__problem]["metrics"])
                         )
                     )
-            self.__algorithms = options["algorithms"]
-        else:
-            self.__algorithms = config["Problem"][self.__problem]["algorithms"]
+                self.__metrics = options["metrics"]
+            else:
+                self.__metrics = config["Problem"][self.__problem]["metrics"]
 
-        if "metrics" in options:
-            if not isinstance(options["metrics"], str):
-                sys.exit("The \"metrics\" paramater needs to be a string (choose only one metric, please)")
-
-            if options["metrics"] not in config["Problem"][self.__problem]["metrics"]:
-                sys.exit(
-                    "Invalid metric %s for a %s problem. Metrics available:[%s]" % (
-                        options["metrics"],
-                        self.__problem,
-                        ", ".join(config["Problem"][self.__problem]["metrics"])
-                    )
-                )
-            self.__metrics = options["metrics"]
-        else:
-            self.__metrics = config["Problem"][self.__problem]["metrics"]
-
-        print("\nIt's a %s problem\nSelected algorithms: [%s]\nSelected metrics: [%s]\n" % (
-            self.__problem,
-            ", ".join(self.__algorithms),
-            ", ".join(self.__metrics)
-        ))
+            print("\nIt's a %s problem\nSelected algorithms: [%s]\nSelected metrics: [%s]\n" % (
+                self.__problem,
+                ", ".join(self.__algorithms),
+                ", ".join(self.__metrics)
+            ))
 
     def Rainbow(self):
-        for algorithm in self.__get_model_algorithms():
-            sqrt = True if "sqrt" in algorithm.keys() else False
-            self.model.param_tunning_method(
-                algorithm["estimator"],
-                algorithm["desc"],
-                algorithm["params"],
-                sqrt
-            )
-            if 'mse' in self.__metrics and self.get_best_model(False) < 0.01:
-                print("Stopping training early, because a good enough result was achieved")
-                break
-            elif 'accuracy' in self.__metrics and self.get_best_model(False) > 0.95:
-                print("Stopping training early, because a good enough result was achieved")
-                break
+        if self.images:
+            self.model.train()
+        else:
+            for algorithm in self.__get_model_algorithms():
+                sqrt = True if "sqrt" in algorithm.keys() else False
+                self.model.param_tunning_method(
+                    algorithm["estimator"],
+                    algorithm["desc"],
+                    algorithm["params"],
+                    sqrt
+                )
+                if 'mse' in self.__metrics and self.get_best_model(False) < 0.01:
+                    print("Stopping training early, because a good enough result was achieved")
+                    break
+                elif 'accuracy' in self.__metrics and self.get_best_model(False) > 0.95:
+                    print("Stopping training early, because a good enough result was achieved")
+                    break
 
     def __get_model_algorithms(self):
         if self.__problem == "Classification":

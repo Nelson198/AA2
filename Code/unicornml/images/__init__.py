@@ -6,23 +6,23 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
 class Images:
-    def __init__(self, input_shape, batch_size, directory, data_augmentation=True, fine_tuning=False):
+    def __init__(self, input_shape, directory, fine_tuning=False):
         self.input_shape = input_shape
-        self.batch_size = batch_size
         self.directory = directory
-        self.data_augmentation = data_augmentation
         self.fine_tuning = fine_tuning
 
         self.test_dir = os.path.join(self.directory, "test")
         self.train_dir = os.path.join(self.directory, "train")
         self.validation_dir = os.path.join(self.directory, "validation")
 
+        if len([name for name in os.listdir(self.train_dir) if os.path.isfile(os.path.join(self.train_dir, name))]) < 5000:
+            self.data_augmentation = True
+        else:
+            self.data_augmentation = False
+
         self.extract_features()
 
         self.model = self.build()
-        self.train()
-
-        self.evaluate()
 
     def extract_features(self):
         if self.data_augmentation:
@@ -37,22 +37,22 @@ class Images:
                 fill_mode="nearest"
             )
         else:
-            self.train_datagen = ImageDataGenerator(rescale=1. / 255)
+            self.train_datagen = ImageDataGenerator(rescale=1./255)
 
         # Validation data should not be augmented!
-        self.test_datagen = ImageDataGenerator(rescale=1. / 255)
+        self.test_datagen = ImageDataGenerator(rescale=1./255)
 
         self.train_generator = self.train_datagen.flow_from_directory(
             self.train_dir,
             target_size=(self.input_shape[0], self.input_shape[1]),
-            batch_size=self.batch_size,
+            batch_size=20,
             class_mode="binary"
         )
 
         self.validation_generator = self.test_datagen.flow_from_directory(
             self.validation_dir,
             target_size=(self.input_shape[0], self.input_shape[1]),
-            batch_size=self.batch_size,
+            batch_size=20,
             class_mode="binary"
         )
 
@@ -97,7 +97,7 @@ class Images:
         test_generator = self.test_datagen.flow_from_directory(
             self.test_dir,
             target_size=(self.input_shape[0], self.input_shape[1]),
-            batch_size=self.batch_size,
+            batch_size=20,
             class_mode="binary")
 
         test_loss, test_acc = self.model.evaluate_generator(test_generator, steps=20)
