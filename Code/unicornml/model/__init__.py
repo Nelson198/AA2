@@ -1,20 +1,15 @@
-import sys
 import random
 
 import numpy as np
-from sklearn.model_selection import RandomizedSearchCV
 from kerastuner.tuners import Hyperband
+from sklearn.model_selection import RandomizedSearchCV
 
 
 class Model:
     def __init__(
-            self, X_train, X_test, y_train, y_test,
-            metric, metric_sign, cv, optimization_method="randomizedSearch"
+        self, X_train, X_test, y_train, y_test,
+        metric, metric_sign, cv
     ):
-        if optimization_method not in ["randomizedSearch", "Bayes"]:
-            sys.exit("Invalid optimization method")
-
-        self.method = optimization_method
         self.metric = metric
         self.metric_sign = metric_sign
         self.results = []
@@ -33,10 +28,8 @@ class Model:
                 trained_model = self.__train_neural_networks(estimator)
             else:
                 trained_model = self.__train_without_optimizer(estimator)
-        elif self.method == "randomizedSearch":
-            trained_model = self.__randomized_search(estimator, params, sqrt)
         else:
-            trained_model = self.__bayes(estimator, params, sqrt)
+            trained_model = self.__randomized_search(estimator, params, sqrt)
 
         y_pred = trained_model.predict(self.X_test)
         if desc == "Neural Networks":
@@ -89,7 +82,7 @@ class Model:
         return estimator.fit(self.X_train, self.y_train)
 
     def __train_neural_networks(self, estimator):
-        if estimator.get_metrics()[0] == "mse":
+        if estimator.get_metric() == "mse":
             tuner = Hyperband(
                 estimator,
                 max_epochs=20,
@@ -108,7 +101,3 @@ class Model:
         tuner.search(self.X_train, self.y_train, epochs=1, validation_split=0.1, verbose=0)
 
         return tuner.get_best_models(num_models=1)[0]
-
-    # TODO : Acabar implementação
-    def __bayes(self, estimator, params, sqrt):
-        pass

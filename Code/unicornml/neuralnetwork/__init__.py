@@ -17,16 +17,16 @@ class UnicornHyperModel(HyperModel):
         if problem == "regression":
             self.__act_output = "linear"
             self.__loss = "mse"
-            self.__metrics = ["mse"]
+            self.__metric = "mse"
         else:
             if self.__output_units > 2:
                 self.__act_output = "softmax"
                 self.__loss = "sparse_categorical_crossentropy"
-                self.__metrics = ["accuracy"]
+                self.__metric = "accuracy"
             else:
                 self.__act_output = "sigmoid"
                 self.__loss = "binary_crossentropy"
-                self.__metrics = ["accuracy"]
+                self.__metric = "accuracy"
 
     def build(self, hp):
         model = Sequential()
@@ -68,13 +68,13 @@ class UnicornHyperModel(HyperModel):
             model.add(Dense(1, activation=self.__act_output))
 
         model.compile(
-            optimizer="rmsprop", loss=self.__loss, metrics=self.__metrics
+            optimizer="rmsprop", loss=self.__loss, metrics=[self.__metric]
         )
 
         return model
 
-    def get_metrics(self):
-        return self.__metrics
+    def get_metric(self):
+        return self.__metric
 
     def get_output_units(self):
         return self.__output_units

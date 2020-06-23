@@ -14,14 +14,14 @@ from ..neuralnetwork import UnicornHyperModel
 class Classification:
     __methods: dict
 
-    def __init__(self, input_shape, algorithms=None, metrics=None, output_units=2):
-        if metrics is None:
-            metrics = []
+    def __init__(self, input_shape, algorithms=None, metric=None, output_units=2):
+        if metric is None:
+            metric = "accuracy"
         if algorithms is None:
             algorithms = []
 
         self.__get_methods(algorithms)
-        self.__get_metrics(metrics)
+        self.__get_metric(metric)
         self.__output_units = output_units
         self.__input_shape = input_shape
 
@@ -31,8 +31,8 @@ class Classification:
             list.append(self.__methods[alg]())
         return list
 
-    def get_metrics(self):
-        return self.__metrics
+    def get_metric(self):
+        return self.__metric
 
     def __get_methods(self, algorithms):
         available = {
@@ -52,15 +52,15 @@ class Classification:
                 if alg not in algorithms:
                     del self.__methods[alg]
 
-    def __get_metrics(self, metrics):
-        if metrics[0] == "recall":
-            self.__metrics = lambda x, y: recall_score(x, y)
-        elif metrics[0] == "auc":
-            self.__metrics = lambda x, y: auc(x, y),
-        elif metrics[0] == "precision":
-            self.__metrics = lambda x, y: precision_score(x, y),
-        else:  # metrics == "accuracy" (default metric)
-            self.__metrics = lambda x, y: accuracy_score(x, y)
+    def __get_metric(self, metric):
+        if metric == "recall":
+            self.__metric = lambda x, y: recall_score(x, y)
+        elif metric == "auc":
+            self.__metric = lambda x, y: auc(x, y),
+        elif metric == "precision":
+            self.__metric = lambda x, y: precision_score(x, y),
+        else:  # metric == "accuracy" (default metric)
+            self.__metric = lambda x, y: accuracy_score(x, y)
 
     def __neuralNetwork(self):
         return {
