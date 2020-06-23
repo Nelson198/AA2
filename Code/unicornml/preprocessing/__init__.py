@@ -23,6 +23,7 @@ def Preprocessing(X, y, cv):
 
     return X_train, X_test, y_train, y_test, problem
 
+
 def removeSmallCats(X, y, cv):
     unique, count = np.unique(y, return_counts=True)
     cats_count = dict(zip(unique, count))
