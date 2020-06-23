@@ -23,6 +23,9 @@
 \tikzstyle{selected}=[draw=orange,fill=orange!30]
 \tikzstyle{root}=[draw=red,fill=red!30]
 
+\usepackage{tabularx}
+\usepackage{booktabs}
+
 \definecolor{friendlybg}{HTML}{f0f0f0}
 \setminted[yaml]{
 	style=manni,
@@ -388,39 +391,40 @@ Problem:
 \chapter{Testes e análise de resultados} \label{ch:Test&Analysis}
 \large{
 	Para validar todos os aspetos considerados durante a implementação deste trabalho, foram incorporados nesta \textit{framework} vários conjuntos de dados que servem de teste à mesma.
-	Como tal, foram adicionados no total 12 conjuntos de dados distintos entre si, havendo tanto problemas de regressão como de classificação com múltiplas classes a serem modelados.
-	Estes conjuntos de dados foram obtidos em https://machinelearningmastery.com/standard-machine-learning-datasets, sendo que alguns deles contêm informação sobre os valores esperados da precisão do modelo gerado. Assim, faremos uma comparação dos resultados obtidos com os esperados para alguns destes dados.
+	Como tal, foram adicionados no total 13 conjuntos de dados distintos entre si, havendo tanto problemas de regressão como de classificação com múltiplas classes a serem modelados.
+	A maioria destes conjuntos de dados foram obtidos na seguinte página:
+	\begin{center}
+        \textit{\url{https://machinelearningmastery.com/standard-machine-learning-datasets}}
+	\end{center}
 
-	De forma a exibir apenas alguns dos resultados obtidos, expõem-se agora os conjuntos de dados considerados para o efeito. Para cada um, é indicado o valor mínimo esperado (e os melhores resultados, no caso de existirem). São ainda apresentados os valores obtidos pela nossa framework, tanto na fase da optimização dos hiperparâmetros como o treino com todos os dados disponíveis:
-	\begin{itemize}
-		\item \textsl{Pima Indians Diabetes Dataset}
-		Desempenho mínimo esperado: 65\%. Melhores resultados previstos: 77\%.
-		Resultado: 80.5\% (accuracy 76.5\%), Gaussian Nayve Bayes
-		\item \textsl{Sonar Dataset}
-		Desempenho mínimo esperado: 53\%. Melhores resultados previstos: 88\%.
-		Resultado: 83\% (accuracy 96.6\%), KNN
-		\item \textsl{Banknote Dataset}
-		Desempenho mínimo esperado: 50\%.
-		Resultado: 97.8\% (accuracy 98\%), Logistic Regression 
-		\item \textsl{Iris Flowers Dataset}
-		Desempenho mínimo esperado: 26\%.
-		Resultado: 93.3\% (accuracy 98.7\%), Decision Tree Classification
-		\item \textsl{Abalone Dataset}
-		Desempenho mínimo esperado: 16\%.
-		Resultado: 27.5\% (accuracy 28.4\%), Kernel Support Vector Machine
-		\item \textsl{Ionosphere Dataset}
-		Desempenho mínimo esperado: 64\%. Melhores resultados previstos: 94\%.
-		Resultado: 93.3\% (accuracy 98.7\%), Decision Tree Classifier
-		\item \textsl{Wheat Seeds Dataset}
-		Desempenho mínimo esperado: 28\%.
-		Resultado: 95.2\% (accuracy 91.4\%), Neural Network
-		\item \textsl{Imagens Gatos e Cães}
-		Desempenho mínimo esperado: 95\%.
-		Resultado: 87.5\%, CNN
-	\end{itemize}
+	É também de realçar que alguns destes conjuntos de dados contêm informações acerca dos valores esperados da precisão do modelo gerado.
+	Assim, faremos uma comparação dos resultados obtidos com os esperados para alguns destes dados.
 
-	Como pode ser notado, quase todos os casos obtiveram valores muito superiores ao esperado, o que demonstra as vantagens da nossa framework quando comparada com a otimização manual de hiperparâmetros.
-	A única exceção foi o conjunto de imagens dos gatos e cães, onde o resultado obtivo foi um pouco inferior ao esperado. Isto deve-se a ter sido utilizado um subconjunto parcial dos dados totais e a rede ter sido treinada durante apenas uma época. Imposemos esta restrição para este caso específico para acelerar o processo de treino, mas note-se que não é um problema da framework em si.
+	De forma a exibir apenas alguns dos resultados obtidos, expõem-se agora os conjuntos de dados considerados para o efeito.
+	Para cada um, é indicado o valor mínimo esperado (e os melhores resultados, no caso de existirem).
+	São ainda apresentados os valores obtidos pela nossa \textit{framework}, tanto na fase da otimização dos hiperparâmetros como no treino com todos os dados disponíveis:
+	
+	\begin{table}[H] 
+		\begin{center}
+			\begin{tabular}{>{\centering}p{0.1\textwidth}>{\centering}p{0.13\textwidth}>{\centering}p{0.18\textwidth}>{\centering}p{0.22\textwidth}>{\centering\arraybackslash}p{0.2\textwidth}}
+				\toprule \textbf{\textit{Dataset}} & \textbf{Desempenho mínimo esperado} & \textbf{Melhor resultado previsto} & \textbf{Resultado obtido} & \textbf{Melhor modelo} \\
+				\midrule \textsl{Pima Indians Diabetes} & 65\% & 77\% & 80.5\% (\textit{accuracy} 76.5\%) & \textit{Gaussian Naive Bayes} \\
+				\midrule \textsl{Sonar} & 53\% & 88\% & 83\% (\textit{accuracy} 96.6\%) & \textit{KNN} \\
+				\midrule \textsl{Banknote} & 50\% & ----- & 97.8\% (\textit{accuracy} 98\%) & \textit{Logistic Regression} \\
+				\midrule \textsl{Iris Flowers} & 26\% & ----- & 93.3\% (\textit{accuracy} 98.7\%) & \textit{Decision Tree Classifier} \\
+				\midrule \textsl{Abalone} & 16\% & ----- & 27.5\% (\textit{accuracy} 28.4\%) & \textit{Kernel Support Vector Machine} \\
+				\midrule \textsl{Ionosphere} & 64\% & 94\% & 93.3\% (\textit{accuracy} 98.7\%) & \textit{Decision Tree Classifier} \\
+				\midrule \textsl{Wheat Seeds} & 28\% & ----- & 95.2\% (\textit{accuracy} 91.4\%) & \textit{Neural Network} \\
+				\midrule \textsl{Cats \& dogs' images} & 95\% & ----- & 87.5\% & \textit{CNN} \\
+				\bottomrule
+			\end{tabular} 
+		\end{center}
+		\caption{Resultados obtidos na obtenção dos melhores modelos para os conjuntos de dados}
+	\end{table}
+
+	Como pode ser notado, quase todos os casos obtiveram valores muito superiores ao esperado, o que demonstra as vantagens da nossa \textit{framework} quando comparada com a otimização manual de hiperparâmetros.
+	A única exceção foi o conjunto de imagens dos gatos e cães, onde o resultado obtivo foi um pouco inferior ao esperado. Isto deve-se a ter sido utilizado um subconjunto parcial dos dados totais e a rede ter sido treinada durante apenas uma época.
+	Imposemos esta restrição para este caso específico para acelerar o processo de treino, mas note-se que não é um problema da \textit{framework} em si.
 }
 
 \chapter{Conclusão} \label{ch:Conclusion}
