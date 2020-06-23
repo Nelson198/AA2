@@ -148,6 +148,6 @@ python3 tests/file.py
   * *Supervised learning* : https://scikit-learn.org/stable/supervised_learning.html
   * *API* : https://scikit-learn.org/stable/modules/classes.html
 * ***tensorflow***:
-  * *keras* : https://www.tensorflow.org/api_docs/python/tf/keras 
+  * *keras* : https://www.tensorflow.org/api_docs/python/tf/keras
 * ***kerastuner***:
   * Página oficial : https://keras-team.github.io/keras-tuner/
