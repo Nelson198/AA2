@@ -5,6 +5,7 @@ import numpy as np
 from sklearn.model_selection import RandomizedSearchCV
 from kerastuner.tuners import Hyperband
 
+
 class Model:
     def __init__(
             self, X_train, X_test, y_train, y_test,
