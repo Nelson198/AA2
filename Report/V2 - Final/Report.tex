@@ -201,20 +201,15 @@
     \end{figure}
 
 	Neste esquema evidenciam-se as pastas \textsl{data} e \textsl{tests}.
-	Na primeira encontram-se disponíveis todos os \textit{datasets} que servem de \textit{input} à \textit{framework} implementada.
-	Na segunda localizam-se os testes unitários associados a cada um dos \textit{datasets} mencionados anteriormente.
-	Para além disso, existe uma classe principal, com o mesmo nome da \textit{framework}, que permite treinar dados supervisionados para problemas de classificação e regressão.
-	Numa fase inicial, é despoletado o mecanismo associado ao pré-processamento dos dados fornecidos, etapa essa que se encontra implementada na respetiva classe.
-	Posteriormente, são processadas todas as informações iniciais, que podem incluir:
-	\begin{itemize}
-		\item \textbf{Problema} - tratamento de um problema de regressão ou classificação; caso não seja fornecida essa informação, é identificado o tipo do problema em questão durante a etapa de pré-processamento;
-		\item \textbf{Algoritmos} - quais os algoritmos, dentro dos disponibilizados, que o utilizador pretende que sejam testados (passado em forma de lista);
-		\item \textbf{Métricas} - métricas a avaliar (passado em forma de lista).
-	\end{itemize}
+	Na primeira podem ser colocados os \textit{datasets} para os quais se querem desenvolver modelos.
+	Na segunda devem ser colocados os testes a realizar, ou seja, uma classe que faça uso da \textit{framework} e lhe passe os argumentos necessários, nomeadamente, os dados de \textit{input} e outras opções.
+	
+	Para além destas, existe uma classe principal, em \texttt{unicornML/\_\_init\_\_.py}, que deve ser usada para definir a computação a realizar.
+	Assim, esta classe deve ser instanciada pela classe referida anteriormente e recebe os dados - que podem ser passados já separados ou como um ficheiro csv - e todas as opções.
+	Entre as opções, o utilizador pode referir qual o tipo de problema (classificação ou regressão), quais os algoritmos que quer que sejam testados e qual a métrica a ser usada.
+	Estas opções são opcionais, sendo que, se não forem fornecidas, a \textit{framework} tratará de identificar o problema e usará todos os algoritmos que tem disponíveis para esse problema bem como uma métrica definida por defeito.
 
-	Todas estas informações são passadas pelo terminal e são opcionais. Caso não sejam fornecidas, serão testadas todas as hipóteses oferecidas pela \textit{framework}.
-    O utilizador pode indicar o problema, os algoritmos e as métricas que pretender, no entanto pode sempre optar por escolher apenas alguns destes campos.
-    A decisão tomada deve, obviamente, ter sempre em consideração as limitações e consequências da própria.
+	Nesta classe principal, é ainda realizado o pré-processamento dos dados, explicado mais à frente.
     
     Todas as opções indicadas pelo utilizador desta \textit{framework} são verificadas e validadas através de um ficheiro previamente definido, isto é, \textbf{\textsl{options.yaml}}.
 	Neste encontram-se todos os parâmetros suportados pela aplicação desenvolvida, ou seja, o tipo de problemas, os algoritmos e, ainda, as respetivas métricas.
@@ -256,8 +251,8 @@ Problem:
         \label{fig:2}
 	\end{figure}
 
-		Numa fase final, é corretamente exibido, para o utilizador, não só o tipo do problema em questão como também os algoritmos e as métricas selecionadas.
-		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervided learning} escolhido, procedendo-se, em última instância, à computação do melhor modelo, ou seja, o que se ajusta de forma adequada ao conjunto de dados em causa.
+		Numa fase final, é corretamente exibido, para o utilizador, não só o tipo do problema em questão como também os algoritmos a testar e as métrica selecionada.
+		Consequentemente, é invocada a classe relativa ao tipo de problema de \textit{supervided learning} escolhido, procedendo-se, também à procura do melhor modelo, ou seja, o que se ajusta de forma mais adequada ao conjunto de dados em causa.
 
 		\begin{figure}[H]
 			\centering
@@ -265,6 +260,10 @@ Problem:
 			\caption{Fluxo de execução da \textit{framework}}
 			\label{fig:3}
 		\end{figure}
+
+		Posto isto, existe ainda um outro problema, tratado de forma diferente do que é exposto acima.
+		Para o caso de imagens, o utilizador deve indicar, ao instanciar a classe principal, que o \textit{dataset} é de imagens, passando nas opções o formato das imagens - altura, largura e profundidade.
+		A profundidade da imagem, entenda-se, corresponde ao facto de a imagem ter ou não cor, sendo igual a 3 no caso de ter (RGB).
 
 		\subsection{Pré-processamento} \label{subsec:Pre-Processing}
 		Na classe de pré-processamento realizam-se várias tarefas sobre os conjuntos de dados disponibilizados.
@@ -337,7 +336,7 @@ Problem:
             \subsubsection{Classificação} \label{sssec:Classification2}
 			As métricas disponíveis para problemas de classificação são as seguintes:
 			\begin{itemize}
-				\item \textit{Accuracy} - Percentagem de exemplos corretamente classificados (PECC). Esta métrica foi definida por omissão;
+				\item \textit{Accuracy} - Percentagem de exemplos corretamente classificados (PECC). Esta métrica foi definida por defeito;
 				\item \textit{Auc};
 				\item \textit{Precision} - Valor preditivo positivo;
 				\item \textit{Recall} - Sensibilidade.
@@ -346,7 +345,7 @@ Problem:
             \subsubsection{Regressão} \label{sssec:Regression2}
 			As métricas disponíveis para problemas de regressão são as seguintes:
 			\begin{itemize}
-				\item \textit{Mean Square Error} (MSE) - métrica definida por omissão;
+				\item \textit{Mean Square Error} (MSE) - métrica definida por defeito;
 				\item \textit{Mean Absolute Error} (MAE);
 				\item \textit{R-squared} ($R^{2}$).
 			\end{itemize}
@@ -362,6 +361,10 @@ Problem:
 			Para desempenhar a otimização de hiperparâmetros dos modelos considerados, o utilizador desta \textit{framework} de \textit{AutoML} pode indicar qual a otimização que pretende realizar.
 			Nesta tomada de decisão este pode explicitamente indicar que não quer realizar tal tarefa. Por omissão, é realizada uma procura aleatória dos melhores parâmetros (\textit{RandomizedSearch}).
 			No caso das redes neuronais, é utilizado o método de otimização bayesiana com recurso à biblioteca \texttt{keras}.
+
+
+		\subsection{Imagens}
+		A classe \texttt{Images}, em \texttt{unicornML/images/\_\_init\_\_.py}, é responsável pelo desenvolvimento de modelos para imagens.
 }
 
 \chapter{Testes e análise de resultados} \label{ch:Test&Analysis}
