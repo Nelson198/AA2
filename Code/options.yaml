@@ -19,7 +19,6 @@ Problem:
     Regression:
         algorithms:
             - linear
-            - poly
             - svr
             - decisionTree
             - randomForest
