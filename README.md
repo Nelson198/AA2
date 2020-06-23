@@ -29,7 +29,6 @@ A *framework* proposta procede à distinção entre problemas de *supervised* e 
 Para problemas de regressão, os algoritmos disponiveis são:
 
 * Regressão Linear;
-* Regressão Polinomial;
 * *Support Vector Regression*;
 * *Decision Tree Regression*;
 * *Random Forest Regression*;
@@ -41,7 +40,7 @@ Para problemas de classificação, os algoritmos disponiveis são:
 * *k-Nearest Neighbors* (KNN);
 * *Support Vector Machine* (SVM);
 * *Kernel* SVM;
-* *Naive Bayes*;
+* *Naive Bayes* (*GaussianNB* e *BernoulliNB*);
 * *Decision Tree Classification*;
 * *Random Forest*;
 * Redes Neuronais.
@@ -143,5 +142,10 @@ python3 tests/file.py
 ```
 
 ### Documentação
-- *Supervised learning* : https://scikit-learn.org/stable/supervised_learning.html
-- *API* : https://scikit-learn.org/stable/modules/classes.html
+* ***sklearn***:
+  * *Supervised learning* : https://scikit-learn.org/stable/supervised_learning.html
+  * *API* : https://scikit-learn.org/stable/modules/classes.html
+* ***tensorflow***:
+  * *keras* : https://www.tensorflow.org/api_docs/python/tf/keras 
+* ***kerastuner***:
+  * Página oficial: https://keras-team.github.io/keras-tuner/
