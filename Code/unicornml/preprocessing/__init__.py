@@ -6,9 +6,10 @@ from sklearn.preprocessing import OneHotEncoder, LabelEncoder, MinMaxScaler
 from sklearn.model_selection import train_test_split
 from sklearn.decomposition import PCA
 
-# Take the raw data and preprocess it such that they are ready to be used for training
+
+# Take the raw data and pre-process it such that they are ready to be used for training
 def Preprocessing(X, y, cv):
-    # Remove missing values from the dataset
+    # Remove missing values from the input columns
     X = removeNAN(X)
 
     # Scale/normalize the input columns
@@ -45,8 +46,8 @@ def removeSmallCats(X, y, cv):
     return X, y
 
 
-# Remove cloumns that contain more than 40% of missing values and replace missing values
-# in the other columns by the modal/mean of that column (depending on wether the variable
+# Remove columns that contain more than 40% of missing values and replace missing values
+# in the other columns by the modal/mean of that column (depending on whether the variable
 # is categorical or continuous)
 def removeNAN(X):
     colIdx = []
@@ -118,7 +119,7 @@ def file_split_X_y(data, label_index):
     return data.iloc[:, :label_index].values, data.iloc[:, label_index].values
 
 
-# Return wether the given object is a digit or not
+# Return whether the given object is a digit or not
 def is_digit(n):
     try:
         int(n)

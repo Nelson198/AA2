@@ -49,7 +49,7 @@ class UnicornML:
 
         if "algorithms" in options:
             if not isinstance(options["algorithms"], list):
-                sys.exit("The \"algorithms\" paramater needs to be a list")
+                sys.exit("The \"algorithms\" parameter needs to be a list")
 
             for alg in options["algorithms"]:
                 if not isinstance(alg, str):
