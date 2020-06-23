@@ -34,10 +34,12 @@ class UnicornML:
             sys.exit("Undefined input data")
 
         if "file" in input:
+            self.images = False
             data = pd.read_csv(input["file"])
             label_index = input["label_col"] if "label_col" in input else -1
             X, y = file_split_X_y(data, label_index)
         elif "X" in input and "y" in input:
+            self.images = False
             X, y = input["X"], input["Y"]
         elif "images" in input:
             self.images = True
