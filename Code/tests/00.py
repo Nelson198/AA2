@@ -1,6 +1,6 @@
 import unittest
-import numpy as np
 from unicornml import UnicornML
+
 
 class TestStringMethods(unittest.TestCase):
     def test_linearRegression(self):
